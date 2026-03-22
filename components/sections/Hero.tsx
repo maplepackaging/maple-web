@@ -16,7 +16,7 @@ const slides = [
     subtitle: "Premium Packaging & Gifting",
     description:
       "Handcrafted packaging and curated gift hampers that transform ordinary moments into extraordinary memories.",
-    image: "https://images.unsplash.com/photo-1549465220-1a8b9238f53e?w=1920&q=90",
+    image: "/hero-opt-1.png",
     cta: { text: "Explore Collections", href: "/categories" },
   },
   {
@@ -24,7 +24,7 @@ const slides = [
     subtitle: "Luxury Wedding Invitations",
     description:
       "Exquisite invitation boxes and stationery that set the perfect tone for your special day.",
-    image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&q=90",
+    image: "/hero-opt-2.png",
     cta: { text: "View Wedding Collection", href: "/categories/wedding-invites" },
   },
   {
@@ -32,7 +32,7 @@ const slides = [
     subtitle: "Premium Corporate Solutions",
     description:
       "Make a lasting impression with our curated corporate hampers and custom packaging solutions.",
-    image: "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=1920&q=90",
+    image: "/hero-opt-3.png",
     cta: { text: "Explore Corporate Gifts", href: "/categories/corporate-gifting" },
   },
 ];
@@ -45,7 +45,7 @@ export default function Hero() {
         modules={[Autoplay, Pagination]}
         speed={800}
         autoplay={{
-          delay: 6000,
+          delay: 5000,
           disableOnInteraction: false,
         }}
         pagination={{
@@ -70,44 +70,43 @@ export default function Hero() {
                   sizes="100vw"
                   quality={90}
                 />
-                <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/70 to-black/50" />
-                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-r from-black/50 via-black/30 to-black/10" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent" />
               </div>
 
               {/* Content */}
-              <div className="relative h-full flex items-center py-8 md:py-12">
+              <div className="relative h-full flex items-center py-4 sm:py-8 md:py-12">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                   <div className="max-w-3xl">
                     {/* Subtitle */}
-                    <div className="mb-4">
-                      <span className="text-primary text-xs md:text-sm font-medium tracking-widest uppercase">
+                    <div className="mb-3 sm:mb-4">
+                      <span className="text-primary text-[10px] sm:text-xs md:text-sm font-medium tracking-widest uppercase">
                         {slide.subtitle}
                       </span>
                     </div>
 
                     {/* Title */}
-                    <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight mb-5">
+                    <h1 className="font-heading text-2xl sm:text-3xl md:text-5xl font-bold text-white leading-tight tracking-tight mb-3 sm:mb-5">
                       {slide.title}
                     </h1>
 
                     {/* Description */}
-                    <p className="text-base md:text-lg text-white/70 max-w-xl leading-relaxed mb-8">
+                    <p className="text-sm sm:text-base md:text-lg text-white/70 max-w-xl leading-relaxed mb-6 sm:mb-8">
                       {slide.description}
                     </p>
 
                     {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <Link href={slide.cta.href}>
-                        <Button size="lg" className="group w-full sm:w-auto">
+                    <div className="flex flex-row flex-wrap gap-3 sm:gap-4">
+                      <Link href={slide.cta.href} className="inline-block">
+                        <Button className="group px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-lg">
                           {slide.cta.text}
                           <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </Button>
                       </Link>
-                      <Link href="/customize">
+                      <Link href="/customize" className="inline-block">
                         <Button 
                           variant="outline" 
-                          size="lg" 
-                          className="w-full sm:w-auto border-2 border-white/30 text-white hover:bg-white hover:text-text-dark backdrop-blur-sm"
+                          className="px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-lg border-2 border-white/30 text-white hover:bg-white hover:text-text-dark backdrop-blur-sm"
                         >
                           Customize Yours
                         </Button>
@@ -142,7 +141,7 @@ export default function Hero() {
         ))}
       </Swiper>
 
-      <style jsx global>{`
+      <style>{`
         .hero-swiper .swiper-pagination {
           bottom: 40px !important;
           z-index: 10;

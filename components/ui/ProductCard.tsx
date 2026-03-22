@@ -20,7 +20,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <Link href={`/products/${product.id}`} className="group block">
       <div className="relative aspect-3/4 overflow-hidden rounded-xl bg-beige-dark mb-3">
         <Image
-          src={product.images[0]}
+          src={product.images?.[0] || "/placeholder-product.png"}
           alt={product.name}
           fill
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"

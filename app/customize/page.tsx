@@ -150,8 +150,8 @@ export default function CustomizePage() {
           </h2>
           <p className="mt-3 text-text-muted">
             Call us at{" "}
-            <a href="tel:+919876543210" className="text-primary font-medium">
-              +91 98765 43210
+            <a href="tel:+918433572388" className="text-primary font-medium">
+              +91 84335 72388
             </a>{" "}
             or{" "}
             <Link href="/contact" className="text-primary font-medium hover:underline">

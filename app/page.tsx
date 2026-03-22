@@ -3,6 +3,7 @@ import Categories from "@/components/sections/Categories";
 import Featured from "@/components/sections/Featured";
 import WhyUs from "@/components/sections/WhyUs";
 import Testimonials from "@/components/sections/Testimonials";
+import InstagramFeed from "@/components/sections/InstagramFeed";
 import CTA from "@/components/sections/CTA";
 import { getCategories, getFeaturedProducts, getTestimonials } from "@/lib/supabase-data";
 
@@ -20,6 +21,7 @@ export default async function Home() {
       <Featured products={featuredProducts} />
       <WhyUs />
       <Testimonials testimonials={testimonials} />
+      <InstagramFeed />
       <CTA />
     </>
   );

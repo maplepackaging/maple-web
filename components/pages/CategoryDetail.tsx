@@ -30,7 +30,7 @@ export default function CategoryDetail({
       {/* Hero banner */}
       <div className="relative h-64 md:h-80 overflow-hidden">
         <Image
-          src={category.image}
+          src={category.image || "/placeholder-product.png"}
           alt={category.name}
           fill
           className="object-cover"

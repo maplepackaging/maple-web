@@ -63,16 +63,17 @@ export default function ProductDetail({
 
       {/* Product section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 lg:items-start">
           {/* Images */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
+            className="lg:sticky lg:top-20"
           >
-            <div className="relative aspect-square rounded-xl overflow-hidden bg-beige-dark">
+            <div className="relative aspect-square max-h-[65vh] rounded-xl overflow-hidden bg-beige-dark">
               <Image
-                src={product.images[selectedImage]}
+                src={product.images?.[selectedImage] || "/placeholder-product.png"}
                 alt={product.name}
                 fill
                 className="object-cover"
@@ -105,7 +106,7 @@ export default function ProductDetail({
                     }`}
                   >
                     <Image
-                      src={img}
+                      src={img || "/placeholder-product.png"}
                       alt={`${product.name} ${i + 1}`}
                       fill
                       className="object-cover"
@@ -222,9 +223,7 @@ export default function ProductDetail({
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedProducts.map((p) => (
-                <Link key={p.id} href={`/products/${p.id}`}>
-                  <ProductCard product={p} />
-                </Link>
+                <ProductCard key={p.id} product={p} />
               ))}
             </div>
           </div>

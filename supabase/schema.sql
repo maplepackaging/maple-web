@@ -126,3 +126,16 @@ CREATE POLICY "Public read testimonials" ON testimonials FOR SELECT USING (true)
 CREATE POLICY "Public insert newsletter" ON newsletter_subscribers FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public insert contact" ON contact_submissions FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public insert enquiry" ON custom_enquiries FOR INSERT WITH CHECK (true);
+
+-- Chat logs
+CREATE TABLE IF NOT EXISTS chat_logs (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  session_id TEXT,
+  user_message TEXT NOT NULL,
+  bot_reply TEXT NOT NULL,
+  matched_product_ids TEXT[] DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+ALTER TABLE chat_logs ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public insert chat_logs" ON chat_logs FOR INSERT WITH CHECK (true);

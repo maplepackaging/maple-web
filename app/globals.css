@@ -15,11 +15,16 @@
   --color-beige: #FAFBF0;
   --color-beige-dark: #F0EAE0;
 
-  --font-heading: var(--font-outfit);
+  --font-heading: var(--font-poppins);
   --font-body: var(--font-poppins);
 }
 
 html {
+  scroll-padding-top: 5rem;
+}
+
+/* Smooth scroll only for in-page anchor navigation, not page transitions */
+:target {
   scroll-behavior: smooth;
 }
 
@@ -29,6 +34,12 @@ body {
   font-family: var(--font-body), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Heading style — Poppins uppercase */
+.font-heading {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 ::selection {
@@ -46,7 +57,13 @@ body {
 }
 
 .animate-scroll-left {
-  animation: scroll-left 30s linear infinite;
+  animation: scroll-left 12s linear infinite;
+}
+
+@media (min-width: 768px) {
+  .animate-scroll-left {
+    animation: scroll-left 25s linear infinite;
+  }
 }
 
 @keyframes fade-in-up {
@@ -62,4 +79,22 @@ body {
 
 .animate-fade-in-up {
   animation: fade-in-up 0.6s ease-out forwards;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% - var(--gap))); }
+}
+
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to { transform: translateY(calc(-100% - var(--gap))); }
+}
+
+.animate-marquee {
+  animation: marquee var(--duration) linear infinite;
+}
+
+.animate-marquee-vertical {
+  animation: marquee-vertical var(--duration) linear infinite;
 }

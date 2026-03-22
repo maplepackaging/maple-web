@@ -39,7 +39,7 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="relative h-72 md:h-96 overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=1400&q=80"
+          src="/placeholder-product.png"
           alt="Maple Packaging workshop"
           fill
           className="object-cover"
@@ -83,7 +83,7 @@ export default function AboutPage() {
             </div>
             <div className="relative aspect-4/3 rounded-xl overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1607861716497-e65ab29fc7ac?w=800&q=80"
+                src="/placeholder-product.png"
                 alt="Premium packaging craftsmanship"
                 fill
                 className="object-cover"

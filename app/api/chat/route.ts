@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import Groq from "groq-sdk";
 import { getProductCatalogForChat, getProducts } from "@/lib/supabase-data";
+import { createClient } from "@supabase/supabase-js";
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
 
 const SYSTEM_TEMPLATE = `You are a helpful gift and packaging consultant for Maple Packaging, a premium Indian packaging and gifting company.
 
@@ -12,26 +19,36 @@ You have access to the following product catalog:
 %%CATALOG%%
 
 IMPORTANT RULES:
-1. When recommending a product, embed the product ID tag anywhere in your response using this EXACT format: #PRODUCT_ID* (e.g. #P004*). You can recommend multiple products by including multiple tags.
 
-2. The tag MUST start with # and end with * — this is how the system detects product recommendations.
+RULE 1 - PRODUCT TAGS (CRITICAL - READ CAREFULLY):
+When recommending a product, you MUST embed the product ID tag in your response using this EXACT format:
+  #PRODUCT_ID*
+  Examples: #P001*  #P004*  #P012*
 
-3. If no product matches the query, respond normally without any product tag.
+The format MUST:
+- Start with a hash symbol: #
+- Followed immediately by the product ID (e.g. P001, P004)
+- End immediately with an asterisk: *
+- No spaces, no dots, no brackets, nothing else between # and *
 
-4. Be warm, helpful, and knowledgeable about packaging, gifting, weddings, and corporate events.
+WRONG: #P001 | #P001. | [#P001*] | # P001* | P001* | #P001
+RIGHT: #P001*
 
-5. Keep responses concise — 2-3 sentences max per recommendation.
+You can recommend multiple products: #P001* #P004*
+The system uses this exact pattern to detect and display products. If the format is wrong, no product card will appear.
 
-6. If the user asks about customization, let them know Maple Packaging offers fully custom solutions and they should visit the Customize page.
+RULE 2: If no product from the catalog matches, respond normally with no product tag.
 
-Example response when recommending a product:
-For Diwali corporate gifts, I'd highly recommend our #P004* — the Luxe Hamper Box in Midnight. It features a magnetic closure and satin lining that will impress your clients.
+RULE 3: Keep responses SHORT - 1-2 sentences maximum. No long paragraphs.
 
-Example response with multiple recommendations:
-Great choices for a wedding! Check out our #P001* for a luxurious invite box, or go with #P002* for a minimal contemporary feel.
+RULE 4: NEVER use em-dashes (—). Use commas or plain dashes (-) instead.
 
-Example response for general query:
-We'd love to help you find the perfect packaging! Could you tell me more about the occasion and your budget range?`;
+RULE 5: If asked about customization, say Maple Packaging offers full custom solutions and direct them to the Customize page.
+
+Example responses:
+- "For weddings, I'd suggest #P001* for a luxurious invite box or #P002* for a minimal look."
+- "Could you share the occasion and your budget so I can find the best fit?"`;
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -86,6 +103,15 @@ export async function POST(request: NextRequest) {
 
     // Strip the tags from the visible reply
     const cleanReply = reply.replace(productIdRegex, "").replace(/\s{2,}/g, " ").trim();
+
+    // Log to Supabase (fire-and-forget, don't block response)
+    const sessionId = request.headers.get("x-session-id") ?? "anonymous";
+    supabase.from("chat_logs").insert({
+      session_id: sessionId,
+      user_message: message,
+      bot_reply: cleanReply,
+      matched_product_ids: matches.map((m) => m[1]),
+    }).then(() => {});
 
     return NextResponse.json({
       reply: cleanReply,

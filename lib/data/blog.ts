@@ -25,7 +25,7 @@ Non-traditional formats are gaining popularity, especially for destination weddi
 Custom monogram wax seals add an old-world charm that feels both timeless and personal.
 
 These trends point to one thing: couples want packaging that tells their story. At Maple Packaging, we help you do exactly that.`,
-    image: "https://images.unsplash.com/photo-1607861716497-e65ab29fc7ac?w=800&q=80",
+    image: "/placeholder-product.png",
     category: "Weddings",
     date: "2025-03-15",
     readTime: "5 min read",
@@ -51,7 +51,7 @@ Adding the recipient's name, a handwritten note, or company colors transforms a 
 The moment someone opens your gift is your brand's moment to shine. Tissue paper, ribbon, and a clean reveal create an experience worth sharing.
 
 At Maple Packaging, we've helped companies from startups to Fortune 500s create corporate gifting programs that employees and clients genuinely love.`,
-    image: "https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80",
+    image: "/placeholder-product.png",
     category: "Corporate",
     date: "2025-03-08",
     readTime: "4 min read",
@@ -77,7 +77,7 @@ The container matters. A handwoven rattan basket, a velvet-lined rigid box, or a
 Shredded paper fill, ribbon, a wax seal, and a handwritten card elevate any hamper from good to extraordinary.
 
 At Maple Packaging, we offer fully curated hampers as well as build-your-own options. Every element is sourced for quality and visual harmony.`,
-    image: "https://images.unsplash.com/photo-1549465220-1a8b9238f53e?w=800&q=80",
+    image: "/placeholder-product.png",
     category: "Gifting",
     date: "2025-02-28",
     readTime: "6 min read",
@@ -104,7 +104,7 @@ Modern consumers — especially millennials and Gen Z — actively prefer brands
 We don't believe in greenwashing. Every eco-friendly claim we make is backed by our supply chain practices. We work with artisan communities who use traditional, low-impact methods.
 
 Going green doesn't mean going bland. Our eco-friendly line includes vibrant designs, premium finishes, and the same attention to detail as our conventional products.`,
-    image: "https://images.unsplash.com/photo-1512909006721-3d6018887383?w=800&q=80",
+    image: "/placeholder-product.png",
     category: "Sustainability",
     date: "2025-02-15",
     readTime: "4 min read",

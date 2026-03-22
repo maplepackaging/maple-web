@@ -6,7 +6,7 @@ export const categories: Category[] = [
     name: "Wedding Invites",
     slug: "wedding-invites",
     description: "Exquisite wedding invitations crafted to set the tone for your special day",
-    image: "https://images.unsplash.com/photo-1607861716497-e65ab29fc7ac?w=800&q=80",
+    image: "/placeholder-product.png",
     subcategories: [
       {
         id: "wedding-boxes",
@@ -68,7 +68,7 @@ export const categories: Category[] = [
     name: "Gift Packaging",
     slug: "gift-packaging",
     description: "Premium packaging solutions that make every gift unforgettable",
-    image: "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=800&q=80",
+    image: "/placeholder-product.png",
     subcategories: [
       {
         id: "gp-boxes",
@@ -143,7 +143,7 @@ export const categories: Category[] = [
     name: "Wedding Stationery",
     slug: "wedding-stationery",
     description: "Complete wedding stationery suites that tell your love story beautifully",
-    image: "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&q=80",
+    image: "/placeholder-product.png",
     subcategories: [
       {
         id: "ws-items",
@@ -171,7 +171,7 @@ export const categories: Category[] = [
     name: "Hampers & Gifts",
     slug: "hampers-gifts",
     description: "Thoughtfully curated hampers for every occasion and every relationship",
-    image: "https://images.unsplash.com/photo-1549465220-1a8b9238f53e?w=800&q=80",
+    image: "/placeholder-product.png",
     subcategories: [
       {
         id: "hg-types",
@@ -221,7 +221,7 @@ export const categories: Category[] = [
     name: "Gift Articles",
     slug: "gift-articles",
     description: "Elegant gift articles in premium materials — silver, glass, and more",
-    image: "https://images.unsplash.com/photo-1512909006721-3d6018887383?w=800&q=80",
+    image: "/placeholder-product.png",
     subcategories: [
       {
         id: "ga-items",
@@ -244,7 +244,7 @@ export const categories: Category[] = [
     name: "Corporate Gifting",
     slug: "corporate-gifting",
     description: "Professional gifting solutions that strengthen business relationships",
-    image: "https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80",
+    image: "/placeholder-product.png",
     subcategories: [
       {
         id: "cg-use-cases",

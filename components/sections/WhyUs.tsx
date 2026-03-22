@@ -1,77 +1,46 @@
 "use client";
 
-import { Gem, Truck, Palette, ShieldCheck } from "lucide-react";
+import { NumberTicker } from "@/components/ui/number-ticker";
 
-const reasons = [
-  {
-    icon: Gem,
-    title: "Premium Quality",
-    description: "Crafted with premium materials and meticulous attention to detail",
-    stat: "100%",
-    label: "Handcrafted",
-  },
-  {
-    icon: Palette,
-    title: "Fully Customizable",
-    description: "Personalize every aspect to perfectly match your vision",
-    stat: "500+",
-    label: "Custom Orders",
-  },
-  {
-    icon: Truck,
-    title: "Pan-India Delivery",
-    description: "Fast and reliable shipping across the country",
-    stat: "48hrs",
-    label: "Avg Delivery",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Trusted by 10K+",
-    description: "Chosen by leading brands and families nationwide",
-    stat: "10K+",
-    label: "Happy Clients",
-  },
+const stats = [
+  { value: 10000, suffix: "+", label: "Happy Clients" },
+  { value: 500, suffix: "+", label: "Custom Orders" },
+  { value: 48, suffix: "h", label: "Avg Delivery" },
+  { value: 100, suffix: "%", label: "Handcrafted" },
 ];
 
 export default function WhyUs() {
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="bg-text-dark py-14 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-12 md:mb-16">
-          <p className="text-primary text-xs md:text-sm font-medium tracking-wider uppercase mb-3">Why Maple</p>
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-text-dark mb-4">
-            What Sets Us Apart
-          </h2>
-          <p className="text-base md:text-lg text-text-muted max-w-2xl mx-auto">
-            Excellence in every detail, trusted by thousands
-          </p>
-        </div>
+        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+          {/* Left — editorial statement */}
+          <div>
+            <p className="text-primary text-xs font-medium tracking-[0.2em] uppercase mb-5">Why Maple</p>
+            <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.05] mb-6">
+              Crafted for moments that matter.
+            </h2>
+            <p className="text-white/50 text-base md:text-lg leading-relaxed max-w-md">
+              From intimate wedding invitations to grand corporate gifts — every piece
+              we make carries the weight of the moment it accompanies.
+            </p>
+          </div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {reasons.map((reason) => (
-            <div 
-              key={reason.title} 
-              className="group relative bg-beige rounded-2xl p-6 hover:shadow-lg transition-all duration-300 border border-transparent hover:border-primary/20"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                  <reason.icon size={20} className="text-primary" />
+          {/* Right — animated stats */}
+          <div className="grid grid-cols-2 gap-px bg-white/10 rounded-2xl overflow-hidden">
+            {stats.map((stat) => (
+              <div key={stat.label} className="bg-text-dark p-8 md:p-10 flex flex-col gap-2">
+                <div className="font-heading text-4xl md:text-5xl font-bold text-white flex items-baseline gap-0.5">
+                  <NumberTicker
+                    value={stat.value}
+                    className="text-white"
+                  />
+                  <span>{stat.suffix}</span>
                 </div>
-                <div className="text-right">
-                  <div className="font-heading text-2xl font-bold text-text-dark">{reason.stat}</div>
-                  <div className="text-xs text-text-muted uppercase tracking-wider">{reason.label}</div>
-                </div>
+                <p className="text-white/40 text-sm uppercase tracking-widest">{stat.label}</p>
               </div>
-              <h3 className="font-heading text-lg font-semibold text-text-dark mb-2">
-                {reason.title}
-              </h3>
-              <p className="text-sm text-text-muted leading-relaxed">
-                {reason.description}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>

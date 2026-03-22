@@ -11,7 +11,12 @@ import MobileMenu from "./MobileMenu";
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { totalItems, openCart } = useCart();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -24,6 +29,7 @@ export default function Header() {
     { label: "Gift Packaging", href: "/categories/gift-packaging" },
     { label: "Hampers & Gifts", href: "/categories/hampers-gifts" },
     { label: "Corporate", href: "/categories/corporate-gifting" },
+    { label: "Blog", href: "/blog" },
     { label: "About", href: "/about" },
   ];
 
@@ -55,7 +61,8 @@ export default function Header() {
                 alt="Maple Packaging"
                 width={180}
                 height={56}
-                className="h-12 md:h-14 w-auto transition-opacity duration-300"
+                style={{ width: "auto", height: "auto" }}
+                className="h-12 md:h-14 transition-opacity duration-300"
                 priority
               />
             </Link>
@@ -87,7 +94,7 @@ export default function Header() {
                 aria-label="Cart"
               >
                 <ShoppingBag size={20} />
-                {totalItems > 0 && (
+                {mounted && totalItems > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                     {totalItems}
                   </span>

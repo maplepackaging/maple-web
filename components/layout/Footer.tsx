@@ -19,10 +19,10 @@ const footerLinks = {
     { label: "Contact", href: "/contact" },
   ],
   support: [
-    { label: "Shipping Policy", href: "/shipping" },
-    { label: "Return Policy", href: "/returns" },
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms" },
+    { label: "Shipping Policy", href: "/contact" },
+    { label: "Return Policy", href: "/contact" },
+    { label: "Privacy Policy", href: "/about" },
+    { label: "Terms of Service", href: "/about" },
   ],
 };
 
@@ -57,7 +57,8 @@ export default function Footer() {
               alt="Maple Packaging"
               width={140}
               height={44}
-              className="h-10 w-auto"
+              style={{ width: "auto" }}
+              className="h-10"
             />
             <p className="mt-4 text-sm text-white/50 max-w-xs leading-relaxed">
               Crafting premium packaging and gifting experiences that leave
@@ -70,7 +71,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-3 text-sm text-white/50">
                 <Phone size={14} />
-                <span>+91 98765 43210</span>
+                <span>+91 84335 72388</span>
               </div>
               <div className="flex items-center gap-3 text-sm text-white/50">
                 <MapPin size={14} />
@@ -86,7 +87,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               {footerLinks.shop.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="text-sm text-white/50 hover:text-primary transition-colors"
@@ -105,7 +106,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="text-sm text-white/50 hover:text-primary transition-colors"
@@ -124,7 +125,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               {footerLinks.support.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="text-sm text-white/50 hover:text-primary transition-colors"

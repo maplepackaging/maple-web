@@ -31,7 +31,7 @@ export default async function CategoriesPage() {
               className="group relative block overflow-hidden rounded-xl aspect-4/3"
             >
               <Image
-                src={category.image}
+                src={category.image || "/placeholder-product.png"}
                 alt={category.name}
                 fill
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"

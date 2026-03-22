@@ -38,7 +38,7 @@ export default async function BlogPage() {
             >
               <div className="relative aspect-video overflow-hidden">
                 <Image
-                  src={post.image}
+                  src={post.image || "/placeholder-product.png"}
                   alt={post.title}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"

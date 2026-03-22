@@ -19,7 +19,7 @@ export default function ChatWidget() {
     {
       role: "assistant",
       content:
-        "Hi! I'm your gifting assistant. Tell me about the occasion, recipient, or budget — and I'll find the perfect packaging for you.",
+        "Hi! I'm Maple AI, your gifting assistant. Tell me about the occasion, recipient, or budget and I'll find the perfect packaging for you.",
     },
   ]);
   const [loading, setLoading] = useState(false);
@@ -33,6 +33,11 @@ export default function ChatWidget() {
   useEffect(() => {
     if (isOpen) inputRef.current?.focus();
   }, [isOpen]);
+
+  // Refocus input after each AI reply
+  useEffect(() => {
+    if (!loading && isOpen) inputRef.current?.focus();
+  }, [loading, isOpen]);
 
   const sendMessage = async () => {
     const trimmed = input.trim();
@@ -144,7 +149,7 @@ export default function ChatWidget() {
             {/* Header */}
             <div className="px-5 py-4 bg-text-dark text-white">
               <h3 className="font-heading text-lg font-semibold">
-                Gift Concierge
+                Maple AI
               </h3>
               <p className="text-xs text-white/60 mt-0.5">
                 Powered by AI · Ask me anything about gifting
@@ -162,7 +167,7 @@ export default function ChatWidget() {
                     className={`max-w-[85%] ${
                       msg.role === "user"
                         ? "bg-primary text-white rounded-2xl rounded-br-md px-4 py-2.5"
-                        : "bg-beige text-text-dark rounded-2xl rounded-bl-md px-4 py-2.5"
+                        : "bg-beige-dark text-text-dark rounded-2xl rounded-bl-md px-4 py-2.5"
                     }`}
                   >
                     <p className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -176,7 +181,7 @@ export default function ChatWidget() {
               ))}
               {loading && (
                 <div className="flex justify-start">
-                  <div className="bg-beige rounded-2xl rounded-bl-md px-4 py-3">
+                  <div className="bg-beige-dark rounded-2xl rounded-bl-md px-4 py-3">
                     <Loader2 size={16} className="animate-spin text-primary" />
                   </div>
                 </div>

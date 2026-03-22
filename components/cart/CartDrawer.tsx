@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { X, Plus, Minus, Trash2, ShoppingBag } from "lucide-react";
@@ -8,8 +8,31 @@ import { useCart } from "@/lib/cart-context";
 import { formatPrice } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 
+const WHATSAPP_NUMBER = "918433572388";
+
 export default function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeItem, totalPrice, totalItems } = useCart();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  const handleWhatsAppCheckout = () => {
+    const lines = items.map(
+      (item) =>
+        `- ${item.product.name} (x${item.quantity}) — ${formatPrice(item.product.price * item.quantity)}`
+    );
+    const message = [
+      "Hi! I'd like to place an order:",
+      "",
+      ...lines,
+      "",
+      `Total: ${formatPrice(totalPrice)}`,
+      "",
+      "Please confirm availability and delivery details. Thank you!",
+    ].join("\n");
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+    closeCart();
+  };
 
   // Prevent body scroll when drawer is open
   useEffect(() => {
@@ -42,7 +65,7 @@ export default function CartDrawer() {
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-border">
           <h2 className="font-heading text-lg font-semibold text-text-dark">
-            Your Cart ({totalItems})
+            Your Cart ({mounted ? totalItems : 0})
           </h2>
           <button
             onClick={closeCart}
@@ -54,7 +77,7 @@ export default function CartDrawer() {
         </div>
 
         {/* Items */}
-        {items.length === 0 ? (
+        {!mounted || items.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
             <ShoppingBag size={48} className="text-border mb-4" />
             <p className="font-heading text-lg font-semibold text-text-dark mb-2">
@@ -73,7 +96,7 @@ export default function CartDrawer() {
                   {/* Image */}
                   <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-beige-dark shrink-0">
                     <Image
-                      src={item.product.images[0]}
+                      src={item.product.images?.[0] || "/placeholder-product.png"}
                       alt={item.product.name}
                       fill
                       className="object-cover"
@@ -137,11 +160,9 @@ export default function CartDrawer() {
               <p className="text-xs text-text-muted">
                 Shipping and taxes calculated at checkout
               </p>
-              <Link href="/customize" onClick={closeCart}>
-                <Button size="lg" className="w-full">
-                  Proceed to Checkout
-                </Button>
-              </Link>
+              <Button size="lg" className="w-full" onClick={handleWhatsAppCheckout}>
+                Proceed to Checkout
+              </Button>
               <button
                 onClick={closeCart}
                 className="w-full text-center text-sm text-text-muted hover:text-primary transition-colors"

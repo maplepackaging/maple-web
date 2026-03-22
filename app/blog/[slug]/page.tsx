@@ -34,7 +34,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       {/* Hero image */}
       <div className="relative h-64 md:h-96 overflow-hidden">
         <Image
-          src={post.image}
+          src={post.image || "/placeholder-product.png"}
           alt={post.title}
           fill
           className="object-cover"

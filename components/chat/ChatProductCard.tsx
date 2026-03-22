@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
+import { ArrowUpRight } from "lucide-react";
 
 interface ChatProductCardProps {
   product: Product;
@@ -11,34 +12,39 @@ export default function ChatProductCard({ product }: ChatProductCardProps) {
   return (
     <Link
       href={`/products/${product.id}`}
-      className="block bg-beige rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300 my-2"
+      className="group block mt-3 rounded-xl overflow-hidden border border-border hover:border-primary/40 hover:shadow-md transition-all duration-200"
     >
-      <div className="flex gap-3 p-3">
-        <div className="relative w-16 h-16 rounded-md overflow-hidden shrink-0 bg-beige-dark">
+      <div className="flex gap-0">
+        {/* Image */}
+        <div className="relative w-20 h-20 shrink-0 bg-beige-dark">
           <Image
-            src={product.images[0]}
+            src={product.images?.[0] || "/placeholder-product.png"}
             alt={product.name}
             fill
             className="object-cover"
-            sizes="64px"
+            sizes="80px"
           />
         </div>
-        <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-medium text-text-dark truncate">
-            {product.name}
-          </h4>
-          <p className="text-xs text-text-muted line-clamp-1 mt-0.5">
-            {product.description}
-          </p>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-sm font-semibold text-primary">
-              {formatPrice(product.price)}
-            </span>
-            {product.originalPrice && (
-              <span className="text-xs text-text-muted line-through">
-                {formatPrice(product.originalPrice)}
+
+        {/* Info */}
+        <div className="flex-1 min-w-0 px-3 py-2.5 bg-white flex flex-col justify-between">
+          <div>
+            <p className="text-xs font-medium text-text-dark leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+              {product.name}
+            </p>
+          </div>
+          <div className="flex items-center justify-between mt-1">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-sm font-bold text-primary">
+                {formatPrice(product.price)}
               </span>
-            )}
+              {product.originalPrice && (
+                <span className="text-xs text-text-muted line-through">
+                  {formatPrice(product.originalPrice)}
+                </span>
+              )}
+            </div>
+            <ArrowUpRight size={13} className="text-text-muted group-hover:text-primary transition-colors shrink-0" />
           </div>
         </div>
       </div>
