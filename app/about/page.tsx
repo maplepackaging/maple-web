@@ -143,7 +143,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Brand story CTA */}
+      {/* CTA */}
       <section className="py-16 md:py-24 bg-text-dark">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white leading-tight">
