@@ -9,18 +9,59 @@ export default function CustomizeForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("loading");
-
     const form = e.currentTarget;
     const formData = new FormData(form);
 
+    const name = (formData.get("name") as string)?.trim();
+    const email = (formData.get("email") as string)?.trim();
+    const phone = (formData.get("phone") as string)?.trim();
+    const product_type = (formData.get("product_type") as string)?.trim();
+    const quantity = (formData.get("quantity") as string)?.trim();
+    const requirements = (formData.get("requirements") as string)?.trim();
+
+    // Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[6-9]\d{9}$/; // Indian mobile number
+    
+    if (!name || name.length < 2) {
+      setStatus("error");
+      setMessage("Please enter a valid name");
+      return;
+    }
+    if (!email || !emailRegex.test(email)) {
+      setStatus("error");
+      setMessage("Please enter a valid email address");
+      return;
+    }
+    if (!phone || !phoneRegex.test(phone)) {
+      setStatus("error");
+      setMessage("Please enter a valid 10-digit mobile number");
+      return;
+    }
+    if (!product_type) {
+      setStatus("error");
+      setMessage("Please select a product type");
+      return;
+    }
+    if (!quantity) {
+      setStatus("error");
+      setMessage("Please enter quantity");
+      return;
+    }
+    if (!requirements || requirements.length < 10) {
+      setStatus("error");
+      setMessage("Please provide detailed requirements (min 10 characters)");
+      return;
+    }
+
+    setStatus("loading");
     const result = await submitCustomEnquiry({
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      phone: formData.get("phone") as string,
-      product_type: formData.get("product_type") as string,
-      quantity: formData.get("quantity") as string,
-      requirements: formData.get("requirements") as string,
+      name,
+      email,
+      phone,
+      product_type,
+      quantity,
+      requirements,
     });
 
     setStatus(result.success ? "success" : "error");

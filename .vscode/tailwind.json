@@ -1,0 +1,27 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    {
+      "name": "@theme",
+      "description": "Tailwind CSS 4 theme configuration directive for defining design tokens.",
+      "references": [
+        {
+          "name": "Tailwind CSS 4 Docs",
+          "url": "https://tailwindcss.com/docs/theme"
+        }
+      ]
+    },
+    {
+      "name": "@source",
+      "description": "Tailwind CSS 4 source directive for specifying content paths."
+    },
+    {
+      "name": "@utility",
+      "description": "Tailwind CSS 4 utility directive for defining custom utilities."
+    },
+    {
+      "name": "@variant",
+      "description": "Tailwind CSS 4 variant directive for defining custom variants."
+    }
+  ]
+}

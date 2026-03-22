@@ -1,96 +1,140 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import Image from "next/image";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/effect-fade";
+
+const slides = [
+  {
+    title: "Where Every Package Tells a Story",
+    subtitle: "Premium Packaging & Gifting",
+    description:
+      "Handcrafted packaging and curated gift hampers that transform ordinary moments into extraordinary memories.",
+    image: "https://images.unsplash.com/photo-1549465220-1a8b9238f53e?w=1200&q=80",
+    cta: { text: "Explore Collections", href: "/categories" },
+  },
+  {
+    title: "Elevate Your Wedding Experience",
+    subtitle: "Luxury Wedding Invitations",
+    description:
+      "Exquisite invitation boxes and stationery that set the perfect tone for your special day. Crafted with love and attention to detail.",
+    image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200&q=80",
+    cta: { text: "View Wedding Collection", href: "/categories/wedding-invites" },
+  },
+  {
+    title: "Corporate Gifting Redefined",
+    subtitle: "Premium Corporate Solutions",
+    description:
+      "Make a lasting impression with our curated corporate hampers and custom packaging solutions for your business needs.",
+    image: "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=1200&q=80",
+    cta: { text: "Explore Corporate Gifts", href: "/categories/corporate-gifting" },
+  },
+];
+
 export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-beige">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 lg:py-40">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Text */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-          >
-            <span className="inline-block text-primary text-sm font-medium tracking-widest uppercase mb-4">
-              Premium Packaging & Gifting
-            </span>
-            <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-text-dark leading-[1.1] tracking-tight">
-              Where Every
-              <br />
-              <span className="text-primary">Package</span> Tells
-              <br />a Story
-            </h1>
-            <p className="mt-6 text-lg text-text-muted max-w-lg leading-relaxed">
-              Handcrafted packaging and curated gift hampers that transform
-              ordinary moments into extraordinary memories. From weddings to
-              corporate gifting — we make it unforgettable.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Link href="/categories">
-                <Button size="lg">Explore Collections</Button>
-              </Link>
-              <Link href="/customize">
-                <Button variant="outline" size="lg">
-                  Customize Yours
-                </Button>
-              </Link>
-            </div>
+      <Swiper
+        modules={[Autoplay, Pagination, EffectFade]}
+        effect="fade"
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}
+        pagination={{
+          clickable: true,
+          bulletClass: "swiper-pagination-bullet !bg-primary/30",
+          bulletActiveClass: "swiper-pagination-bullet-active !bg-primary",
+        }}
+        loop={true}
+        className="hero-swiper"
+      >
+        {slides.map((slide, index) => (
+          <SwiperSlide key={index}>
+            <div className="relative min-h-[600px] md:min-h-[700px] lg:min-h-[800px]">
+              {/* Background Image */}
+              <div className="absolute inset-0">
+                <Image
+                  src={slide.image}
+                  alt={slide.title}
+                  fill
+                  className="object-cover"
+                  priority={index === 0}
+                  sizes="100vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
+              </div>
 
-            {/* Stats */}
-            <div className="mt-12 flex gap-10">
-              {[
-                { value: "10K+", label: "Happy Clients" },
-                { value: "500+", label: "Products" },
-                { value: "50+", label: "Corporate Partners" },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <div className="font-heading text-2xl font-semibold text-text-dark">
-                    {stat.value}
+              {/* Content */}
+              <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full min-h-[600px] md:min-h-[700px] lg:min-h-[800px] flex items-center">
+                <div className="max-w-2xl">
+                  <span className="inline-block text-primary text-sm font-medium tracking-widest uppercase mb-4 animate-fade-in-up">
+                    {slide.subtitle}
+                  </span>
+                  <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-white leading-[1.1] tracking-tight animate-fade-in-up">
+                    {slide.title}
+                  </h1>
+                  <p className="mt-6 text-lg text-white/90 max-w-lg leading-relaxed animate-fade-in-up">
+                    {slide.description}
+                  </p>
+                  <div className="mt-8 flex flex-wrap gap-4 animate-fade-in-up">
+                    <Link href={slide.cta.href}>
+                      <Button size="lg">{slide.cta.text}</Button>
+                    </Link>
+                    <Link href="/customize">
+                      <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-text-dark">
+                        Customize Yours
+                      </Button>
+                    </Link>
                   </div>
-                  <div className="text-sm text-text-muted mt-0.5">
-                    {stat.label}
-                  </div>
+
+                  {/* Stats */}
+                  {index === 0 && (
+                    <div className="mt-12 flex gap-10 animate-fade-in-up">
+                      {[
+                        { value: "10K+", label: "Happy Clients" },
+                        { value: "500+", label: "Products" },
+                        { value: "50+", label: "Corporate Partners" },
+                      ].map((stat) => (
+                        <div key={stat.label}>
+                          <div className="font-heading text-2xl font-semibold text-white">
+                            {stat.value}
+                          </div>
+                          <div className="text-sm text-white/70 mt-0.5">
+                            {stat.label}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              ))}
+              </div>
             </div>
-          </motion.div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
-          {/* Image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-            className="relative"
-          >
-            <div className="relative aspect-square rounded-2xl overflow-hidden bg-beige-dark">
-              <Image
-                src="https://images.unsplash.com/photo-1549465220-1a8b9238f53e?w=800&q=80"
-                alt="Premium gift packaging"
-                fill
-                className="object-cover"
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-              {/* Decorative overlay */}
-              <div className="absolute inset-0 bg-linear-to-t from-text-dark/20 to-transparent" />
-            </div>
-            {/* Floating badge */}
-            <div className="absolute -bottom-4 -left-4 bg-surface rounded-xl shadow-lg p-4 hidden md:block">
-              <div className="text-sm font-medium text-text-dark">
-                Trusted by
-              </div>
-              <div className="font-heading text-xl font-semibold text-primary">
-                10,000+ clients
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
+      <style jsx global>{`
+        .hero-swiper .swiper-pagination {
+          bottom: 30px !important;
+        }
+        .hero-swiper .swiper-pagination-bullet {
+          width: 12px;
+          height: 12px;
+          margin: 0 6px !important;
+          transition: all 0.3s ease;
+        }
+        .hero-swiper .swiper-pagination-bullet-active {
+          width: 32px;
+          border-radius: 6px;
+        }
+      `}</style>
     </section>
   );
 }

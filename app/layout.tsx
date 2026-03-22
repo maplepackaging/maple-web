@@ -31,6 +31,31 @@ export const metadata: Metadata = {
     "corporate gifting",
     "custom packaging",
   ],
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://maplepackaging.com",
+    siteName: "Maple Packaging",
+    title: "Maple Packaging — Premium Packaging & Gifting",
+    description:
+      "Handcrafted premium packaging and curated gift hampers for weddings, corporate events, and every occasion.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Maple Packaging",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Maple Packaging — Premium Packaging & Gifting",
+    description:
+      "Handcrafted premium packaging and curated gift hampers for weddings, corporate events, and every occasion.",
+    images: ["/og-image.jpg"],
+  },
+  metadataBase: new URL("https://maplepackaging.com"),
 };
 
 export default function RootLayout({

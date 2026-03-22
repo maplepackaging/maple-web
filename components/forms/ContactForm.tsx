@@ -9,16 +9,43 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("loading");
-
     const form = e.currentTarget;
     const formData = new FormData(form);
 
+    const name = (formData.get("name") as string)?.trim();
+    const email = (formData.get("email") as string)?.trim();
+    const subject = (formData.get("subject") as string)?.trim();
+    const messageText = (formData.get("message") as string)?.trim();
+
+    // Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!name || name.length < 2) {
+      setStatus("error");
+      setMessage("Please enter a valid name");
+      return;
+    }
+    if (!email || !emailRegex.test(email)) {
+      setStatus("error");
+      setMessage("Please enter a valid email address");
+      return;
+    }
+    if (!subject || subject.length < 3) {
+      setStatus("error");
+      setMessage("Please enter a subject");
+      return;
+    }
+    if (!messageText || messageText.length < 10) {
+      setStatus("error");
+      setMessage("Message must be at least 10 characters");
+      return;
+    }
+
+    setStatus("loading");
     const result = await submitContactForm({
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      subject: formData.get("subject") as string,
-      message: formData.get("message") as string,
+      name,
+      email,
+      subject,
+      message: messageText,
     });
 
     setStatus(result.success ? "success" : "error");

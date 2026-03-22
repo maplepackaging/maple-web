@@ -10,10 +10,18 @@ export default function NewsletterForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) return;
-    setStatus("loading");
+    const trimmedEmail = email.trim();
+    
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!trimmedEmail || !emailRegex.test(trimmedEmail)) {
+      setStatus("error");
+      setMessage("Please enter a valid email address");
+      return;
+    }
 
-    const result = await subscribeToNewsletter(email.trim());
+    setStatus("loading");
+    const result = await subscribeToNewsletter(trimmedEmail);
     setStatus(result.success ? "success" : "error");
     setMessage(result.message);
     if (result.success) setEmail("");
