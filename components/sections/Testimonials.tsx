@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import SectionHeading from "@/components/ui/SectionHeading";
+import { Star } from "lucide-react";
 import type { Testimonial } from "@/lib/types";
 
 interface TestimonialsProps {
@@ -11,96 +8,59 @@ interface TestimonialsProps {
 }
 
 export default function Testimonials({ testimonials }: TestimonialsProps) {
-  const [current, setCurrent] = useState(0);
-
-  const next = () => setCurrent((prev) => (prev + 1) % testimonials.length);
-  const prev = () =>
-    setCurrent(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length
-    );
-
-  const testimonial = testimonials[current];
-
   return (
-    <section className="py-20 md:py-28 bg-beige">
+    <section className="py-16 md:py-24 bg-beige">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeading
-          title="What Our Clients Say"
-          subtitle="Real stories from people who trusted us with their most important moments"
-        />
+        {/* Section Header */}
+        <div className="text-center mb-12 md:mb-16">
+          <p className="text-primary text-xs md:text-sm font-medium tracking-wider uppercase mb-3">Testimonials</p>
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-text-dark mb-4">
+            Loved by Customers
+          </h2>
+          <p className="text-base md:text-lg text-text-muted max-w-2xl mx-auto">
+            Real stories from real people who chose Maple Packaging
+          </p>
+        </div>
 
-        <div className="max-w-3xl mx-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={testimonial.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.4 }}
-              className="text-center"
+        {/* Testimonials Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {testimonials.map((testimonial, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-2xl p-6 md:p-8 hover:shadow-xl transition-all duration-300"
             >
-              {/* Avatar */}
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary text-white font-heading text-xl font-semibold mb-6">
-                {testimonial.avatar}
-              </div>
-
               {/* Stars */}
-              <div className="flex items-center justify-center gap-1 mb-6">
+              <div className="flex gap-0.5 mb-4">
                 {Array.from({ length: testimonial.rating }).map((_, i) => (
                   <Star
                     key={i}
-                    size={16}
-                    className="fill-accent text-accent"
+                    size={14}
+                    className="fill-primary text-primary"
                   />
                 ))}
               </div>
 
-              {/* Quote */}
-              <blockquote className="font-heading text-xl md:text-2xl text-text-dark leading-relaxed italic">
-                &ldquo;{testimonial.content}&rdquo;
-              </blockquote>
+              {/* Content */}
+              <p className="relative text-text-dark text-sm md:text-base leading-relaxed mb-6">
+                {testimonial.content}
+              </p>
 
               {/* Author */}
-              <div className="mt-6">
-                <div className="font-medium text-text-dark">
-                  {testimonial.name}
+              <div className="flex items-center gap-3 pt-4 border-t border-border">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm">
+                  {testimonial.name.charAt(0)}
                 </div>
-                <div className="text-sm text-text-muted mt-0.5">
-                  {testimonial.role}
+                <div>
+                  <div className="font-semibold text-sm text-text-dark">
+                    {testimonial.name}
+                  </div>
+                  <div className="text-xs text-text-muted">
+                    {testimonial.role}
+                  </div>
                 </div>
               </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Navigation */}
-          <div className="flex items-center justify-center gap-4 mt-10">
-            <button
-              onClick={prev}
-              className="p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-colors"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <div className="flex gap-2">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrent(i)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    i === current ? "bg-primary w-6" : "bg-border"
-                  }`}
-                  aria-label={`Go to testimonial ${i + 1}`}
-                />
-              ))}
             </div>
-            <button
-              onClick={next}
-              className="p-2 rounded-full border border-border hover:border-primary hover:text-primary transition-colors"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
+          ))}
         </div>
       </div>
     </section>

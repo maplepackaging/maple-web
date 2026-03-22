@@ -16,6 +16,7 @@ export default async function TestimonialsPage() {
     <div className="bg-beige py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
+          label="Testimonials"
           title="Client Stories"
           subtitle="Real experiences from people who trusted us with their most important moments"
         />
@@ -24,31 +25,31 @@ export default async function TestimonialsPage() {
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}
-              className="bg-surface rounded-xl p-8 border border-border hover:shadow-md transition-shadow duration-300"
+              className="bg-white rounded-2xl p-6 md:p-8 hover:shadow-xl transition-all duration-300"
             >
               {/* Stars */}
-              <div className="flex items-center gap-1 mb-5">
+              <div className="flex gap-0.5 mb-4">
                 {Array.from({ length: testimonial.rating }).map((_, i) => (
                   <Star
                     key={i}
                     size={14}
-                    className="fill-accent text-accent"
+                    className="fill-primary text-primary"
                   />
                 ))}
               </div>
 
-              {/* Quote */}
-              <blockquote className="text-text-dark leading-relaxed text-[15px] italic">
-                &ldquo;{testimonial.content}&rdquo;
-              </blockquote>
+              {/* Content */}
+              <p className="text-text-dark text-sm md:text-base leading-relaxed mb-6">
+                {testimonial.content}
+              </p>
 
               {/* Author */}
-              <div className="mt-6 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-heading font-semibold text-sm">
+              <div className="flex items-center gap-3 pt-4 border-t border-border">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm">
                   {testimonial.avatar}
                 </div>
                 <div>
-                  <div className="font-medium text-text-dark text-sm">
+                  <div className="font-semibold text-sm text-text-dark">
                     {testimonial.name}
                   </div>
                   <div className="text-xs text-text-muted">

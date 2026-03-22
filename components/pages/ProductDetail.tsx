@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { ShoppingBag, Heart, Share2, ChevronRight } from "lucide-react";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
+import { useCart } from "@/lib/cart-context";
 import Button from "@/components/ui/Button";
 import ProductCard from "@/components/ui/ProductCard";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -25,6 +26,7 @@ export default function ProductDetail({
   relatedProducts,
 }: ProductDetailProps) {
   const [selectedImage, setSelectedImage] = useState(0);
+  const { addItem } = useCart();
 
   const discount = product.originalPrice
     ? Math.round(
@@ -163,7 +165,7 @@ export default function ProductDetail({
 
             {/* Actions */}
             <div className="mt-8 flex flex-wrap gap-4">
-              <Button size="lg" className="flex-1 min-w-50">
+              <Button size="lg" className="flex-1 min-w-50" onClick={() => addItem(product)}>
                 <ShoppingBag size={18} className="mr-2" />
                 Add to Cart
               </Button>

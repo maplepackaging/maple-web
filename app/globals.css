@@ -15,8 +15,8 @@
   --color-beige: #FAFBF0;
   --color-beige-dark: #F0EAE0;
 
-  --font-heading: var(--font-playfair);
-  --font-body: var(--font-dm-sans);
+  --font-heading: var(--font-outfit);
+  --font-body: var(--font-poppins);
 }
 
 html {

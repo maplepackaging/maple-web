@@ -5,11 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { Search, ShoppingBag, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/lib/cart-context";
 import MobileMenu from "./MobileMenu";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { totalItems, openCart } = useCart();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -49,11 +51,11 @@ export default function Header() {
             {/* Logo */}
             <Link href="/" className="shrink-0">
               <Image
-                src="/logo.png"
+                src={scrolled ? "/logowithoutbg.png" : "/logo.png"}
                 alt="Maple Packaging"
                 width={180}
                 height={56}
-                className="h-12 md:h-14 w-auto"
+                className="h-12 md:h-14 w-auto transition-opacity duration-300"
                 priority
               />
             </Link>
@@ -80,13 +82,16 @@ export default function Header() {
                 <Search size={20} />
               </button>
               <button
+                onClick={openCart}
                 className="p-2 text-text-dark hover:text-primary transition-colors relative"
                 aria-label="Cart"
               >
                 <ShoppingBag size={20} />
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                  0
-                </span>
+                {totalItems > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
               </button>
               <Link
                 href="/customize"

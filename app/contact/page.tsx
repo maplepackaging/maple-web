@@ -41,6 +41,7 @@ export default function ContactPage() {
     <div className="bg-beige py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
+          label="Contact Us"
           title="Get in Touch"
           subtitle="Have a question, custom order, or just want to say hello? We're here to help."
         />

@@ -98,6 +98,7 @@ export default function AboutPage() {
       <section className="py-16 md:py-24 bg-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
+            label="Our Values"
             title="What We Stand For"
             subtitle="The principles that guide every product we create"
           />
@@ -120,6 +121,7 @@ export default function AboutPage() {
       <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
+            label="How We Work"
             title="Our Process"
             subtitle="From first conversation to doorstep delivery"
           />

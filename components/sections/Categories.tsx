@@ -1,58 +1,111 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import SectionHeading from "@/components/ui/SectionHeading";
 import type { Category } from "@/lib/types";
+import { ArrowUpRight } from "lucide-react";
 
 interface CategoriesProps {
   categories: Category[];
 }
 
 export default function Categories({ categories }: CategoriesProps) {
-  return (
-    <section className="py-20 md:py-28 bg-surface">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeading
-          title="Our Collections"
-          subtitle="From wedding invitations to corporate gifting — explore packaging crafted for every occasion"
-        />
+  // Create asymmetric bento layout - first item large, others smaller
+  const [featured, ...rest] = categories;
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-          {categories.map((category, index) => (
-            <motion.div
-              key={category.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+  return (
+    <section className="py-20 md:py-32 bg-white">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header - Asymmetric */}
+        <div className="grid md:grid-cols-2 gap-8 mb-16 md:mb-24">
+          <div>
+            <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-text-dark leading-[1.1]">
+              Explore Our
+              <br />
+              Collections
+            </h2>
+          </div>
+          <div className="flex items-end">
+            <p className="text-lg md:text-xl text-text-muted leading-relaxed">
+              From intimate celebrations to grand corporate events, discover packaging that tells your story
+            </p>
+          </div>
+        </div>
+
+        {/* Bento Grid - Asymmetric Layout */}
+        <div className="grid grid-cols-4 md:grid-cols-8 gap-3 md:gap-4">
+          {/* Featured Category - Large */}
+          {featured && (
+            <Link
+              href={`/categories/${featured.slug}`}
+              className="group relative col-span-4 md:col-span-4 row-span-2 overflow-hidden rounded-2xl bg-beige-dark"
             >
-              <Link
-                href={`/categories/${category.slug}`}
-                className="group relative block overflow-hidden rounded-xl aspect-3/4 md:aspect-square"
-              >
+              <div className="absolute inset-0">
+                <Image
+                  src={featured.image}
+                  alt={featured.name}
+                  fill
+                  className="object-cover transition-all duration-700 ease-out group-hover:scale-110"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
+              </div>
+              
+              <div className="relative h-full min-h-100 flex flex-col justify-between p-6 md:p-8">
+                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm self-start">
+                  <ArrowUpRight className="w-5 h-5 text-white transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </div>
+                <div>
+                  <p className="text-white/70 text-xs md:text-sm mb-2 uppercase tracking-wider">Featured</p>
+                  <h3 className="font-heading text-2xl md:text-3xl font-bold text-white mb-2">
+                    {featured.name}
+                  </h3>
+                  <p className="text-white/80 text-sm md:text-base max-w-xs">
+                    {featured.description}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          )}
+
+          {/* Other Categories - Smaller Cards */}
+          {rest.slice(0, 5).map((category, idx) => (
+            <Link
+              key={category.id}
+              href={`/categories/${category.slug}`}
+              className={`group relative overflow-hidden rounded-2xl bg-beige-dark ${
+                idx === 0 ? 'col-span-4 md:col-span-4' : 
+                idx === 1 ? 'col-span-2 md:col-span-2' :
+                idx === 2 ? 'col-span-2 md:col-span-2' :
+                'col-span-2 md:col-span-2'
+              }`}
+            >
+              <div className="absolute inset-0">
                 <Image
                   src={category.image}
                   alt={category.name}
                   fill
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                  sizes="(max-width: 768px) 50vw, 33vw"
+                  className="object-cover transition-all duration-700 ease-out group-hover:scale-110"
+                  sizes="(max-width: 768px) 50vw, 25vw"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent transition-opacity duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
-                  <h3 className="font-heading text-lg md:text-xl font-semibold text-white">
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
+              </div>
+              
+              <div className="relative h-full min-h-45 md:min-h-50 flex flex-col justify-between p-4 md:p-6">
+                <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm self-start opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ArrowUpRight className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-heading text-base md:text-lg font-bold text-white mb-1">
                     {category.name}
                   </h3>
-                  <p className="mt-1 text-sm text-white/70 line-clamp-2 hidden md:block">
+                  <p className="text-white/70 text-xs line-clamp-1">
                     {category.description}
                   </p>
-                  <span className="inline-block mt-3 text-sm text-white/90 font-medium group-hover:text-primary transition-colors duration-300">
-                    Explore →
-                  </span>
                 </div>
-              </Link>
-            </motion.div>
+              </div>
+            </Link>
           ))}
         </div>
       </div>

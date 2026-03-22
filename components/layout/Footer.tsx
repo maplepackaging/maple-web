@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, Phone, MapPin } from "lucide-react";
 import NewsletterForm from "@/components/forms/NewsletterForm";
+import { CopyrightYear } from "@/components/ui/CopyrightYear";
 
 const footerLinks = {
   shop: [
@@ -52,11 +53,11 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-2">
             <Image
-              src="/logo.png"
+              src="/logowithoutbg.png"
               alt="Maple Packaging"
               width={140}
               height={44}
-              className="h-10 w-auto brightness-0 invert opacity-90"
+              className="h-10 w-auto"
             />
             <p className="mt-4 text-sm text-white/50 max-w-xs leading-relaxed">
               Crafting premium packaging and gifting experiences that leave
@@ -141,7 +142,7 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-white/40">
-            © 2025 Maple Packaging. All rights reserved.
+            © <CopyrightYear /> Maple Packaging. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a

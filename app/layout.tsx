@@ -1,21 +1,24 @@
 import type { Metadata } from "next";
-import { Playfair_Display, DM_Sans } from "next/font/google";
+import { Poppins, Outfit } from "next/font/google";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ChatWidget from "@/components/chat/ChatWidget";
 import WhatsAppButton from "@/components/chat/WhatsAppButton";
 import EngagementPopup from "@/components/popups/EngagementPopup";
+import { CartProvider } from "@/lib/cart-context";
+import CartDrawer from "@/components/cart/CartDrawer";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
   display: "swap",
 });
@@ -31,6 +34,14 @@ export const metadata: Metadata = {
     "corporate gifting",
     "custom packaging",
   ],
+  icons: {
+    icon: [
+      { url: "/icon.png" },
+      { url: "/icon.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: "/icon.png",
+  },
   openGraph: {
     type: "website",
     locale: "en_IN",
@@ -64,18 +75,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${playfair.variable} ${dmSans.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        <AnnouncementBar />
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <WhatsAppButton />
-        <ChatWidget />
-        <EngagementPopup />
+    <html lang="en">
+      <body
+        className={`${poppins.variable} ${outfit.variable} font-sans antialiased min-h-full flex flex-col`}
+      >
+        <CartProvider>
+          <AnnouncementBar />
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <CartDrawer />
+          <WhatsAppButton />
+          <ChatWidget />
+          <EngagementPopup />
+        </CartProvider>
       </body>
     </html>
   );
