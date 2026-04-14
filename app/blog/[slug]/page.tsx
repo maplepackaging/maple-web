@@ -3,20 +3,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
-import { getBlogPosts, getBlogPostBySlug } from "@/lib/supabase-data";
+import { PortableText } from "@portabletext/react";
+import { getSanityBlogPosts, getSanityBlogPostBySlug } from "@/lib/sanity-data";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
-  const blogPosts = await getBlogPosts();
+  const blogPosts = await getSanityBlogPosts();
   return blogPosts.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getBlogPostBySlug(slug);
+  const post = await getSanityBlogPostBySlug(slug);
   if (!post) return { title: "Not Found" };
   return {
     title: `${post.title} — Maple Packaging Blog`,
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = await getBlogPostBySlug(slug);
+  const post = await getSanityBlogPostBySlug(slug);
   if (!post) notFound();
 
   return (
@@ -83,58 +84,15 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           {/* Content */}
           <div className="mt-8 prose-maple">
-            {post.content.split("\n\n").map((paragraph, i) => {
-              if (paragraph.startsWith("**") && paragraph.endsWith("**")) {
-                const text = paragraph.replace(/\*\*/g, "");
-                return (
-                  <h3
-                    key={i}
-                    className="font-heading text-xl font-semibold text-text-dark mt-8 mb-3"
-                  >
-                    {text}
-                  </h3>
-                );
-              }
-              if (paragraph.startsWith("- ")) {
-                const items = paragraph.split("\n").filter((l) => l.startsWith("- "));
-                return (
-                  <ul key={i} className="space-y-2 my-4">
-                    {items.map((item, j) => (
-                      <li
-                        key={j}
-                        className="flex items-start gap-3 text-text-muted leading-relaxed"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
-                        <span>{item.replace("- ", "")}</span>
-                      </li>
-                    ))}
-                  </ul>
-                );
-              }
-              // Check for bold subheadings within paragraphs
-              if (paragraph.includes("**")) {
-                const parts = paragraph.split(/(\*\*[^*]+\*\*)/);
-                return (
-                  <p key={i} className="text-text-muted leading-relaxed mb-4">
-                    {parts.map((part, j) => {
-                      if (part.startsWith("**") && part.endsWith("**")) {
-                        return (
-                          <strong key={j} className="font-semibold text-text-dark block mt-6 mb-2 font-heading text-lg">
-                            {part.replace(/\*\*/g, "")}
-                          </strong>
-                        );
-                      }
-                      return <span key={j}>{part}</span>;
-                    })}
-                  </p>
-                );
-              }
-              return (
+            {post.body?.length ? (
+              <PortableText value={post.body as any} />
+            ) : post.content ? (
+              post.content.split("\n\n").map((paragraph: string, i: number) => (
                 <p key={i} className="text-text-muted leading-relaxed mb-4">
                   {paragraph}
                 </p>
-              );
-            })}
+              ))
+            ) : null}
           </div>
 
           {/* Back link */}

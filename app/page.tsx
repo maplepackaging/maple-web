@@ -5,24 +5,33 @@ import WhyUs from "@/components/sections/WhyUs";
 import Testimonials from "@/components/sections/Testimonials";
 import InstagramFeed from "@/components/sections/InstagramFeed";
 import CTA from "@/components/sections/CTA";
-import { getCategories, getFeaturedProducts, getTestimonials } from "@/lib/supabase-data";
+import {
+  getHeroSlides,
+  getSanityCategories,
+  getSanityFeaturedProducts,
+  getSanityTestimonials,
+  getSiteSettings,
+} from "@/lib/sanity-data";
 
 export default async function Home() {
-  const [categories, featuredProducts, testimonials] = await Promise.all([
-    getCategories(),
-    getFeaturedProducts(),
-    getTestimonials(),
-  ]);
+  const [heroSlides, categories, featuredProducts, testimonials, settings] =
+    await Promise.all([
+      getHeroSlides(),
+      getSanityCategories(),
+      getSanityFeaturedProducts(),
+      getSanityTestimonials(),
+      getSiteSettings(),
+    ]);
 
   return (
     <>
-      <Hero />
+      <Hero slides={heroSlides} />
       <Categories categories={categories} />
       <Featured products={featuredProducts} />
-      <WhyUs />
+      <WhyUs settings={settings} />
       <Testimonials testimonials={testimonials} />
-      <InstagramFeed />
-      <CTA />
+      <InstagramFeed settings={settings} />
+      <CTA settings={settings} />
     </>
   );
 }

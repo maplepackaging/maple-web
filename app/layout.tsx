@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins, Outfit } from "next/font/google";
+import { Space_Grotesk, Outfit } from "next/font/google";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -8,18 +8,20 @@ import WhatsAppButton from "@/components/chat/WhatsAppButton";
 import EngagementPopup from "@/components/popups/EngagementPopup";
 import { CartProvider } from "@/lib/cart-context";
 import CartDrawer from "@/components/cart/CartDrawer";
+import { getSiteSettings } from "@/lib/sanity-data";
 import "./globals.css";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -52,9 +54,9 @@ export const metadata: Metadata = {
       "Handcrafted premium packaging and curated gift hampers for weddings, corporate events, and every occasion.",
     images: [
       {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
+        url: "/icon.png",
+        width: 512,
+        height: 512,
         alt: "Maple Packaging",
       },
     ],
@@ -64,26 +66,28 @@ export const metadata: Metadata = {
     title: "Maple Packaging — Premium Packaging & Gifting",
     description:
       "Handcrafted premium packaging and curated gift hampers for weddings, corporate events, and every occasion.",
-    images: ["/og-image.jpg"],
+    images: ["/icon.png"],
   },
   metadataBase: new URL("https://maplepackaging.com"),
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings();
+
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} ${outfit.variable} font-sans antialiased min-h-full flex flex-col`}
+        className={`${spaceGrotesk.variable} ${outfit.variable} font-sans antialiased min-h-full flex flex-col`}
       >
         <CartProvider>
-          <AnnouncementBar />
-          <Header />
+          <AnnouncementBar announcements={settings.announcements} />
+          <Header navLinks={settings.navLinks} />
           <main className="flex-1">{children}</main>
-          <Footer />
+          <Footer settings={settings} />
           <CartDrawer />
           <WhatsAppButton />
           <ChatWidget />

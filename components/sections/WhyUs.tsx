@@ -1,15 +1,23 @@
 "use client";
 
 import { NumberTicker } from "@/components/ui/number-ticker";
+import type { SiteSettings } from "@/lib/sanity-data";
 
-const stats = [
+const defaultStats = [
   { value: 10000, suffix: "+", label: "Happy Clients" },
   { value: 500, suffix: "+", label: "Custom Orders" },
   { value: 48, suffix: "h", label: "Avg Delivery" },
   { value: 100, suffix: "%", label: "Handcrafted" },
 ];
 
-export default function WhyUs() {
+interface WhyUsProps {
+  settings?: SiteSettings;
+}
+
+export default function WhyUs({ settings }: WhyUsProps) {
+  const stats = settings?.whyUsStats?.length ? settings.whyUsStats : defaultStats;
+  const heading = settings?.whyUsHeading || "Crafted for moments that matter.";
+  const body = settings?.whyUsBody || "From intimate wedding invitations to grand corporate gifts — every piece we make carries the weight of the moment it accompanies.";
   return (
     <section className="bg-text-dark py-14 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,11 +26,10 @@ export default function WhyUs() {
           <div>
             <p className="text-primary text-xs font-medium tracking-[0.2em] uppercase mb-5">Why Maple</p>
             <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.05] mb-6">
-              Crafted for moments that matter.
+              {heading}
             </h2>
             <p className="text-white/50 text-base md:text-lg leading-relaxed max-w-md">
-              From intimate wedding invitations to grand corporate gifts — every piece
-              we make carries the weight of the moment it accompanies.
+              {body}
             </p>
           </div>
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { getCategories } from "@/lib/supabase-data";
+import { getSanityCategories } from "@/lib/sanity-data";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CategoriesPage() {
-  const categories = await getCategories();
+  const categories = await getSanityCategories();
 
   return (
     <section className="py-16 md:py-24 bg-beige">

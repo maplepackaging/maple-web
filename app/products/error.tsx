@@ -27,8 +27,11 @@ export default function ProductError({
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button onClick={reset}>Try Again</Button>
-          <Link href="/categories">
-            <Button variant="secondary">Browse Categories</Button>
+          <Link
+            href="/categories"
+            className="inline-flex items-center justify-center font-medium transition-all duration-300 ease-out cursor-pointer bg-surface text-text-dark border border-border hover:border-primary hover:text-primary px-6 py-3 text-base rounded-lg"
+          >
+            Browse Categories
           </Link>
         </div>
       </div>

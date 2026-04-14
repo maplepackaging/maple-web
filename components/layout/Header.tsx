@@ -8,7 +8,21 @@ import { cn } from "@/lib/utils";
 import { useCart } from "@/lib/cart-context";
 import MobileMenu from "./MobileMenu";
 
-export default function Header() {
+const defaultNavLinks = [
+  { label: "Wedding Invites", href: "/categories/wedding-invites" },
+  { label: "Gift Packaging", href: "/categories/gift-packaging" },
+  { label: "Hampers & Gifts", href: "/categories/hampers-gifts" },
+  { label: "Corporate", href: "/categories/corporate-gifting" },
+  { label: "Blog", href: "/blog" },
+  { label: "About", href: "/about" },
+];
+
+interface HeaderProps {
+  navLinks?: { label: string; href: string }[];
+}
+
+export default function Header({ navLinks: navLinksProp }: HeaderProps) {
+  const navLinks = navLinksProp?.length ? navLinksProp : defaultNavLinks;
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -23,15 +37,6 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const navLinks = [
-    { label: "Wedding Invites", href: "/categories/wedding-invites" },
-    { label: "Gift Packaging", href: "/categories/gift-packaging" },
-    { label: "Hampers & Gifts", href: "/categories/hampers-gifts" },
-    { label: "Corporate", href: "/categories/corporate-gifting" },
-    { label: "Blog", href: "/blog" },
-    { label: "About", href: "/about" },
-  ];
 
   return (
     <>

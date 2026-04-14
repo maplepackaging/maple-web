@@ -66,7 +66,7 @@ export default function InstagramGrid({ posts }: Props) {
           {/* Thumbnail */}
           <Image
             src={post.imageUrl}
-            alt={post.caption?.slice(0, 80) || "Instagram post"}
+            alt={post.caption ? Array.from(post.caption).slice(0, 80).join("") : "Instagram post"}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
             sizes="(max-width: 768px) 33vw, 20vw"

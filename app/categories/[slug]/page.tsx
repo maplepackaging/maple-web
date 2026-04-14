@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getCategories, getCategoryBySlug, getProductsByCategory } from "@/lib/supabase-data";
+import { getSanityCategories, getSanityCategoryBySlug, getSanityProductsByCategory } from "@/lib/sanity-data";
 import CategoryDetail from "@/components/pages/CategoryDetail";
 
 interface PageProps {
@@ -8,13 +8,13 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const categories = await getCategories();
+  const categories = await getSanityCategories();
   return categories.map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const category = await getCategoryBySlug(slug);
+  const category = await getSanityCategoryBySlug(slug);
   if (!category) return { title: "Not Found" };
   return {
     title: `${category.name} — Maple Packaging`,
@@ -24,10 +24,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function CategoryPage({ params }: PageProps) {
   const { slug } = await params;
-  const category = await getCategoryBySlug(slug);
+  const category = await getSanityCategoryBySlug(slug);
   if (!category) notFound();
 
-  const categoryProducts = await getProductsByCategory(category.id);
+  const categoryProducts = await getSanityProductsByCategory(category.id);
 
   return (
     <CategoryDetail category={category} products={categoryProducts} />

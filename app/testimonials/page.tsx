@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Star } from "lucide-react";
 import SectionHeading from "@/components/ui/SectionHeading";
-import { getTestimonials } from "@/lib/supabase-data";
+import { getSanityTestimonials } from "@/lib/sanity-data";
 
 export const metadata: Metadata = {
   title: "Testimonials — Maple Packaging",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function TestimonialsPage() {
-  const testimonials = await getTestimonials();
+  const testimonials = await getSanityTestimonials();
 
   return (
     <div className="bg-beige py-16 md:py-24">

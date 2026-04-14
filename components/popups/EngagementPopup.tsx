@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Gift } from "lucide-react";
+import { subscribeToNewsletter } from "@/lib/supabase-helpers";
 
 export default function EngagementPopup() {
   const [isVisible, setIsVisible] = useState(false);
@@ -47,11 +48,12 @@ export default function EngagementPopup() {
     sessionStorage.setItem("popup-dismissed", "true");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
     setSubmitted(true);
     sessionStorage.setItem("popup-dismissed", "true");
+    await subscribeToNewsletter(email.trim(), "popup");
     setTimeout(() => setIsVisible(false), 2500);
   };
 

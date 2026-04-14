@@ -144,9 +144,7 @@ export default function CategoryDetail({
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: index * 0.05 }}
                   >
-                    <Link href={`/products/${product.id}`}>
-                      <ProductCard product={product} />
-                    </Link>
+                    <ProductCard product={product} />
                   </motion.div>
                 ))}
               </div>

@@ -3,8 +3,9 @@ import Image from "next/image";
 import { Mail, Phone, MapPin } from "lucide-react";
 import NewsletterForm from "@/components/forms/NewsletterForm";
 import { CopyrightYear } from "@/components/ui/CopyrightYear";
+import type { SiteSettings } from "@/lib/sanity-data";
 
-const footerLinks = {
+const defaultFooterLinks = {
   shop: [
     { label: "Wedding Invites", href: "/categories/wedding-invites" },
     { label: "Gift Packaging", href: "/categories/gift-packaging" },
@@ -26,7 +27,25 @@ const footerLinks = {
   ],
 };
 
-export default function Footer() {
+interface FooterProps {
+  settings?: SiteSettings;
+}
+
+export default function Footer({ settings }: FooterProps) {
+  const footerLinks = {
+    shop: settings?.footerShopLinks?.length ? settings.footerShopLinks : defaultFooterLinks.shop,
+    company: settings?.footerCompanyLinks?.length ? settings.footerCompanyLinks : defaultFooterLinks.company,
+    support: settings?.footerSupportLinks?.length ? settings.footerSupportLinks : defaultFooterLinks.support,
+  };
+  const email = settings?.email || "hello@maplepackaging.com";
+  const phone = settings?.phone || "+91 84335 72388";
+  const address = settings?.address || "Mumbai, India";
+  const tagline = settings?.footerTagline || "Crafting premium packaging and gifting experiences that leave lasting impressions. Every box tells a story.";
+  const instagramUrl = settings?.instagramUrl || "https://instagram.com";
+  const facebookUrl = settings?.facebookUrl || "https://facebook.com";
+  const pinterestUrl = settings?.pinterestUrl || "https://pinterest.com";
+  const newsletterHeading = settings?.newsletterHeading || "Stay in the loop";
+  const newsletterBody = settings?.newsletterBody || "Be the first to know about new collections, exclusive offers, and gifting inspiration.";
   return (
     <footer className="bg-text-dark text-white/80">
       {/* Newsletter */}
@@ -35,11 +54,10 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div>
               <h3 className="font-heading text-2xl md:text-3xl font-semibold text-white">
-                Stay in the loop
+                {newsletterHeading}
               </h3>
               <p className="mt-2 text-white/60 text-sm">
-                Be the first to know about new collections, exclusive offers,
-                and gifting inspiration.
+                {newsletterBody}
               </p>
             </div>
             <NewsletterForm />
@@ -61,21 +79,20 @@ export default function Footer() {
               className="h-10"
             />
             <p className="mt-4 text-sm text-white/50 max-w-xs leading-relaxed">
-              Crafting premium packaging and gifting experiences that leave
-              lasting impressions. Every box tells a story.
+              {tagline}
             </p>
             <div className="mt-6 space-y-3">
               <div className="flex items-center gap-3 text-sm text-white/50">
                 <Mail size={14} />
-                <span>hello@maplepackaging.com</span>
+                <span>{email}</span>
               </div>
               <div className="flex items-center gap-3 text-sm text-white/50">
                 <Phone size={14} />
-                <span>+91 84335 72388</span>
+                <span>{phone}</span>
               </div>
               <div className="flex items-center gap-3 text-sm text-white/50">
                 <MapPin size={14} />
-                <span>Mumbai, India</span>
+                <span>{address}</span>
               </div>
             </div>
           </div>
@@ -147,7 +164,7 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-6">
             <a
-              href="https://instagram.com"
+              href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-white/40 hover:text-primary transition-colors"
@@ -155,7 +172,7 @@ export default function Footer() {
               Instagram
             </a>
             <a
-              href="https://facebook.com"
+              href={facebookUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-white/40 hover:text-primary transition-colors"
@@ -163,7 +180,7 @@ export default function Footer() {
               Facebook
             </a>
             <a
-              href="https://pinterest.com"
+              href={pinterestUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-white/40 hover:text-primary transition-colors"

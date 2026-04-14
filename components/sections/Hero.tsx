@@ -1,164 +1,181 @@
 "use client";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import Button from "@/components/ui/Button";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import type { HeroSlide } from "@/lib/sanity-data";
 
-import "swiper/css";
-import "swiper/css/pagination";
-
-const slides = [
+const fallbackSlides: HeroSlide[] = [
   {
     title: "Where Every Package Tells a Story",
     subtitle: "Premium Packaging & Gifting",
-    description:
-      "Handcrafted packaging and curated gift hampers that transform ordinary moments into extraordinary memories.",
+    description: "Handcrafted packaging and curated gift hampers that transform ordinary moments into extraordinary memories.",
     image: "/hero-opt-1.png",
     cta: { text: "Explore Collections", href: "/categories" },
   },
   {
-    title: "Elevate Your Wedding Experience",
-    subtitle: "Luxury Wedding Invitations",
-    description:
-      "Exquisite invitation boxes and stationery that set the perfect tone for your special day.",
+    title: "Crafted for Your Special Day",
+    subtitle: "Wedding Collection 2025",
+    description: "Exquisite wedding invitations, favor boxes, and packaging that set the tone for your celebration.",
     image: "/hero-opt-2.png",
-    cta: { text: "View Wedding Collection", href: "/categories/wedding-invites" },
+    cta: { text: "Wedding Collection", href: "/categories/wedding-invites" },
   },
   {
-    title: "Corporate Gifting Redefined",
-    subtitle: "Premium Corporate Solutions",
-    description:
-      "Make a lasting impression with our curated corporate hampers and custom packaging solutions.",
+    title: "Make Every Gift Unforgettable",
+    subtitle: "Corporate & Personal Gifting",
+    description: "Curated gift hampers and premium packaging solutions for corporate events, festivals, and personal milestones.",
     image: "/hero-opt-3.png",
-    cta: { text: "Explore Corporate Gifts", href: "/categories/corporate-gifting" },
+    cta: { text: "Customize Now", href: "/customize" },
   },
 ];
 
-export default function Hero() {
+const SLIDE_DURATION = 6000;
+
+interface HeroProps {
+  slides?: HeroSlide[];
+}
+
+export default function Hero({ slides: slidesProp }: HeroProps) {
+  const slides = slidesProp && slidesProp.length > 0 ? slidesProp : fallbackSlides;
+  const [current, setCurrent] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  const next = useCallback(() => {
+    setCurrent((prev) => (prev + 1) % slides.length);
+    setProgress(0);
+  }, []);
+
+  const prev = useCallback(() => {
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+    setProgress(0);
+  }, []);
+
+  const goTo = useCallback((i: number) => {
+    setCurrent(i);
+    setProgress(0);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((p) => {
+        if (p >= 100) {
+          next();
+          return 0;
+        }
+        return p + 100 / (SLIDE_DURATION / 50);
+      });
+    }, 50);
+    return () => clearInterval(interval);
+  }, [current, next]);
+
+  const slide = slides[current];
+
   return (
-    <section className="relative overflow-hidden bg-black h-[calc(100vh-7rem)]"
-    >
-      <Swiper
-        modules={[Autoplay, Pagination]}
-        speed={800}
-        autoplay={{
-          delay: 5000,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-          bulletClass: "swiper-pagination-bullet !bg-white/40",
-          bulletActiveClass: "swiper-pagination-bullet-active !bg-primary",
-        }}
-        loop={true}
-        className="hero-swiper h-full"
-      >
-        {slides.map((slide, index) => (
-          <SwiperSlide key={index}>
-            <div className="relative h-full w-full">
-              {/* Background Image */}
-              <div className="absolute inset-0">
+    <section className="relative bg-text-dark overflow-hidden h-[calc(100dvh-7rem)]">
+      <div className="mx-auto h-full grid grid-cols-1 lg:grid-cols-2">
+        {/* Left — Text panel */}
+        <div className="relative z-10 flex flex-col justify-center px-6 sm:px-10 lg:px-16 xl:px-20 py-14 md:py-20 lg:py-24 order-2 lg:order-1">
+
+
+          <div key={current}>
+              <span className="inline-block text-primary text-xs font-semibold tracking-[0.2em] uppercase mb-4 md:mb-5">
+                {slide.subtitle}
+              </span>
+
+              <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-[1.15] mb-4 md:mb-5 max-w-[520px]">
+                {slide.title}
+              </h1>
+
+              <p className="text-sm sm:text-base md:text-lg text-white/60 leading-relaxed mb-6 md:mb-8 max-w-lg line-clamp-2">
+                {slide.description}
+              </p>
+
+              <div className="flex flex-wrap gap-3 sm:gap-4">
+                <Link
+                  href={slide.cta.href}
+                  className="group inline-flex items-center justify-center font-medium transition-all duration-300 bg-primary text-white hover:bg-primary-hover shadow-lg hover:shadow-xl px-6 py-3.5 sm:px-8 sm:py-4 text-sm sm:text-base rounded-xl"
+                >
+                  {slide.cta.text}
+                  <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+                <Link
+                  href="/customize"
+                  className="inline-flex items-center justify-center font-medium transition-all duration-300 border-2 border-white/20 text-white hover:bg-white/10 px-6 py-3.5 sm:px-8 sm:py-4 text-sm sm:text-base rounded-xl"
+                >
+                  Customize Yours
+                </Link>
+              </div>
+          </div>
+
+          {/* Bottom controls */}
+          <div className="mt-12 md:mt-16 flex items-center gap-6">
+            {/* Arrows */}
+            <div className="flex gap-2">
+              <button
+                onClick={prev}
+                aria-label="Previous slide"
+                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/40 transition-colors"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button
+                onClick={next}
+                aria-label="Next slide"
+                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/40 transition-colors"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+
+            {/* Progress bars */}
+            <div className="flex items-center gap-2 flex-1 max-w-48">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                  className="relative h-1 flex-1 rounded-full bg-white/15 overflow-hidden cursor-pointer"
+                >
+                  <div
+                    className="absolute inset-y-0 left-0 rounded-full bg-primary transition-all duration-100 ease-linear"
+                    style={{
+                      width:
+                        i === current
+                          ? `${progress}%`
+                          : i < current
+                            ? "100%"
+                            : "0%",
+                    }}
+                  />
+                </button>
+              ))}
+            </div>
+
+          </div>
+        </div>
+
+        {/* Right — Image panel */}
+        <div className="relative order-1 lg:order-2 min-h-[240px] sm:min-h-[300px] lg:min-h-0">
+          <div className="absolute inset-0">
+              {slide.image ? (
                 <Image
                   src={slide.image}
                   alt={slide.title}
                   fill
                   className="object-cover"
-                  priority={index === 0}
-                  sizes="100vw"
+                  priority={current === 0}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   quality={90}
                 />
-                <div className="absolute inset-0 bg-linear-to-r from-black/50 via-black/30 to-black/10" />
-                <div className="absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent" />
-              </div>
-
-              {/* Content */}
-              <div className="relative h-full flex items-center py-4 sm:py-8 md:py-12">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                  <div className="max-w-3xl">
-                    {/* Subtitle */}
-                    <div className="mb-3 sm:mb-4">
-                      <span className="text-primary text-[10px] sm:text-xs md:text-sm font-medium tracking-widest uppercase">
-                        {slide.subtitle}
-                      </span>
-                    </div>
-
-                    {/* Title */}
-                    <h1 className="font-heading text-2xl sm:text-3xl md:text-5xl font-bold text-white leading-tight tracking-tight mb-3 sm:mb-5">
-                      {slide.title}
-                    </h1>
-
-                    {/* Description */}
-                    <p className="text-sm sm:text-base md:text-lg text-white/70 max-w-xl leading-relaxed mb-6 sm:mb-8">
-                      {slide.description}
-                    </p>
-
-                    {/* CTA Buttons */}
-                    <div className="flex flex-row flex-wrap gap-3 sm:gap-4">
-                      <Link href={slide.cta.href} className="inline-block">
-                        <Button className="group px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-lg">
-                          {slide.cta.text}
-                          <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                        </Button>
-                      </Link>
-                      <Link href="/customize" className="inline-block">
-                        <Button 
-                          variant="outline" 
-                          className="px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-lg border-2 border-white/30 text-white hover:bg-white hover:text-text-dark backdrop-blur-sm"
-                        >
-                          Customize Yours
-                        </Button>
-                      </Link>
-                    </div>
-
-                    {/* Stats - Only on first slide */}
-                    {index === 0 && (
-                      <div className="mt-12 mb-16 grid grid-cols-3 gap-6 max-w-lg">
-                        {[
-                          { value: "10K+", label: "Happy Clients" },
-                          { value: "500+", label: "Products" },
-                          { value: "50+", label: "Corporate Partners" },
-                        ].map((stat) => (
-                          <div key={stat.label} className="text-center sm:text-left">
-                            <div className="font-heading text-2xl md:text-3xl font-bold text-white mb-1">
-                              {stat.value}
-                            </div>
-                            <div className="text-xs text-white/70 uppercase tracking-wider">
-                              {stat.label}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-
-      <style>{`
-        .hero-swiper .swiper-pagination {
-          bottom: 40px !important;
-          z-index: 10;
-        }
-        .hero-swiper .swiper-pagination-bullet {
-          width: 10px;
-          height: 10px;
-          margin: 0 6px !important;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          opacity: 1;
-        }
-        .hero-swiper .swiper-pagination-bullet-active {
-          width: 40px;
-          border-radius: 5px;
-          background: #CD5F39 !important;
-        }
-      `}</style>
+              ) : (
+                <div className="w-full h-full bg-charcoal/30" />
+              )}
+              {/* Subtle gradient blending into dark panel on left */}
+              <div className="absolute inset-0 bg-linear-to-t from-text-dark/80 via-transparent to-transparent lg:bg-linear-to-r lg:from-text-dark/60 lg:via-transparent lg:to-transparent" />
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

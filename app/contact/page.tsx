@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import SectionHeading from "@/components/ui/SectionHeading";
 import ContactForm from "@/components/forms/ContactForm";
+import { getSiteSettings } from "@/lib/sanity-data";
 
 export const metadata: Metadata = {
   title: "Contact Us — Maple Packaging",
@@ -9,34 +10,35 @@ export const metadata: Metadata = {
     "Get in touch with Maple Packaging for custom orders, bulk enquiries, or any questions. We'd love to hear from you.",
 };
 
-const contactInfo = [
-  {
-    icon: Mail,
-    title: "Email",
-    detail: "hello@maplepackaging.com",
-    href: "mailto:hello@maplepackaging.com",
-  },
-  {
-    icon: Phone,
-    title: "Phone",
-    detail: "+91 84335 72388",
-    href: "tel:+918433572388",
-  },
-  {
-    icon: MapPin,
-    title: "Address",
-    detail: "Mumbai, Maharashtra, India",
-    href: null,
-  },
-  {
-    icon: Clock,
-    title: "Hours",
-    detail: "Mon – Sat, 10 AM – 7 PM IST",
-    href: null,
-  },
-];
+export default async function ContactPage() {
+  const settings = await getSiteSettings();
 
-export default function ContactPage() {
+  const contactInfo = [
+    {
+      icon: Mail,
+      title: "Email",
+      detail: settings.email || "hello@maplepackaging.com",
+      href: `mailto:${settings.email || "hello@maplepackaging.com"}`,
+    },
+    {
+      icon: Phone,
+      title: "Phone",
+      detail: settings.phone || "+91 84335 72388",
+      href: `tel:${(settings.phone || "+91 84335 72388").replace(/\s/g, "")}`,
+    },
+    {
+      icon: MapPin,
+      title: "Address",
+      detail: settings.address || "Mumbai, Maharashtra, India",
+      href: null,
+    },
+    {
+      icon: Clock,
+      title: "Hours",
+      detail: settings.hours || "Mon – Sat, 10 AM – 7 PM IST",
+      href: null,
+    },
+  ];
   return (
     <div className="bg-beige py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

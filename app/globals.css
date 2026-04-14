@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #FAFBF0;
-  --color-foreground: #2C1810;
-  --color-primary: #CD5F39;
-  --color-primary-hover: #B34F2D;
-  --color-primary-light: #F0DDD4;
-  --color-secondary: #87522A;
-  --color-text-dark: #2C1810;
-  --color-text-muted: #6B5B4F;
-  --color-border: #E8E0D6;
-  --color-surface: #FAFBF0;
-  --color-accent: #87522A;
-  --color-beige: #FAFBF0;
-  --color-beige-dark: #F0EAE0;
+  --color-background: #fafbf0;
+  --color-foreground: #2c1810;
+  --color-primary: #cd5f39;
+  --color-primary-hover: #b34f2d;
+  --color-primary-light: #f0ddd4;
+  --color-secondary: #87522a;
+  --color-text-dark: #2c1810;
+  --color-text-muted: #6b5b4f;
+  --color-border: #e8e0d6;
+  --color-surface: #fafbf0;
+  --color-accent: #87522a;
+  --color-beige: #fafbf0;
+  --color-beige-dark: #f0eae0;
 
-  --font-heading: var(--font-poppins);
-  --font-body: var(--font-poppins);
+  --font-heading: var(--font-bricolage);
+  --font-body: var(--font-space-grotesk);
 }
 
 html {
@@ -29,22 +29,23 @@ html {
 }
 
 body {
-  background-color: #FAFBF0;
-  color: #2C1810;
-  font-family: var(--font-body), system-ui, sans-serif;
+  background-color: #fafbf0;
+  color: #2c1810;
+  --font-sans: var(--font-outfit), system-ui, sans-serif;
+  font-family: var(--font-outfit), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Heading style — Poppins uppercase */
+/* Heading style — Space Grotesk */
 .font-heading {
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  letter-spacing: -0.01em;
 }
 
 ::selection {
-  background-color: #CD5F39;
-  color: #FFFFFF;
+  background-color: #cd5f39;
+  color: #ffffff;
 }
 
 @keyframes scroll-left {
@@ -82,13 +83,21 @@ body {
 }
 
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(calc(-100% - var(--gap))); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
 }
 
 @keyframes marquee-vertical {
-  from { transform: translateY(0); }
-  to { transform: translateY(calc(-100% - var(--gap))); }
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+  }
 }
 
 .animate-marquee {

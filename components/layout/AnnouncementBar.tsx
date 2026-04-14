@@ -1,6 +1,6 @@
 "use client";
 
-const announcements = [
+const defaultAnnouncements = [
   "Flat 25% off on Eid Hampers",
   "Free shipping on orders above ₹999",
   "New: Corporate Gifting Collection 2025",
@@ -8,7 +8,12 @@ const announcements = [
   "Diwali Early Bird: 20% off on bulk orders",
 ];
 
-export default function AnnouncementBar() {
+interface AnnouncementBarProps {
+  announcements?: string[];
+}
+
+export default function AnnouncementBar({ announcements: announcementsProp }: AnnouncementBarProps) {
+  const announcements = announcementsProp?.length ? announcementsProp : defaultAnnouncements;
   const duplicated = [...announcements, ...announcements];
 
   return (

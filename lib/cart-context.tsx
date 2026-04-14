@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from "react";
 import type { Product } from "@/lib/types";
 
 export interface CartItem {
@@ -24,24 +24,29 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window === "undefined") return [];
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+
+  // Load cart from localStorage after hydration
+  useEffect(() => {
     const stored = localStorage.getItem("maple-cart");
     if (stored) {
       try {
-        return JSON.parse(stored);
+        setItems(JSON.parse(stored));
       } catch {
-        return [];
+        // ignore corrupt data
       }
     }
-    return [];
-  });
-  const [isOpen, setIsOpen] = useState(false);
+    setHydrated(true);
+  }, []);
 
-  // Save cart to localStorage on change
+  // Save cart to localStorage on change (skip initial hydration)
   useEffect(() => {
-    localStorage.setItem("maple-cart", JSON.stringify(items));
-  }, [items]);
+    if (hydrated) {
+      localStorage.setItem("maple-cart", JSON.stringify(items));
+    }
+  }, [items, hydrated]);
 
   const openCart = useCallback(() => setIsOpen(true), []);
   const closeCart = useCallback(() => setIsOpen(false), []);
@@ -81,11 +86,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems([]);
   }, []);
 
-  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = items.reduce(
+  const totalItems = useMemo(() => items.reduce((sum, item) => sum + item.quantity, 0), [items]);
+  const totalPrice = useMemo(() => items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0
-  );
+  ), [items]);
 
   return (
     <CartContext.Provider

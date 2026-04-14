@@ -2,6 +2,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { Instagram } from "lucide-react";
 import InstagramGrid from "./InstagramGrid";
+import type { SiteSettings } from "@/lib/sanity-data";
 
 interface BeholdPost {
   id: string;
@@ -15,13 +16,17 @@ interface BeholdPost {
   prunedCaption: string;
 }
 
-async function getInstagramPosts(): Promise<BeholdPost[]> {
+const DEFAULT_FEED_URL = "https://feeds.behold.so/2xJXFQqgEerbVGpDVYYP";
+const DEFAULT_HANDLE = "@maplepackaging_";
+const DEFAULT_IG_URL = "https://instagram.com/maplepackaging_";
+
+async function getInstagramPosts(feedUrl: string): Promise<BeholdPost[]> {
   "use cache";
   cacheLife("hours");
   cacheTag("instagram");
 
   try {
-    const res = await fetch("https://feeds.behold.so/2xJXFQqgEerbVGpDVYYP");
+    const res = await fetch(feedUrl);
     if (!res.ok) return [];
     const data = await res.json();
     return (data.posts ?? []).slice(0, 6);
@@ -30,8 +35,15 @@ async function getInstagramPosts(): Promise<BeholdPost[]> {
   }
 }
 
-export default async function InstagramFeed() {
-  const posts = await getInstagramPosts();
+interface InstagramFeedProps {
+  settings?: SiteSettings;
+}
+
+export default async function InstagramFeed({ settings }: InstagramFeedProps) {
+  const feedUrl = settings?.instagramFeedUrl || DEFAULT_FEED_URL;
+  const handle = settings?.instagramHandle || DEFAULT_HANDLE;
+  const igUrl = settings?.instagramUrl || DEFAULT_IG_URL;
+  const posts = await getInstagramPosts(feedUrl);
 
   const gridPosts = posts.map((p) => ({
     id: p.id,
@@ -71,13 +83,13 @@ export default async function InstagramFeed() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mt-10">
           <Link
-            href="https://instagram.com/maplepackaging_"
+            href={igUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-7 py-3 rounded-full border-2 border-text-dark text-text-dark text-sm font-medium hover:bg-text-dark hover:text-white transition-all duration-200"
           >
             <Instagram size={16} />
-            Follow @maplepackaging_
+            Follow {handle}
           </Link>
         </div>
       </div>

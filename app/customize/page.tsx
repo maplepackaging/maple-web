@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Palette, Box, Pen, Truck } from "lucide-react";
 import SectionHeading from "@/components/ui/SectionHeading";
 import CustomizeForm from "@/components/forms/CustomizeForm";
+import { getCustomizePage } from "@/lib/sanity-data";
 
 export const metadata: Metadata = {
   title: "Customize Your Order — Maple Packaging",
@@ -10,34 +11,18 @@ export const metadata: Metadata = {
     "Create bespoke packaging tailored to your brand, wedding, or event. Custom colors, materials, textures, and monograms.",
 };
 
-const steps = [
-  {
-    icon: Pen,
-    title: "Tell Us Your Vision",
-    description:
-      "Share your event details, color preferences, material choices, and any inspiration images you have.",
-  },
-  {
-    icon: Palette,
-    title: "We Design & Sample",
-    description:
-      "Our design team creates concepts with mockups. We send physical samples for your approval before production.",
-  },
-  {
-    icon: Box,
-    title: "Production",
-    description:
-      "Once approved, we handcraft your order with meticulous attention to detail using premium materials.",
-  },
-  {
-    icon: Truck,
-    title: "Delivery",
-    description:
-      "Carefully packed and shipped pan-India. We ensure everything arrives in pristine condition.",
-  },
+const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  Pen, Palette, Box, Truck,
+};
+
+const defaultSteps = [
+  { icon: "Pen", title: "Tell Us Your Vision", description: "Share your event details, color preferences, material choices, and any inspiration images you have." },
+  { icon: "Palette", title: "We Design & Sample", description: "Our design team creates concepts with mockups. We send physical samples for your approval before production." },
+  { icon: "Box", title: "Production", description: "Once approved, we handcraft your order with meticulous attention to detail using premium materials." },
+  { icon: "Truck", title: "Delivery", description: "Carefully packed and shipped pan-India. We ensure everything arrives in pristine condition." },
 ];
 
-const customizableProducts = [
+const defaultProducts = [
   "Wedding Invitation Boxes",
   "Wedding Cards & Suites",
   "Gift Hamper Boxes & Baskets",
@@ -48,7 +33,10 @@ const customizableProducts = [
   "Festival Gift Packaging",
 ];
 
-export default function CustomizePage() {
+export default async function CustomizePage() {
+  const data = await getCustomizePage();
+  const steps = data.steps?.length ? data.steps : defaultSteps;
+  const customizableProducts = data.customizableProducts?.length ? data.customizableProducts : defaultProducts;
   return (
     <div className="bg-beige">
       {/* Hero */}
@@ -65,16 +53,13 @@ export default function CustomizePage() {
         </div>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           <span className="inline-block text-primary text-sm font-medium tracking-widest uppercase mb-4">
-            Bespoke Packaging
+            {data.heroLabel || "Bespoke Packaging"}
           </span>
           <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">
-            Your Vision,
-            <br />
-            Our Craft
+            {data.heroTitle || "Your Vision, Our Craft"}
           </h1>
           <p className="mt-6 text-lg text-white/60 max-w-xl mx-auto leading-relaxed">
-            From custom colors and textures to embossed monograms and bespoke
-            structures — we bring your packaging dreams to life.
+            {data.heroBody || "From custom colors and textures to embossed monograms and bespoke structures — we bring your packaging dreams to life."}
           </p>
         </div>
       </section>
@@ -90,7 +75,7 @@ export default function CustomizePage() {
             {steps.map((step, i) => (
               <div key={step.title} className="text-center">
                 <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary-light mb-5 relative">
-                  <step.icon size={24} className="text-primary" />
+                  {(() => { const Icon = iconMap[step.icon] || Pen; return <Icon size={24} className="text-primary" />; })()}
                   <span className="absolute -top-1 -right-1 w-6 h-6 bg-text-dark text-white text-xs font-bold rounded-full flex items-center justify-center">
                     {i + 1}
                   </span>
@@ -116,12 +101,10 @@ export default function CustomizePage() {
                 Fully Customizable
               </span>
               <h2 className="mt-3 font-heading text-3xl md:text-4xl font-semibold text-text-dark leading-tight">
-                Everything Can Be Tailored to You
+                {data.customizableTitle || "Everything Can Be Tailored to You"}
               </h2>
               <p className="mt-4 text-text-muted leading-relaxed">
-                Colors, materials, textures, sizes, printing, foil stamping,
-                embossing, monograms, ribbons, wax seals — every element is
-                yours to choose.
+                {data.customizableBody || "Colors, materials, textures, sizes, printing, foil stamping, embossing, monograms, ribbons, wax seals — every element is yours to choose."}
               </p>
               <div className="mt-8 grid grid-cols-2 gap-3">
                 {customizableProducts.map((product) => (

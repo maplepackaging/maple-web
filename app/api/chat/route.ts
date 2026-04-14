@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import Groq from "groq-sdk";
-import { getProductCatalogForChat, getProducts } from "@/lib/supabase-data";
-import { createClient } from "@supabase/supabase-js";
+import { getSanityProductCatalogForChat, getSanityProducts } from "@/lib/sanity-data";
+import { supabase } from "@/lib/supabase";
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
 
 const SYSTEM_TEMPLATE = `You are a helpful gift and packaging consultant for Maple Packaging, a premium Indian packaging and gifting company.
@@ -23,18 +18,15 @@ IMPORTANT RULES:
 RULE 1 - PRODUCT TAGS (CRITICAL - READ CAREFULLY):
 When recommending a product, you MUST embed the product ID tag in your response using this EXACT format:
   #PRODUCT_ID*
-  Examples: #P001*  #P004*  #P012*
+  Example: #A9XGrwkGGCiReURNTDlkM6*
 
 The format MUST:
 - Start with a hash symbol: #
-- Followed immediately by the product ID (e.g. P001, P004)
+- Followed immediately by the full product ID exactly as shown in the catalog
 - End immediately with an asterisk: *
 - No spaces, no dots, no brackets, nothing else between # and *
 
-WRONG: #P001 | #P001. | [#P001*] | # P001* | P001* | #P001
-RIGHT: #P001*
-
-You can recommend multiple products: #P001* #P004*
+You can recommend multiple products: #id1* #id2*
 The system uses this exact pattern to detect and display products. If the format is wrong, no product card will appear.
 
 RULE 2: If no product from the catalog matches, respond normally with no product tag.
@@ -46,7 +38,7 @@ RULE 4: NEVER use em-dashes (—). Use commas or plain dashes (-) instead.
 RULE 5: If asked about customization, say Maple Packaging offers full custom solutions and direct them to the Customize page.
 
 Example responses:
-- "For weddings, I'd suggest #P001* for a luxurious invite box or #P002* for a minimal look."
+- "For weddings, I'd suggest this luxurious invite box or this minimal look." (with product ID tags embedded)
 - "Could you share the occasion and your budget so I can find the best fit?"`;
 
 
@@ -62,7 +54,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Lightweight catalog for prompt (cached, only 5 columns)
-    const catalog = await getProductCatalogForChat();
+    const catalog = await getSanityProductCatalogForChat();
 
     const catalogText = catalog
       .map(
@@ -89,15 +81,15 @@ export async function POST(request: NextRequest) {
 
     const reply = completion.choices[0]?.message?.content || "Sorry, I couldn't process that. Please try again.";
 
-    // Extract product IDs using regex: #P001*, #P002*, etc.
-    const productIdRegex = /#(P\d{3})\*/g;
+    // Extract product IDs using regex: #<id>* format (supports UUIDs and Sanity IDs)
+    const productIdRegex = /#([a-zA-Z0-9_-]{8,})\*/g;
     const matches = [...reply.matchAll(productIdRegex)];
 
     // Only fetch full product objects if AI actually recommended products
-    let matchedProducts: Awaited<ReturnType<typeof getProducts>> = [];
+    let matchedProducts: Awaited<ReturnType<typeof getSanityProducts>> = [];
     if (matches.length > 0) {
       const matchedIds = new Set(matches.map((m) => m[1]));
-      const allProducts = await getProducts();
+      const allProducts = await getSanityProducts();
       matchedProducts = allProducts.filter((p) => matchedIds.has(p.id));
     }
 

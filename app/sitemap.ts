@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { getSanityCategories, getSanityProducts, getSanityBlogPosts } from "@/lib/sanity-data";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 3600; // Revalidate every hour
@@ -6,7 +7,7 @@ export const revalidate = 3600; // Revalidate every hour
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://maplepackaging.com"; // Update with your actual domain
 
-  // Static routes only - dynamic routes will be discovered by crawlers
+  // Static routes
   const routes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -51,6 +52,42 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
   ];
+
+  // Dynamic category routes
+  const [categories, products, blogPosts] = await Promise.all([
+    getSanityCategories(),
+    getSanityProducts(),
+    getSanityBlogPosts(),
+  ]);
+
+  for (const category of categories) {
+    routes.push({
+      url: `${baseUrl}/categories/${category.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    });
+  }
+
+  // Dynamic product routes
+  for (const product of products) {
+    routes.push({
+      url: `${baseUrl}/products/${product.id}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    });
+  }
+
+  // Dynamic blog routes
+  for (const post of blogPosts) {
+    routes.push({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.date),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    });
+  }
 
   return routes;
 }

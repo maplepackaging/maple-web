@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/ui/SectionHeading";
-import { getBlogPosts } from "@/lib/supabase-data";
+import { getSanityBlogPosts } from "@/lib/sanity-data";
 
 export const metadata: Metadata = {
   title: "Blog — Maple Packaging",
@@ -17,7 +17,7 @@ function formatDate(dateString: string) {
 }
 
 export default async function BlogPage() {
-  const blogPosts = await getBlogPosts();
+  const blogPosts = await getSanityBlogPosts();
 
   return (
     <div className="bg-beige py-16 md:py-24">
