@@ -33,7 +33,16 @@ export default function Header({ navLinks: navLinksProp }: HeaderProps) {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+      }
+    };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -42,7 +51,7 @@ export default function Header({ navLinks: navLinksProp }: HeaderProps) {
     <>
       <header
         className={cn(
-          "sticky top-0 z-50 transition-all duration-300",
+          "sticky top-0 z-50 transition-[background-color,box-shadow] duration-300",
           scrolled
             ? "bg-white/95 backdrop-blur-md shadow-sm"
             : "bg-[#FAFBF0]"
@@ -62,12 +71,21 @@ export default function Header({ navLinks: navLinksProp }: HeaderProps) {
             {/* Logo */}
             <Link href="/" className="shrink-0">
               <Image
-                src={scrolled ? "/logowithoutbg.png" : "/logo.png"}
+                src="/logo.png"
                 alt="Maple Packaging"
                 width={180}
                 height={56}
                 style={{ width: "auto", height: "auto" }}
-                className="h-12 md:h-14 transition-opacity duration-300"
+                className={cn("h-12 md:h-14 absolute transition-opacity duration-300", scrolled ? "opacity-0" : "opacity-100")}
+                priority
+              />
+              <Image
+                src="/logowithoutbg.png"
+                alt="Maple Packaging"
+                width={180}
+                height={56}
+                style={{ width: "auto", height: "auto" }}
+                className={cn("h-12 md:h-14 transition-opacity duration-300", scrolled ? "opacity-100" : "opacity-0")}
                 priority
               />
             </Link>
