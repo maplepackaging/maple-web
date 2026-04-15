@@ -72,10 +72,10 @@ export default function Hero({ slides: slidesProp }: HeroProps) {
   const slide = slides[current];
 
   return (
-    <section className="relative bg-text-dark overflow-hidden h-[calc(100dvh-7rem)]">
+    <section className="relative bg-text-dark overflow-hidden min-h-[calc(100dvh-7rem)] lg:h-[calc(100dvh-7rem)]">
       <div className="mx-auto h-full grid grid-cols-1 lg:grid-cols-2">
         {/* Left — Text panel */}
-        <div className="relative z-10 flex flex-col justify-center px-6 sm:px-10 lg:px-16 xl:px-20 py-14 md:py-20 lg:py-24 order-2 lg:order-1">
+        <div className="relative z-10 flex flex-col justify-center px-5 sm:px-10 lg:px-16 xl:px-20 py-8 sm:py-14 md:py-20 lg:py-24 order-2 lg:order-1">
 
 
           <div key={current}>
@@ -109,7 +109,7 @@ export default function Hero({ slides: slidesProp }: HeroProps) {
           </div>
 
           {/* Bottom controls */}
-          <div className="mt-12 md:mt-16 flex items-center gap-6">
+          <div className="mt-6 sm:mt-12 md:mt-16 flex items-center gap-4 sm:gap-6">
             {/* Arrows */}
             <div className="flex gap-2">
               <button
@@ -156,7 +156,7 @@ export default function Hero({ slides: slidesProp }: HeroProps) {
         </div>
 
         {/* Right — Image panel */}
-        <div className="relative order-1 lg:order-2 min-h-[240px] sm:min-h-[300px] lg:min-h-0">
+        <div className="relative order-1 lg:order-2 min-h-[200px] h-[35dvh] sm:min-h-[300px] sm:h-[40dvh] lg:h-auto lg:min-h-0">
           <div className="absolute inset-0">
               {slide.image ? (
                 <Image
