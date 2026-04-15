@@ -32,7 +32,7 @@ export default function CartDrawer() {
     closeCart();
   };
 
-  // Prevent body scroll when drawer is open
+  
   useEffect(() => {
     if (!isOpen) return;
     document.body.style.overflow = "hidden";
