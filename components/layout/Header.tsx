@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, ShoppingBag, Menu } from "lucide-react";
@@ -23,24 +23,28 @@ interface HeaderProps {
 
 export default function Header({ navLinks: navLinksProp }: HeaderProps) {
   const navLinks = navLinksProp?.length ? navLinksProp : defaultNavLinks;
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { totalItems, openCart } = useCart();
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    let ticking = false;
+    let scrolled = false;
     const handleScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(() => {
-          setScrolled(window.scrollY > 20);
-          ticking = false;
-        });
+      const isScrolled = window.scrollY > 20;
+      if (isScrolled !== scrolled) {
+        scrolled = isScrolled;
+        const el = headerRef.current;
+        if (!el) return;
+        if (scrolled) {
+          el.classList.add("header-scrolled");
+        } else {
+          el.classList.remove("header-scrolled");
+        }
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -50,12 +54,8 @@ export default function Header({ navLinks: navLinksProp }: HeaderProps) {
   return (
     <>
       <header
-        className={cn(
-          "sticky top-0 z-50 transition-[background-color,box-shadow] duration-300",
-          scrolled
-            ? "bg-white/95 backdrop-blur-md shadow-sm"
-            : "bg-[#FAFBF0]"
-        )}
+        ref={headerRef}
+        className="sticky top-0 z-50 bg-[#FAFBF0] transition-[background-color,box-shadow] duration-300 [&.header-scrolled]:bg-white/95 [&.header-scrolled]:backdrop-blur-md [&.header-scrolled]:shadow-sm"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-18 md:h-20">
@@ -71,21 +71,12 @@ export default function Header({ navLinks: navLinksProp }: HeaderProps) {
             {/* Logo */}
             <Link href="/" className="shrink-0">
               <Image
-                src="/logo.png"
-                alt="Maple Packaging"
-                width={180}
-                height={56}
-                style={{ width: "auto", height: "auto" }}
-                className={cn("h-12 md:h-14 absolute transition-opacity duration-300", scrolled ? "opacity-0" : "opacity-100")}
-                priority
-              />
-              <Image
                 src="/logowithoutbg.png"
                 alt="Maple Packaging"
                 width={180}
                 height={56}
                 style={{ width: "auto", height: "auto" }}
-                className={cn("h-12 md:h-14 transition-opacity duration-300", scrolled ? "opacity-100" : "opacity-0")}
+                className="h-12 md:h-14"
                 priority
               />
             </Link>
