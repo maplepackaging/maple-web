@@ -5,10 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { X, Plus, Minus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, WHATSAPP_NUMBER } from "@/lib/utils";
 import Button from "@/components/ui/Button";
-
-const WHATSAPP_NUMBER = "918433572388";
 
 export default function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeItem, totalPrice, totalItems } = useCart();
@@ -36,13 +34,13 @@ export default function CartDrawer() {
 
   // Prevent body scroll when drawer is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!isOpen) return;
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "";
+      // Only restore if no other overlay (mobile menu) is open
+      if (!document.querySelector('[data-scroll-lock]')) {
+        document.body.style.overflow = "";
+      }
     };
   }, [isOpen]);
 
@@ -58,6 +56,7 @@ export default function CartDrawer() {
 
       {/* Drawer */}
       <div
+        data-scroll-lock={isOpen || undefined}
         className={`fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl transition-transform duration-300 ease-out flex flex-col ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { PortableText } from "@portabletext/react";
+import { PortableText, type PortableTextBlock } from "@portabletext/react";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { getAboutPage } from "@/lib/sanity-data";
 
@@ -64,7 +64,7 @@ export default async function AboutPage() {
               </h2>
               {about.whatWeDoBody?.length ? (
                 <div className="mt-6 text-text-muted leading-relaxed prose-maple">
-                  <PortableText value={about.whatWeDoBody as any} />
+                  <PortableText value={about.whatWeDoBody as PortableTextBlock[]} />
                 </div>
               ) : (
                 <>

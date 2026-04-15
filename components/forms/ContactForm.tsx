@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { submitContactForm } from "@/lib/supabase-helpers";
+import { EMAIL_REGEX } from "@/lib/utils";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -18,13 +19,12 @@ export default function ContactForm() {
     const messageText = (formData.get("message") as string)?.trim();
 
     // Validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!name || name.length < 2) {
       setStatus("error");
       setMessage("Please enter a valid name");
       return;
     }
-    if (!email || !emailRegex.test(email)) {
+    if (!email || !EMAIL_REGEX.test(email)) {
       setStatus("error");
       setMessage("Please enter a valid email address");
       return;

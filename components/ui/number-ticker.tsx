@@ -26,10 +26,11 @@ export function NumberTicker({
   const isInView = useInView(ref, { once: true, margin: "0px" });
 
   useEffect(() => {
-    isInView &&
-      setTimeout(() => {
-        motionValue.set(direction === "down" ? 0 : value);
-      }, delay * 1000);
+    if (!isInView) return;
+    const timer = setTimeout(() => {
+      motionValue.set(direction === "down" ? 0 : value);
+    }, delay * 1000);
+    return () => clearTimeout(timer);
   }, [motionValue, isInView, delay, value, direction]);
 
   useEffect(

@@ -1,10 +1,10 @@
 import { supabase } from "./supabase";
 
 // Newsletter subscription
-export async function subscribeToNewsletter(email: string, source = "website") {
+export async function subscribeToNewsletter(email: string, source?: string) {
   const { error } = await supabase
     .from("newsletter_subscribers")
-    .insert({ email, source });
+    .insert({ email, source: source || "website" });
 
   if (error) {
     if (error.code === "23505") {

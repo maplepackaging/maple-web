@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { subscribeToNewsletter } from "@/lib/supabase-helpers";
+import { EMAIL_REGEX } from "@/lib/utils";
 
 export default function NewsletterForm() {
   const [email, setEmail] = useState("");
@@ -12,9 +13,7 @@ export default function NewsletterForm() {
     e.preventDefault();
     const trimmedEmail = email.trim();
     
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!trimmedEmail || !emailRegex.test(trimmedEmail)) {
+    if (!trimmedEmail || !EMAIL_REGEX.test(trimmedEmail)) {
       setStatus("error");
       setMessage("Please enter a valid email address");
       return;

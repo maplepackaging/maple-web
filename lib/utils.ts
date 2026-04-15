@@ -11,6 +11,10 @@ export function formatPrice(price: number): string {
   }).format(price);
 }
 
+export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "918433572388";
+
+export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export function slugify(text: string): string {
   return text
     .toLowerCase()

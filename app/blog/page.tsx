@@ -11,9 +11,11 @@ export const metadata: Metadata = {
 };
 
 function formatDate(dateString: string) {
-  const parts = dateString.split("-");
-  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  return `${parseInt(parts[2])} ${months[parseInt(parts[1]) - 1]} ${parts[0]}`;
+  return new Date(dateString).toLocaleDateString("en-IN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 }
 
 export default async function BlogPage() {

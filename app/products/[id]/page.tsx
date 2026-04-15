@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getSanityProducts, getSanityProductById, getSanityCategories } from "@/lib/sanity-data";
+import { getSanityProducts, getSanityProductById, getSanityCategories, getSanityProductsByCategory } from "@/lib/sanity-data";
 import ProductDetail from "@/components/pages/ProductDetail";
 
 interface PageProps {
@@ -24,17 +24,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ProductPage({ params }: PageProps) {
   const { id } = await params;
-  // Batch all 3 cached calls in parallel — each is independently cached
-  const [product, allCategories, allProducts] = await Promise.all([
-    getSanityProductById(id),
-    getSanityCategories(),
-    getSanityProducts(),
-  ]);
+  const product = await getSanityProductById(id);
   if (!product) notFound();
 
+  // Fetch only what's needed — category list (cached) + category products (cached)
+  const [allCategories, categoryProducts] = await Promise.all([
+    getSanityCategories(),
+    getSanityProductsByCategory(product.categoryId),
+  ]);
+
   const category = allCategories.find((c) => c.id === product.categoryId);
-  const relatedProducts = allProducts
-    .filter((p) => p.categoryId === product.categoryId && p.id !== product.id)
+  const relatedProducts = categoryProducts
+    .filter((p) => p.id !== product.id)
     .slice(0, 4);
 
   return (

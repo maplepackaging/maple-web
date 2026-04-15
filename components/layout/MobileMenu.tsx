@@ -17,13 +17,14 @@ export default function MobileMenu({
   links,
 }: MobileMenuProps) {
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!isOpen) return;
+    const scrollY = window.scrollY;
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "";
+      // Only restore if no other overlay (cart) is open
+      if (!document.querySelector('[data-scroll-lock]')) {
+        document.body.style.overflow = "";
+      }
     };
   }, [isOpen]);
 
@@ -46,6 +47,7 @@ export default function MobileMenu({
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
+            data-scroll-lock
             className="fixed top-0 left-0 z-50 h-full w-[85%] max-w-sm bg-surface shadow-2xl"
           >
             <div className="flex items-center justify-between p-5 border-b border-border">

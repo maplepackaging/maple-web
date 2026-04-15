@@ -114,7 +114,7 @@ export default function CategoryDetail({
                         {sub.items.map((item) => (
                           <span
                             key={item.id}
-                            className="inline-block px-3 py-1.5 text-xs bg-surface border border-border rounded-full text-text-muted hover:border-primary hover:text-primary cursor-pointer transition-colors"
+                            className="inline-block px-3 py-1.5 text-xs bg-surface border border-border rounded-full text-text-muted"
                           >
                             {item.name}
                           </span>

@@ -57,9 +57,10 @@ export async function POST(request: NextRequest) {
     const catalog = await getSanityProductCatalogForChat();
 
     const catalogText = catalog
+      .slice(0, 50)
       .map(
         (p) =>
-          `ID: ${p.id} | Name: ${p.name} | Price: ₹${p.price} | Tags: ${p.tags.join(", ")} | Description: ${p.description}`
+          `ID: ${p.id} | Name: ${p.name} | Price: ₹${p.price} | Tags: ${p.tags.join(", ")} | Description: ${p.description?.slice(0, 80) ?? ""}`
       )
       .join("\n");
 
@@ -98,12 +99,14 @@ export async function POST(request: NextRequest) {
 
     // Log to Supabase (fire-and-forget, don't block response)
     const sessionId = request.headers.get("x-session-id") ?? "anonymous";
-    supabase.from("chat_logs").insert({
-      session_id: sessionId,
-      user_message: message,
-      bot_reply: cleanReply,
-      matched_product_ids: matches.map((m) => m[1]),
-    }).then(() => {});
+    Promise.resolve(
+      supabase.from("chat_logs").insert({
+        session_id: sessionId,
+        user_message: message,
+        bot_reply: cleanReply,
+        matched_product_ids: matches.map((m) => m[1]),
+      })
+    ).catch((err: unknown) => console.error("Chat log insert failed:", err));
 
     return NextResponse.json({
       reply: cleanReply,

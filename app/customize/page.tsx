@@ -4,6 +4,7 @@ import { Palette, Box, Pen, Truck } from "lucide-react";
 import SectionHeading from "@/components/ui/SectionHeading";
 import CustomizeForm from "@/components/forms/CustomizeForm";
 import { getCustomizePage } from "@/lib/sanity-data";
+import { WHATSAPP_NUMBER } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Customize Your Order — Maple Packaging",
@@ -133,7 +134,7 @@ export default async function CustomizePage() {
           </h2>
           <p className="mt-3 text-text-muted">
             Call us at{" "}
-            <a href="tel:+918433572388" className="text-primary font-medium">
+            <a href={`tel:+${WHATSAPP_NUMBER}`} className="text-primary font-medium">
               +91 84335 72388
             </a>{" "}
             or{" "}

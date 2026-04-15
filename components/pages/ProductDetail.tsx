@@ -93,7 +93,7 @@ export default function ProductDetail({
             </div>
 
             {/* Thumbnails */}
-            {product.images.length > 1 && (
+            {(product.images?.length ?? 0) > 1 && (
               <div className="flex gap-3 mt-4">
                 {product.images.map((img, i) => (
                   <button
@@ -170,10 +170,16 @@ export default function ProductDetail({
                 <ShoppingBag size={18} className="mr-2" />
                 Add to Cart
               </Button>
-              <button className="p-3 border border-border rounded-lg hover:border-primary hover:text-primary transition-colors">
+              <button
+                aria-label="Add to wishlist"
+                className="p-3 border border-border rounded-lg hover:border-primary hover:text-primary transition-colors"
+              >
                 <Heart size={20} />
               </button>
-              <button className="p-3 border border-border rounded-lg hover:border-primary hover:text-primary transition-colors">
+              <button
+                aria-label="Share product"
+                className="p-3 border border-border rounded-lg hover:border-primary hover:text-primary transition-colors"
+              >
                 <Share2 size={20} />
               </button>
             </div>

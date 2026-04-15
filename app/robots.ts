@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = "https://maplepackaging.com"; // Update with your actual domain
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://maplepackaging.com";
 
   return {
     rules: [

@@ -71,8 +71,14 @@ export async function POST(request: NextRequest) {
 
     // If no specific type/table, revalidate everything
     const allTags = [
-      "categories", "products", "blog", "testimonials",
-      "heroSlides", "siteSettings", "aboutPage", "customizePage",
+      "categories",
+      "products",
+      "blog",
+      "testimonials",
+      "heroSlides",
+      "siteSettings",
+      "aboutPage",
+      "customizePage",
     ];
     for (const tag of allTags) {
       revalidateTag(tag, "max");
@@ -86,7 +92,7 @@ export async function POST(request: NextRequest) {
   } catch {
     return NextResponse.json(
       { error: "Failed to revalidate" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

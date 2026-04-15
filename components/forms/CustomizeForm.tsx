@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { submitCustomEnquiry } from "@/lib/supabase-helpers";
+import { EMAIL_REGEX } from "@/lib/utils";
 
 export default function CustomizeForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -20,7 +21,6 @@ export default function CustomizeForm() {
     const requirements = (formData.get("requirements") as string)?.trim();
 
     // Validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[6-9]\d{9}$/; // Indian mobile number
     
     if (!name || name.length < 2) {
@@ -28,7 +28,7 @@ export default function CustomizeForm() {
       setMessage("Please enter a valid name");
       return;
     }
-    if (!email || !emailRegex.test(email)) {
+    if (!email || !EMAIL_REGEX.test(email)) {
       setStatus("error");
       setMessage("Please enter a valid email address");
       return;
@@ -125,6 +125,7 @@ export default function CustomizeForm() {
             <input
               name="phone"
               type="tel"
+              required
               placeholder="Phone"
               className="w-full px-4 py-3 text-sm bg-surface border border-border rounded-lg focus:outline-none focus:border-primary transition-colors text-text-dark placeholder:text-text-muted"
             />

@@ -26,7 +26,7 @@ Custom monogram wax seals add an old-world charm that feels both timeless and pe
 
 These trends point to one thing: couples want packaging that tells their story. At Maple Packaging, we help you do exactly that.`,
     image: "/placeholder-product.png",
-    category: "Weddings",
+    category: "Wedding",
     date: "2025-03-15",
     readTime: "5 min read",
   },

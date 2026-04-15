@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
-import { PortableText } from "@portabletext/react";
+import { PortableText, type PortableTextBlock } from "@portabletext/react";
 import { getSanityBlogPosts, getSanityBlogPostBySlug } from "@/lib/sanity-data";
 
 interface PageProps {
@@ -85,7 +85,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           {/* Content */}
           <div className="mt-8 prose-maple">
             {post.body?.length ? (
-              <PortableText value={post.body as any} />
+              <PortableText value={post.body as PortableTextBlock[]} />
             ) : post.content ? (
               post.content.split("\n\n").map((paragraph: string, i: number) => (
                 <p key={i} className="text-text-muted leading-relaxed mb-4">

@@ -1,11 +1,10 @@
 import { MetadataRoute } from "next";
 import { getSanityCategories, getSanityProducts, getSanityBlogPosts } from "@/lib/sanity-data";
 
-export const dynamic = "force-dynamic";
 export const revalidate = 3600; // Revalidate every hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://maplepackaging.com"; // Update with your actual domain
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://maplepackaging.com";
 
   // Static routes
   const routes: MetadataRoute.Sitemap = [

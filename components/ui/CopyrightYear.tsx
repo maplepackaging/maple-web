@@ -2,8 +2,11 @@
 
 import { useSyncExternalStore } from "react";
 
+// Computed once at module load time — safe during prerendering
+const BUILD_YEAR = new Date().getFullYear();
+
 function getServerSnapshot() {
-  return 2026; // Fallback year for SSR
+  return BUILD_YEAR;
 }
 
 function getSnapshot() {

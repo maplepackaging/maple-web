@@ -51,10 +51,14 @@ export default function EngagementPopup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
-    setSubmitted(true);
     sessionStorage.setItem("popup-dismissed", "true");
-    await subscribeToNewsletter(email.trim(), "popup");
-    setTimeout(() => setIsVisible(false), 2500);
+    const result = await subscribeToNewsletter(email.trim(), "popup");
+    if (result.success) {
+      setSubmitted(true);
+      setTimeout(() => setIsVisible(false), 2500);
+    } else {
+      setIsVisible(false);
+    }
   };
 
   return (
