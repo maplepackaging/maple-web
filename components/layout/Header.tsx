@@ -55,7 +55,7 @@ export default function Header({ navLinks: navLinksProp }: HeaderProps) {
     <>
       <header
         ref={headerRef}
-        className="sticky top-0 z-50 bg-[#FAFBF0] transition-[background-color,box-shadow] duration-300 [&.header-scrolled]:bg-white/95 [&.header-scrolled]:backdrop-blur-md [&.header-scrolled]:shadow-sm"
+        className="sticky top-0 z-50 bg-[#FAFBF0] backdrop-blur-md transition-[background-color,box-shadow] duration-300 [&.header-scrolled]:bg-white [&.header-scrolled]:shadow-sm"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-18 md:h-20">
