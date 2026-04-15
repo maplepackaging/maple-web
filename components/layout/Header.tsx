@@ -42,7 +42,7 @@ export default function Header({ navLinks: navLinksProp }: HeaderProps) {
     <>
       <header
         className={cn(
-          "sticky top-0 z-50 transition-all duration-300",
+          "sticky top-0 z-50 transition-[background-color,box-shadow] duration-300",
           scrolled
             ? "bg-white/95 backdrop-blur-md shadow-sm"
             : "bg-[#FAFBF0]"

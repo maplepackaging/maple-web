@@ -18,7 +18,7 @@ export default function AnnouncementBar({ announcements: announcementsProp }: An
 
   return (
     <div className="bg-text-dark text-white py-2 overflow-hidden">
-      <div className="animate-scroll-left flex whitespace-nowrap">
+      <div className="animate-scroll-left flex whitespace-nowrap will-change-transform">
         {duplicated.map((text, i) => (
           <span key={i} className="mx-8 text-sm font-light tracking-wide">
             {text}
