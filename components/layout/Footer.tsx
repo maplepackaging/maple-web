@@ -122,7 +122,7 @@ export default function Footer({ settings }: FooterProps) {
       {/* Oversized brand wordmark */}
       <div className="select-none pointer-events-none px-5" aria-hidden="true">
         <span className="block font-heading font-extrabold tracking-tighter leading-[1.05] text-center text-transparent bg-clip-text bg-gradient-to-b from-terracotta via-clay to-[#a8855a] text-[22vw] lg:text-[16rem]">
-          Maple
+          MAPLE
         </span>
       </div>
 
