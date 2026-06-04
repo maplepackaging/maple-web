@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Groq from "groq-sdk";
-import { getSanityProductCatalogForChat, getSanityProducts } from "@/lib/sanity-data";
+import { getSanityProductCatalogForChat, getSanityProducts } from "@/lib/content";
 import { supabase } from "@/lib/supabase";
 
 const groq = new Groq({
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
     const reply = completion.choices[0]?.message?.content || "Sorry, I couldn't process that. Please try again.";
 
     // Extract product IDs using regex: #<id>* format (supports UUIDs and Sanity IDs)
-    const productIdRegex = /#([a-zA-Z0-9_-]{8,})\*/g;
+    const productIdRegex = /#([a-zA-Z0-9_-]{3,})\*/g;
     const matches = [...reply.matchAll(productIdRegex)];
 
     // Only fetch full product objects if AI actually recommended products

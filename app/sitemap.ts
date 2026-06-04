@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { getSanityCategories, getSanityProducts, getSanityBlogPosts } from "@/lib/sanity-data";
+import { getSanityCategories, getSanityProducts, getSanityBlogPosts } from "@/lib/content";
 
 export const revalidate = 3600; // Revalidate every hour
 

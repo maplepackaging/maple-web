@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
-import SectionHeading from "@/components/ui/SectionHeading";
+import PageHero from "@/components/ui/PageHero";
 import ContactForm from "@/components/forms/ContactForm";
-import { getSiteSettings } from "@/lib/sanity-data";
+import { getSiteSettings } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Contact Us — Maple Packaging",
@@ -14,84 +14,58 @@ export default async function ContactPage() {
   const settings = await getSiteSettings();
 
   const contactInfo = [
-    {
-      icon: Mail,
-      title: "Email",
-      detail: settings.email || "hello@maplepackaging.com",
-      href: `mailto:${settings.email || "hello@maplepackaging.com"}`,
-    },
-    {
-      icon: Phone,
-      title: "Phone",
-      detail: settings.phone || "+91 84335 72388",
-      href: `tel:${(settings.phone || "+91 84335 72388").replace(/\s/g, "")}`,
-    },
-    {
-      icon: MapPin,
-      title: "Address",
-      detail: settings.address || "Mumbai, Maharashtra, India",
-      href: null,
-    },
-    {
-      icon: Clock,
-      title: "Hours",
-      detail: settings.hours || "Mon – Sat, 10 AM – 7 PM IST",
-      href: null,
-    },
+    { icon: Mail, title: "Email", detail: settings.email || "hello@maplepackaging.com", href: `mailto:${settings.email || "hello@maplepackaging.com"}` },
+    { icon: Phone, title: "Phone", detail: settings.phone || "+91 84335 72388", href: `tel:${(settings.phone || "+91 84335 72388").replace(/\s/g, "")}` },
+    { icon: MapPin, title: "Address", detail: settings.address || "Mumbai, Maharashtra, India", href: null },
+    { icon: Clock, title: "Hours", detail: settings.hours || "Mon – Sat, 10 AM – 7 PM IST", href: null },
   ];
+
   return (
-    <div className="bg-beige py-16 md:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeading
-          label="Contact Us"
-          title="Get in Touch"
-          subtitle="Have a question, custom order, or just want to say hello? We're here to help."
-        />
+    <>
+      <PageHero
+        label="Contact us"
+        title="Get in touch"
+        subtitle="Have a question, custom order, or just want to say hello? We're here to help."
+        crumbs={[{ label: "Home", href: "/" }, { label: "Contact" }]}
+      />
 
-        <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
-          {/* Contact form */}
-          <div className="lg:col-span-3">
-            <ContactForm />
-          </div>
+      <section className="py-14 md:py-20 bg-cream">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-5 gap-8 lg:gap-12">
+            <div className="lg:col-span-3 card-soft p-6 md:p-8">
+              <ContactForm />
+            </div>
 
-          {/* Contact info */}
-          <div className="lg:col-span-2 space-y-8">
-            {contactInfo.map((item) => (
-              <div key={item.title} className="flex gap-4">
-                <div className="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center shrink-0">
-                  <item.icon size={18} className="text-primary" />
+            <div className="lg:col-span-2 space-y-3.5">
+              {contactInfo.map((item) => (
+                <div key={item.title} className="card-soft flex gap-4 p-5">
+                  <span className="icon-chip bg-terracotta-soft w-11 h-11 shrink-0">
+                    <item.icon size={18} className="text-terracotta" />
+                  </span>
+                  <div>
+                    <h3 className="text-sm font-semibold text-ink">{item.title}</h3>
+                    {item.href ? (
+                      <a href={item.href} className="text-sm text-ink-soft hover:text-terracotta transition-colors">
+                        {item.detail}
+                      </a>
+                    ) : (
+                      <p className="text-sm text-ink-soft">{item.detail}</p>
+                    )}
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-sm font-medium text-text-dark">
-                    {item.title}
-                  </h3>
-                  {item.href ? (
-                    <a
-                      href={item.href}
-                      className="text-sm text-text-muted hover:text-primary transition-colors"
-                    >
-                      {item.detail}
-                    </a>
-                  ) : (
-                    <p className="text-sm text-text-muted">{item.detail}</p>
-                  )}
-                </div>
+              ))}
+
+              <div className="rounded-[1.75rem] bg-espresso-deep text-cream p-6">
+                <h3 className="font-heading text-lg text-white">Quick response guarantee</h3>
+                <p className="mt-2 text-sm text-cream/70 leading-relaxed">
+                  We respond to all enquiries within 24 hours. For urgent orders, call us directly or
+                  use our AI Gift Concierge (bottom right).
+                </p>
               </div>
-            ))}
-
-            {/* Quick response note */}
-            <div className="mt-8 p-6 bg-surface rounded-xl border border-border">
-              <h3 className="font-heading text-lg font-semibold text-text-dark">
-                Quick Response Guarantee
-              </h3>
-              <p className="mt-2 text-sm text-text-muted leading-relaxed">
-                We respond to all enquiries within 24 hours. For urgent orders,
-                call us directly or use our AI Gift Concierge (bottom right).
-              </p>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 }

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ArrowLeft } from "lucide-react";
 import { PortableText, type PortableTextBlock } from "@portabletext/react";
-import { getSanityBlogPosts, getSanityBlogPostBySlug } from "@/lib/sanity-data";
+import { getSanityBlogPosts, getSanityBlogPostBySlug } from "@/lib/content";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -31,9 +31,9 @@ export default async function BlogPostPage({ params }: PageProps) {
   if (!post) notFound();
 
   return (
-    <div className="bg-beige">
+    <div className="bg-cream">
       {/* Hero image */}
-      <div className="relative h-64 md:h-96 overflow-hidden">
+      <div className="relative h-64 md:h-[26rem] overflow-hidden">
         <Image
           src={post.image || "/placeholder-product.png"}
           alt={post.title}
@@ -42,66 +42,48 @@ export default async function BlogPostPage({ params }: PageProps) {
           priority
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/60 to-transparent" />
       </div>
 
-      <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-10 pb-20">
-        {/* Card */}
-        <div className="bg-surface rounded-xl shadow-lg p-8 md:p-12">
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-xs text-text-muted mb-6">
-            <Link href="/" className="hover:text-primary transition-colors">
-              Home
-            </Link>
-            <ChevronRight size={12} />
-            <Link href="/blog" className="hover:text-primary transition-colors">
-              Blog
-            </Link>
-            <ChevronRight size={12} />
-            <span className="text-text-dark truncate">{post.title}</span>
+      <article className="max-w-3xl mx-auto px-5 sm:px-6 lg:px-8 -mt-20 relative z-10 pb-20">
+        <div className="card-soft p-7 md:p-12">
+          <nav className="flex items-center gap-2 text-xs text-ink-soft mb-6">
+            <Link href="/" className="hover:text-terracotta transition-colors">Home</Link>
+            <ChevronRight size={12} className="text-line" />
+            <Link href="/blog" className="hover:text-terracotta transition-colors">Blog</Link>
+            <ChevronRight size={12} className="text-line" />
+            <span className="text-ink truncate">{post.title}</span>
           </nav>
 
-          {/* Meta */}
-          <div className="flex items-center gap-3 text-sm text-text-muted mb-4">
-            <span className="px-3 py-1 bg-primary-light text-primary rounded-full text-xs font-medium">
+          <div className="flex items-center gap-3 text-sm text-ink-soft mb-5">
+            <span className="inline-flex items-center rounded-full bg-terracotta-soft text-terracotta px-3 py-1 text-xs font-semibold">
               {post.category}
             </span>
             <time>
-              {new Date(post.date).toLocaleDateString("en-IN", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+              {new Date(post.date).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}
             </time>
-            <span>·</span>
+            <span className="w-1 h-1 rounded-full bg-line" />
             <span>{post.readTime}</span>
           </div>
 
-          {/* Title */}
-          <h1 className="font-heading text-3xl md:text-4xl font-semibold text-text-dark leading-tight">
-            {post.title}
-          </h1>
+          <h1 className="font-heading text-3xl md:text-5xl text-ink leading-[1.08]">{post.title}</h1>
 
-          {/* Content */}
-          <div className="mt-8 prose-maple">
+          <div className="mt-8 text-ink-soft leading-relaxed space-y-4">
             {post.body?.length ? (
               <PortableText value={post.body as PortableTextBlock[]} />
             ) : post.content ? (
               post.content.split("\n\n").map((paragraph: string, i: number) => (
-                <p key={i} className="text-text-muted leading-relaxed mb-4">
-                  {paragraph}
-                </p>
+                <p key={i}>{paragraph}</p>
               ))
-            ) : null}
+            ) : (
+              <p>{post.excerpt}</p>
+            )}
           </div>
 
-          {/* Back link */}
-          <div className="mt-12 pt-8 border-t border-border">
-            <Link
-              href="/blog"
-              className="text-sm font-medium text-primary hover:underline"
-            >
-              ← Back to all articles
+          <div className="mt-12 pt-8 border-t border-line">
+            <Link href="/blog" className="btn btn-pill-light btn-md">
+              <ArrowLeft size={16} />
+              Back to all articles
             </Link>
           </div>
         </div>

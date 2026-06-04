@@ -12,7 +12,7 @@ export default function NewsletterForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedEmail = email.trim();
-    
+
     if (!trimmedEmail || !EMAIL_REGEX.test(trimmedEmail)) {
       setStatus("error");
       setMessage("Please enter a valid email address");
@@ -27,25 +27,27 @@ export default function NewsletterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative flex w-full max-w-md">
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Your email address"
-        required
-        disabled={status === "loading"}
-        className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-l-lg text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-primary transition-colors disabled:opacity-50"
-      />
-      <button
-        type="submit"
-        disabled={status === "loading"}
-        className="px-6 py-3 bg-primary text-white font-medium text-sm rounded-r-lg hover:bg-primary-hover transition-colors disabled:opacity-50"
-      >
-        {status === "loading" ? "..." : "Subscribe"}
-      </button>
+    <form onSubmit={handleSubmit} className="w-full max-w-md">
+      <div className="flex flex-col sm:flex-row gap-2.5 p-2 rounded-[1.5rem] sm:rounded-full bg-white/10 border border-white/15">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@email.com"
+          required
+          disabled={status === "loading"}
+          className="flex-1 px-4 py-3 bg-transparent text-sm text-cream placeholder:text-cream/40 focus:outline-none disabled:opacity-50"
+        />
+        <button
+          type="submit"
+          disabled={status === "loading"}
+          className="btn btn-pill-brand btn-md disabled:opacity-60"
+        >
+          {status === "loading" ? "Subscribing…" : "Subscribe"}
+        </button>
+      </div>
       {message && (
-        <p className={`absolute mt-14 text-xs ${status === "success" ? "text-green-400" : "text-red-400"}`}>
+        <p className={`mt-2.5 text-xs px-2 ${status === "success" ? "text-sage-soft" : "text-terracotta-soft"}`}>
           {message}
         </p>
       )}

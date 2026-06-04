@@ -1,109 +1,323 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #fafbf0;
-  --color-foreground: #2c1810;
-  --color-primary: #cd5f39;
-  --color-primary-hover: #b34f2d;
-  --color-primary-light: #f0ddd4;
-  --color-secondary: #87522a;
-  --color-text-dark: #2c1810;
-  --color-text-muted: #6b5b4f;
-  --color-border: #e8e0d6;
-  --color-surface: #fafbf0;
-  --color-accent: #87522a;
-  --color-beige: #fafbf0;
-  --color-beige-dark: #f0eae0;
+  /* ── Brand palette (tuned to approved mockups) ─────────────── */
+  --color-cream: #f5eee1;          /* page background — warm sand */
+  --color-cream-deep: #efe5d3;     /* alt warm surface */
+  --color-paper: #fcf9f2;          /* warm white — cards */
+  --color-ink: #2e1e13;            /* headlines — warm espresso */
+  --color-ink-soft: #6e5d4f;       /* muted body text */
+  --color-line: #e7ddcc;           /* hairline borders */
 
-  --font-heading: var(--font-bricolage);
-  --font-body: var(--font-space-grotesk);
+  --color-terracotta: #c2603d;     /* primary brand */
+  --color-terracotta-deep: #a84d2d;/* hover / active */
+  --color-terracotta-soft: #f2e1d6;/* tint surface */
+  --color-clay: #8a4f2b;           /* deep rust accent */
+  --color-espresso: #3b2a1e;       /* dark pill / nav cta */
+  --color-espresso-deep: #2c1f16;
+
+  --color-sage: #7e8a6b;           /* complementary secondary */
+  --color-sage-deep: #5e6a4e;
+  --color-sage-soft: #e6eadd;
+
+  --color-gold: #c79a4c;           /* warm gold accent / dividers */
+
+  /* ── Backward-compat aliases (pre-redesign components) ─────── */
+  --color-background: #f5eee1;
+  --color-foreground: #2e1e13;
+  --color-primary: #c2603d;
+  --color-primary-hover: #a84d2d;
+  --color-primary-light: #f2e1d6;
+  --color-secondary: #8a4f2b;
+  --color-text-dark: #2e1e13;
+  --color-text-muted: #6e5d4f;
+  --color-border: #e7ddcc;
+  --color-surface: #f5eee1;
+  --color-accent: #8a4f2b;
+  --color-beige: #f5eee1;
+  --color-beige-dark: #efe5d3;
+
+  /* ── Type — Geist (single grotesque family) ────────────────── */
+  --font-display: var(--font-geist);
+  --font-heading: var(--font-geist);
+  --font-body: var(--font-geist);
+  --font-sans: var(--font-geist);
+
+  /* ── Easing ────────────────────────────────────────────────── */
+  --ease-boutique: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 html {
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 7rem;
 }
-
-/* Smooth scroll only for in-page anchor navigation, not page transitions */
 :target {
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: #fafbf0;
-  color: #2c1810;
-  --font-sans: var(--font-outfit), system-ui, sans-serif;
-  font-family: var(--font-outfit), system-ui, sans-serif;
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-geist), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* Heading style — Space Grotesk */
-.font-heading {
-  font-family: var(--font-space-grotesk), system-ui, sans-serif;
-  letter-spacing: -0.01em;
+/* ── Headings — bold grotesque, tight tracking ─────────────── */
+.font-heading,
+.font-display {
+  font-family: var(--font-geist), system-ui, sans-serif;
+  letter-spacing: -0.025em;
+  font-weight: 800;
 }
 
 ::selection {
-  background-color: #cd5f39;
-  color: #ffffff;
+  background-color: var(--color-terracotta);
+  color: #fff;
 }
 
+/* ── Small uppercase eyebrow label ─────────────────────────── */
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-terracotta);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PUFFY PILL BUTTONS — squishy 3D, soft shadow
+   ═══════════════════════════════════════════════════════════ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.3s var(--ease-boutique),
+    box-shadow 0.3s var(--ease-boutique), filter 0.3s var(--ease-boutique);
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+.btn-lg {
+  padding: 1.05rem 1.9rem;
+  font-size: 1rem;
+}
+.btn-md {
+  padding: 0.8rem 1.4rem;
+  font-size: 0.9rem;
+}
+.btn-sm {
+  padding: 0.6rem 1.1rem;
+  font-size: 0.8rem;
+}
+
+.btn-pill-brand {
+  background: linear-gradient(180deg, #cf6b46 0%, #c2603d 52%, #b3522f 100%);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -3px 7px rgba(120, 45, 20, 0.4),
+    0 10px 22px -8px rgba(168, 77, 45, 0.6);
+}
+.btn-pill-brand:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    inset 0 -3px 7px rgba(120, 45, 20, 0.4),
+    0 18px 34px -10px rgba(168, 77, 45, 0.6);
+}
+
+.btn-pill-dark {
+  background: linear-gradient(180deg, #4a3526 0%, #3b2a1e 58%, #2c1f16 100%);
+  color: #f6efe2;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -3px 7px rgba(0, 0, 0, 0.4),
+    0 10px 22px -8px rgba(44, 31, 22, 0.55);
+}
+.btn-pill-dark:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -3px 7px rgba(0, 0, 0, 0.4),
+    0 18px 34px -10px rgba(44, 31, 22, 0.55);
+}
+
+.btn-pill-light {
+  background: linear-gradient(180deg, #ffffff 0%, #faf5ec 100%);
+  color: var(--color-ink);
+  border: 1px solid rgba(231, 221, 204, 0.9);
+  box-shadow: inset 0 1px 0 #fff,
+    0 8px 20px -8px rgba(46, 30, 19, 0.22),
+    0 1px 2px rgba(46, 30, 19, 0.06);
+}
+.btn-pill-light:hover {
+  box-shadow: inset 0 1px 0 #fff,
+    0 16px 30px -10px rgba(46, 30, 19, 0.26),
+    0 1px 2px rgba(46, 30, 19, 0.06);
+}
+
+/* Ghost pill for use on dark imagery */
+.btn-pill-ghost {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(6px);
+}
+.btn-pill-ghost:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* ── Soft pill badge ───────────────────────────────────────── */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--color-paper);
+  border: 1px solid rgba(231, 221, 204, 0.8);
+  border-radius: 9999px;
+  padding: 0.6rem 1.05rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-ink);
+  box-shadow: 0 8px 18px -10px rgba(46, 30, 19, 0.22),
+    inset 0 1px 0 #fff;
+}
+
+/* ── Soft card ─────────────────────────────────────────────── */
+.card-soft {
+  background: var(--color-paper);
+  border: 1px solid rgba(231, 221, 204, 0.7);
+  border-radius: 1.75rem;
+  box-shadow: 0 1px 2px rgba(46, 30, 19, 0.04),
+    0 18px 40px -24px rgba(46, 30, 19, 0.2);
+}
+.lift {
+  transition: transform 0.4s var(--ease-boutique),
+    box-shadow 0.4s var(--ease-boutique);
+}
+.lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 1px 2px rgba(46, 30, 19, 0.04),
+    0 30px 55px -28px rgba(46, 30, 19, 0.32);
+}
+
+/* ── Circular icon chip (stat cards, etc.) ─────────────────── */
+.icon-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 8px 18px -8px rgba(46, 30, 19, 0.3);
+}
+
+/* ── Gold hairline divider ─────────────────────────────────── */
+.rule-gold {
+  height: 2px;
+  width: 3rem;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--color-gold), transparent);
+}
+
+/* ── Background washes & textures ──────────────────────────── */
+.gradient-hero {
+  background: radial-gradient(
+    120% 110% at 78% 0%,
+    #fcf4e7 0%,
+    #f5eee1 48%,
+    #f1e7d7 100%
+  );
+}
+.gradient-warm {
+  background: linear-gradient(180deg, #f5eee1 0%, #f7eddd 100%);
+}
+.dotted-grid {
+  background-image: radial-gradient(rgba(46, 30, 19, 0.08) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* ── Animated underline link ───────────────────────────────── */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 2px;
+  width: 100%;
+  background-color: var(--color-terracotta);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s var(--ease-boutique);
+}
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Animations
+   ═══════════════════════════════════════════════════════════ */
 @keyframes scroll-left {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
-
-.animate-scroll-left {
-  animation: scroll-left 12s linear infinite;
-}
-
+.animate-scroll-left { animation: scroll-left 12s linear infinite; }
 @media (min-width: 768px) {
-  .animate-scroll-left {
-    animation: scroll-left 25s linear infinite;
-  }
+  .animate-scroll-left { animation: scroll-left 25s linear infinite; }
 }
 
 @keyframes fade-in-up {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0; transform: translateY(24px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
-
 .animate-fade-in-up {
-  animation: fade-in-up 0.6s ease-out forwards;
+  animation: fade-in-up 0.8s var(--ease-boutique) forwards;
 }
+.animate-fade-in-up-1 { opacity: 0; animation: fade-in-up 0.8s var(--ease-boutique) 0.05s forwards; }
+.animate-fade-in-up-2 { opacity: 0; animation: fade-in-up 0.8s var(--ease-boutique) 0.15s forwards; }
+.animate-fade-in-up-3 { opacity: 0; animation: fade-in-up 0.8s var(--ease-boutique) 0.25s forwards; }
+.animate-fade-in-up-4 { opacity: 0; animation: fade-in-up 0.8s var(--ease-boutique) 0.35s forwards; }
 
 @keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(calc(-100% - var(--gap)));
-  }
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% - var(--gap))); }
 }
-
 @keyframes marquee-vertical {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(calc(-100% - var(--gap)));
+  from { transform: translateY(0); }
+  to { transform: translateY(calc(-100% - var(--gap))); }
+}
+.animate-marquee { animation: marquee var(--duration) linear infinite; }
+.animate-marquee-vertical { animation: marquee-vertical var(--duration) linear infinite; }
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(var(--tw-rotate, 0)); }
+  50% { transform: translateY(-14px) rotate(var(--tw-rotate, 0)); }
+}
+.animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }
 
-.animate-marquee {
-  animation: marquee var(--duration) linear infinite;
+/* ── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: var(--color-cream-deep); }
+::-webkit-scrollbar-thumb {
+  background: #d8c6ab;
+  border-radius: 9999px;
+  border: 3px solid var(--color-cream-deep);
 }
-
-.animate-marquee-vertical {
-  animation: marquee-vertical var(--duration) linear infinite;
-}
+::-webkit-scrollbar-thumb:hover { background: var(--color-clay); }

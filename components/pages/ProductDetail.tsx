@@ -4,13 +4,11 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ShoppingBag, Heart, Share2, ChevronRight } from "lucide-react";
+import { ShoppingBag, Heart, Share2, ChevronRight, Check, Sparkles, Truck, ShieldCheck } from "lucide-react";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 import { useCart } from "@/lib/cart-context";
-import Button from "@/components/ui/Button";
 import ProductCard from "@/components/ui/ProductCard";
-import SectionHeading from "@/components/ui/SectionHeading";
 
 interface ProductDetailProps {
   product: Product;
@@ -18,6 +16,12 @@ interface ProductDetailProps {
   categorySlug: string;
   relatedProducts: Product[];
 }
+
+const trust = [
+  { Icon: Sparkles, label: "Free design proof" },
+  { Icon: Truck, label: "Pan-India shipping" },
+  { Icon: ShieldCheck, label: "Bulk pricing" },
+];
 
 export default function ProductDetail({
   product,
@@ -29,49 +33,50 @@ export default function ProductDetail({
   const { addItem } = useCart();
 
   const discount = product.originalPrice
-    ? Math.round(
-        ((product.originalPrice - product.price) / product.originalPrice) * 100
-      )
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : null;
 
   return (
-    <div className="bg-beige min-h-screen">
+    <div className="bg-cream min-h-screen">
       {/* Breadcrumb */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <nav className="flex items-center gap-2 text-sm text-text-muted">
-          <Link href="/" className="hover:text-primary transition-colors">
-            Home
-          </Link>
-          <ChevronRight size={14} />
-          <Link
-            href="/categories"
-            className="hover:text-primary transition-colors"
-          >
-            Collections
-          </Link>
-          <ChevronRight size={14} />
-          <Link
-            href={`/categories/${categorySlug}`}
-            className="hover:text-primary transition-colors"
-          >
-            {categoryName}
-          </Link>
-          <ChevronRight size={14} />
-          <span className="text-text-dark">{product.name}</span>
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pt-8 pb-2">
+        <nav className="flex items-center gap-1.5 text-sm text-ink-soft flex-wrap">
+          <Link href="/" className="hover:text-terracotta transition-colors">Home</Link>
+          <ChevronRight size={14} className="text-line" />
+          <Link href="/categories" className="hover:text-terracotta transition-colors">Collections</Link>
+          <ChevronRight size={14} className="text-line" />
+          <Link href={`/categories/${categorySlug}`} className="hover:text-terracotta transition-colors">{categoryName}</Link>
+          <ChevronRight size={14} className="text-line" />
+          <span className="text-ink">{product.name}</span>
         </nav>
       </div>
 
-      {/* Product section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      {/* Product */}
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-16 pt-4">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 lg:items-start">
-          {/* Images */}
+          {/* Gallery */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="lg:sticky lg:top-20"
+            className="lg:sticky lg:top-28 flex flex-col-reverse sm:flex-row gap-4"
           >
-            <div className="relative aspect-square max-h-[65vh] rounded-xl overflow-hidden bg-beige-dark">
+            {(product.images?.length ?? 0) > 1 && (
+              <div className="flex sm:flex-col gap-3">
+                {product.images.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setSelectedImage(i)}
+                    className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border-2 transition-colors ${
+                      selectedImage === i ? "border-terracotta" : "border-line"
+                    }`}
+                  >
+                    <Image src={img || "/placeholder-product.png"} alt={`${product.name} ${i + 1}`} fill className="object-cover" sizes="80px" />
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="relative flex-1 aspect-square rounded-[1.75rem] overflow-hidden bg-cream-deep border border-line/60">
               <Image
                 src={product.images?.[selectedImage] || "/placeholder-product.png"}
                 alt={product.name}
@@ -81,41 +86,12 @@ export default function ProductDetail({
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
               {product.bestseller && (
-                <span className="absolute top-4 left-4 bg-text-dark text-white text-xs font-medium px-3 py-1.5 rounded-full">
-                  Bestseller
-                </span>
+                <span className="absolute top-4 left-4 bg-ink/90 text-cream text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur-sm">Bestseller</span>
               )}
               {discount && (
-                <span className="absolute top-4 right-4 bg-primary text-white text-xs font-medium px-3 py-1.5 rounded-full">
-                  {discount}% off
-                </span>
+                <span className="absolute top-4 right-4 bg-terracotta text-white text-xs font-bold px-3 py-1.5 rounded-full">{discount}% off</span>
               )}
             </div>
-
-            {/* Thumbnails */}
-            {(product.images?.length ?? 0) > 1 && (
-              <div className="flex gap-3 mt-4">
-                {product.images.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setSelectedImage(i)}
-                    className={`relative w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors ${
-                      selectedImage === i
-                        ? "border-primary"
-                        : "border-transparent"
-                    }`}
-                  >
-                    <Image
-                      src={img || "/placeholder-product.png"}
-                      alt={`${product.name} ${i + 1}`}
-                      fill
-                      className="object-cover"
-                      sizes="80px"
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
           </motion.div>
 
           {/* Details */}
@@ -123,111 +99,84 @@ export default function ProductDetail({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="flex flex-col"
           >
-            <div className="flex flex-wrap gap-2 mb-4">
-              {product.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs font-medium text-primary uppercase tracking-wider"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {product.tags?.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {product.tags.map((tag) => (
+                  <span key={tag} className="inline-flex items-center rounded-full bg-terracotta-soft text-terracotta text-xs font-semibold px-3 py-1 capitalize">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
 
-            <h1 className="font-heading text-3xl md:text-4xl font-semibold text-text-dark leading-tight">
-              {product.name}
-            </h1>
+            <h1 className="font-heading text-3xl md:text-5xl text-ink leading-[1.05]">{product.name}</h1>
 
-            {/* Price */}
-            <div className="mt-4 flex items-baseline gap-3">
-              <span className="text-3xl font-semibold text-text-dark">
-                {formatPrice(product.price)}
-              </span>
+            <div className="mt-5 flex items-baseline gap-3 flex-wrap">
+              <span className="font-heading text-4xl text-terracotta">{formatPrice(product.price)}</span>
               {product.originalPrice && (
                 <>
-                  <span className="text-lg text-text-muted line-through">
-                    {formatPrice(product.originalPrice)}
-                  </span>
-                  <span className="text-sm font-medium text-primary">
-                    Save {discount}%
-                  </span>
+                  <span className="text-lg text-ink-soft line-through">{formatPrice(product.originalPrice)}</span>
+                  <span className="text-sm font-semibold text-sage-deep bg-sage-soft px-2.5 py-1 rounded-full">Save {discount}%</span>
                 </>
               )}
             </div>
 
-            <div className="h-px bg-border my-6" />
-
-            {/* Description */}
-            <p className="text-text-muted leading-relaxed text-base">
-              {product.description}
-            </p>
+            <p className="mt-6 text-ink-soft leading-relaxed">{product.description}</p>
 
             {/* Actions */}
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Button size="lg" className="flex-1 min-w-50" onClick={() => addItem(product)}>
-                <ShoppingBag size={18} className="mr-2" />
+            <div className="mt-8 flex flex-wrap gap-3">
+              <button onClick={() => addItem(product)} className="btn btn-pill-brand btn-lg flex-1 min-w-[12rem]">
+                <ShoppingBag size={18} />
                 Add to Cart
-              </Button>
-              <button
-                aria-label="Add to wishlist"
-                className="p-3 border border-border rounded-lg hover:border-primary hover:text-primary transition-colors"
-              >
+              </button>
+              <Link href="/customize" className="btn btn-pill-light btn-lg">Customize this</Link>
+              <button aria-label="Wishlist" className="grid place-items-center w-[3.4rem] h-[3.4rem] rounded-full bg-paper border border-line text-ink hover:text-terracotta hover:-translate-y-0.5 transition-all">
                 <Heart size={20} />
               </button>
-              <button
-                aria-label="Share product"
-                className="p-3 border border-border rounded-lg hover:border-primary hover:text-primary transition-colors"
-              >
+              <button aria-label="Share" className="grid place-items-center w-[3.4rem] h-[3.4rem] rounded-full bg-paper border border-line text-ink hover:text-terracotta hover:-translate-y-0.5 transition-all">
                 <Share2 size={20} />
               </button>
             </div>
 
+            {/* Trust pills */}
+            <div className="mt-6 flex flex-wrap gap-2.5">
+              {trust.map(({ Icon, label }) => (
+                <span key={label} className="badge-pill !py-2 !text-[0.8rem]">
+                  <Icon size={15} className="text-terracotta" />
+                  {label}
+                </span>
+              ))}
+            </div>
+
             {/* Highlights */}
-            <div className="mt-8 space-y-3">
+            <div className="card-soft mt-8 p-6 space-y-3">
               {[
                 "Handcrafted with premium materials",
                 "Fully customizable — colors, textures, monograms",
                 "Pan-India delivery with careful packaging",
-                "Minimum order quantities may apply",
               ].map((point) => (
                 <div key={point} className="flex items-start gap-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
-                  <span className="text-sm text-text-muted">{point}</span>
+                  <span className="grid place-items-center w-5 h-5 rounded-full bg-sage-soft text-sage-deep mt-0.5 shrink-0">
+                    <Check size={12} strokeWidth={3} />
+                  </span>
+                  <span className="text-sm text-ink-soft">{point}</span>
                 </div>
               ))}
-            </div>
-
-            {/* Enquiry */}
-            <div className="mt-8 p-5 bg-surface border border-border rounded-xl">
-              <p className="text-sm font-medium text-text-dark">
-                Need this customized?
-              </p>
-              <p className="text-sm text-text-muted mt-1">
-                We offer bespoke packaging with your branding, colors, and
-                materials. Contact us for a quote.
-              </p>
-              <Link
-                href="/customize"
-                className="inline-block mt-3 text-sm font-medium text-primary hover:underline"
-              >
-                Start Customizing →
-              </Link>
             </div>
           </motion.div>
         </div>
       </div>
 
-      {/* Related products */}
+      {/* Related */}
       {relatedProducts.length > 0 && (
-        <div className="bg-surface py-16 md:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeading
-              title="You May Also Like"
-              subtitle="More from this collection"
-            />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="gradient-warm py-16 md:py-20">
+          <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+            <div className="text-center mb-10 md:mb-14">
+              <p className="eyebrow mb-3">More to love</p>
+              <h2 className="font-heading text-4xl md:text-5xl text-ink leading-[1.02]">You may also like</h2>
+            </div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
               {relatedProducts.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}

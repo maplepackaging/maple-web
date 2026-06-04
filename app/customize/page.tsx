@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Palette, Box, Pen, Truck } from "lucide-react";
-import SectionHeading from "@/components/ui/SectionHeading";
+import { Palette, Box, Pen, Truck, Check } from "lucide-react";
+import PageHero from "@/components/ui/PageHero";
 import CustomizeForm from "@/components/forms/CustomizeForm";
-import { getCustomizePage } from "@/lib/sanity-data";
+import { getCustomizePage } from "@/lib/content";
 import { WHATSAPP_NUMBER } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -38,110 +38,88 @@ export default async function CustomizePage() {
   const data = await getCustomizePage();
   const steps = data.steps?.length ? data.steps : defaultSteps;
   const customizableProducts = data.customizableProducts?.length ? data.customizableProducts : defaultProducts;
+
   return (
-    <div className="bg-beige">
-      {/* Hero */}
-      <section className="py-20 md:py-28 bg-text-dark relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-              backgroundSize: "40px 40px",
-            }}
-          />
-        </div>
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-          <span className="inline-block text-primary text-sm font-medium tracking-widest uppercase mb-4">
-            {data.heroLabel || "Bespoke Packaging"}
-          </span>
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight">
-            {data.heroTitle || "Your Vision, Our Craft"}
-          </h1>
-          <p className="mt-6 text-lg text-white/60 max-w-xl mx-auto leading-relaxed">
-            {data.heroBody || "From custom colors and textures to embossed monograms and bespoke structures — we bring your packaging dreams to life."}
-          </p>
-        </div>
-      </section>
+    <div className="bg-cream">
+      <PageHero
+        label={data.heroLabel || "Bespoke packaging"}
+        title={data.heroTitle || "Your vision, our craft"}
+        subtitle={
+          data.heroBody ||
+          "From custom colors and textures to embossed monograms and bespoke structures — we bring your packaging dreams to life."
+        }
+        crumbs={[{ label: "Home", href: "/" }, { label: "Customize" }]}
+      />
 
       {/* How it works */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            title="How It Works"
-            subtitle="Four simple steps from concept to doorstep"
-          />
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {steps.map((step, i) => (
-              <div key={step.title} className="text-center">
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary-light mb-5 relative">
-                  {(() => { const Icon = iconMap[step.icon] || Pen; return <Icon size={24} className="text-primary" />; })()}
-                  <span className="absolute -top-1 -right-1 w-6 h-6 bg-text-dark text-white text-xs font-bold rounded-full flex items-center justify-center">
-                    {i + 1}
+      <section className="relative py-16 md:py-24 overflow-hidden">
+        <div className="dotted-grid absolute inset-0 opacity-50 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)] pointer-events-none" />
+        <div className="relative max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 md:mb-16">
+            <p className="eyebrow mb-3">How it works</p>
+            <h2 className="font-heading text-4xl md:text-5xl text-ink leading-[1.02]">Four steps to bespoke</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+            {steps.map((step, i) => {
+              const Icon = iconMap[step.icon] || Pen;
+              return (
+                <div key={step.title} className="card-soft p-7 text-center">
+                  <span className="relative inline-grid mb-5">
+                    <span className="icon-chip bg-terracotta-soft w-14 h-14">
+                      <Icon size={24} className="text-terracotta" />
+                    </span>
+                    <span className="absolute -top-1.5 -right-1.5 w-6 h-6 grid place-items-center bg-espresso text-cream text-xs font-bold rounded-full">
+                      {i + 1}
+                    </span>
                   </span>
+                  <h3 className="font-heading text-lg text-ink">{step.title}</h3>
+                  <p className="mt-2 text-sm text-ink-soft leading-relaxed">{step.description}</p>
                 </div>
-                <h3 className="font-heading text-lg font-semibold text-text-dark">
-                  {step.title}
-                </h3>
-                <p className="mt-2 text-sm text-text-muted leading-relaxed">
-                  {step.description}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* What can be customized */}
-      <section className="py-16 md:py-24 bg-surface">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <span className="text-primary text-sm font-medium tracking-widest uppercase">
-                Fully Customizable
-              </span>
-              <h2 className="mt-3 font-heading text-3xl md:text-4xl font-semibold text-text-dark leading-tight">
-                {data.customizableTitle || "Everything Can Be Tailored to You"}
+      {/* Customizable + form */}
+      <section className="py-16 md:py-24 gradient-warm">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+            <div className="lg:sticky lg:top-28">
+              <p className="eyebrow mb-3">Fully customizable</p>
+              <h2 className="font-heading text-3xl md:text-5xl text-ink leading-[1.05]">
+                {data.customizableTitle || "Everything tailored to you"}
               </h2>
-              <p className="mt-4 text-text-muted leading-relaxed">
-                {data.customizableBody || "Colors, materials, textures, sizes, printing, foil stamping, embossing, monograms, ribbons, wax seals — every element is yours to choose."}
+              <p className="mt-4 text-ink-soft leading-relaxed max-w-md">
+                {data.customizableBody ||
+                  "Colors, materials, textures, sizes, printing, foil stamping, embossing, monograms, ribbons, wax seals — every element is yours to choose."}
               </p>
-              <div className="mt-8 grid grid-cols-2 gap-3">
+              <div className="mt-8 grid sm:grid-cols-2 gap-2.5">
                 {customizableProducts.map((product) => (
-                  <div
-                    key={product}
-                    className="flex items-center gap-2 text-sm text-text-muted"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                  <div key={product} className="flex items-center gap-2.5 text-sm text-ink-soft">
+                    <span className="grid place-items-center w-5 h-5 rounded-full bg-sage-soft text-sage-deep shrink-0">
+                      <Check size={12} strokeWidth={3} />
+                    </span>
                     {product}
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Enquiry form */}
             <CustomizeForm />
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-16 md:py-20">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-heading text-2xl md:text-3xl font-semibold text-text-dark">
-            Prefer to talk directly?
-          </h2>
-          <p className="mt-3 text-text-muted">
+      {/* Talk CTA */}
+      <section className="py-14 md:py-20 bg-cream">
+        <div className="max-w-3xl mx-auto px-5 sm:px-6 lg:px-8 text-center">
+          <h2 className="font-heading text-2xl md:text-4xl text-ink">Prefer to talk directly?</h2>
+          <p className="mt-3 text-ink-soft">
             Call us at{" "}
-            <a href={`tel:+${WHATSAPP_NUMBER}`} className="text-primary font-medium">
-              +91 84335 72388
-            </a>{" "}
+            <a href={`tel:+${WHATSAPP_NUMBER}`} className="text-terracotta font-semibold">+91 84335 72388</a>{" "}
             or{" "}
-            <Link href="/contact" className="text-primary font-medium hover:underline">
-              send us a message
-            </Link>
-            .
+            <Link href="/contact" className="text-terracotta font-semibold link-underline">send us a message</Link>.
           </p>
         </div>
       </section>

@@ -57,18 +57,18 @@ export default function CartDrawer() {
       {/* Drawer */}
       <div
         data-scroll-lock={isOpen || undefined}
-        className={`fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl transition-transform duration-300 ease-out flex flex-col ${
+        className={`fixed top-0 right-0 h-full w-full max-w-md bg-paper z-50 shadow-2xl transition-transform duration-300 ease-out flex flex-col ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-          <h2 className="font-heading text-lg font-semibold text-text-dark">
-            Your Cart ({mounted ? totalItems : 0})
+        <div className="flex items-center justify-between px-6 py-5 border-b border-line">
+          <h2 className="font-heading text-xl text-ink">
+            Your cart ({mounted ? totalItems : 0})
           </h2>
           <button
             onClick={closeCart}
-            className="p-2 hover:bg-beige rounded-lg transition-colors"
+            className="grid place-items-center w-10 h-10 rounded-full bg-cream text-ink hover:text-terracotta transition-colors"
             aria-label="Close cart"
           >
             <X size={20} />
@@ -78,13 +78,11 @@ export default function CartDrawer() {
         {/* Items */}
         {!mounted || items.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
-            <ShoppingBag size={48} className="text-border mb-4" />
-            <p className="font-heading text-lg font-semibold text-text-dark mb-2">
-              Your cart is empty
-            </p>
-            <p className="text-sm text-text-muted mb-6">
-              Looks like you haven&apos;t added anything yet
-            </p>
+            <span className="icon-chip bg-cream-deep w-16 h-16 mb-5">
+              <ShoppingBag size={26} className="text-ink-soft" />
+            </span>
+            <p className="font-heading text-xl text-ink mb-2">Your cart is empty</p>
+            <p className="text-sm text-ink-soft mb-6">Looks like you haven&apos;t added anything yet</p>
             <Button onClick={closeCart}>Continue Shopping</Button>
           </div>
         ) : (
@@ -93,7 +91,7 @@ export default function CartDrawer() {
               {items.map((item) => (
                 <div key={item.product.id} className="flex gap-4">
                   {/* Image */}
-                  <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-beige-dark shrink-0">
+                  <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-cream-deep shrink-0">
                     <Image
                       src={item.product.images?.[0] || "/placeholder-product.png"}
                       alt={item.product.name}
@@ -108,30 +106,30 @@ export default function CartDrawer() {
                     <Link
                       href={`/products/${item.product.id}`}
                       onClick={closeCart}
-                      className="text-sm font-medium text-text-dark hover:text-primary transition-colors line-clamp-1"
+                      className="text-sm font-semibold text-ink hover:text-terracotta transition-colors line-clamp-1"
                     >
                       {item.product.name}
                     </Link>
-                    <p className="text-sm font-semibold text-text-dark mt-1">
+                    <p className="text-sm font-semibold text-terracotta mt-1">
                       {formatPrice(item.product.price)}
                     </p>
 
                     {/* Quantity Controls */}
                     <div className="flex items-center justify-between mt-2">
-                      <div className="flex items-center border border-border rounded-lg">
+                      <div className="flex items-center border border-line rounded-full bg-cream">
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          className="p-1.5 hover:bg-beige transition-colors"
+                          className="grid place-items-center w-8 h-8 rounded-full hover:text-terracotta transition-colors"
                           aria-label="Decrease quantity"
                         >
                           <Minus size={14} />
                         </button>
-                        <span className="px-3 text-sm font-medium min-w-8 text-center">
+                        <span className="px-2 text-sm font-semibold min-w-7 text-center">
                           {item.quantity}
                         </span>
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          className="p-1.5 hover:bg-beige transition-colors"
+                          className="grid place-items-center w-8 h-8 rounded-full hover:text-terracotta transition-colors"
                           aria-label="Increase quantity"
                         >
                           <Plus size={14} />
@@ -151,20 +149,18 @@ export default function CartDrawer() {
             </div>
 
             {/* Footer */}
-            <div className="border-t border-border px-6 py-4 space-y-4">
+            <div className="border-t border-line px-6 py-5 space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-base font-medium text-text-dark">Subtotal</span>
-                <span className="text-lg font-bold text-text-dark">{formatPrice(totalPrice)}</span>
+                <span className="text-base font-medium text-ink">Subtotal</span>
+                <span className="font-heading text-2xl text-ink">{formatPrice(totalPrice)}</span>
               </div>
-              <p className="text-xs text-text-muted">
-                Shipping and taxes calculated at checkout
-              </p>
+              <p className="text-xs text-ink-soft">Shipping and taxes calculated at checkout</p>
               <Button size="lg" className="w-full" onClick={handleWhatsAppCheckout}>
                 Proceed to Checkout
               </Button>
               <button
                 onClick={closeCart}
-                className="w-full text-center text-sm text-text-muted hover:text-primary transition-colors"
+                className="w-full text-center text-sm text-ink-soft hover:text-terracotta transition-colors"
               >
                 Continue Shopping
               </button>

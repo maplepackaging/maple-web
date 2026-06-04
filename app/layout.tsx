@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Outfit } from "next/font/google";
-import AnnouncementBar from "@/components/layout/AnnouncementBar";
+import { Geist } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ChatWidget from "@/components/chat/ChatWidget";
@@ -8,20 +7,13 @@ import WhatsAppButton from "@/components/chat/WhatsAppButton";
 import EngagementPopup from "@/components/popups/EngagementPopup";
 import { CartProvider } from "@/lib/cart-context";
 import CartDrawer from "@/components/cart/CartDrawer";
-import { getSiteSettings } from "@/lib/sanity-data";
+import { getSiteSettings } from "@/lib/content";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
@@ -81,10 +73,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${spaceGrotesk.variable} ${outfit.variable} font-sans antialiased min-h-full flex flex-col`}
+        className={`${geist.variable} font-sans antialiased min-h-full flex flex-col`}
       >
         <CartProvider>
-          <AnnouncementBar announcements={settings.announcements} />
+          {/* layout shell */}
           <Header navLinks={settings.navLinks} />
           <main className="flex-1">{children}</main>
           <Footer settings={settings} />

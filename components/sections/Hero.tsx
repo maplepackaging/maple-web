@@ -1,178 +1,109 @@
-"use client";
-
-import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import type { HeroSlide } from "@/lib/sanity-data";
+import { Sparkles, Leaf, Truck } from "lucide-react";
 
-const fallbackSlides: HeroSlide[] = [
-  {
-    title: "Where Every Package Tells a Story",
-    subtitle: "Premium Packaging & Gifting",
-    description: "Handcrafted packaging and curated gift hampers that transform ordinary moments into extraordinary memories.",
-    image: "/hero-opt-1.png",
-    cta: { text: "Explore Collections", href: "/categories" },
-  },
-  {
-    title: "Crafted for Your Special Day",
-    subtitle: "Wedding Collection 2025",
-    description: "Exquisite wedding invitations, favor boxes, and packaging that set the tone for your celebration.",
-    image: "/hero-opt-2.png",
-    cta: { text: "Wedding Collection", href: "/categories/wedding-invites" },
-  },
-  {
-    title: "Make Every Gift Unforgettable",
-    subtitle: "Corporate & Personal Gifting",
-    description: "Curated gift hampers and premium packaging solutions for corporate events, festivals, and personal milestones.",
-    image: "/hero-opt-3.png",
-    cta: { text: "Customize Now", href: "/customize" },
-  },
+// Positions tuned to match the approved hero mockup (overlapping framed collage)
+const collage = [
+  { src: "/hero-box-1.png", alt: "Cream wedding gift box with ribbon",
+    style: { top: "1%", left: "0%", width: "54%", zIndex: 30, rotate: "-3deg" }, delay: "0s" },
+  { src: "/hero-box-2.png", alt: "Curated gift hamper",
+    style: { top: "9%", left: "56%", width: "43%", zIndex: 20, rotate: "3deg" }, delay: "1.1s" },
+  { src: "/hero-box-3.png", alt: "Green monogrammed invitation box",
+    style: { top: "53%", left: "5%", width: "45%", zIndex: 20, rotate: "2deg" }, delay: "0.6s" },
+  { src: "/hero-box-4.png", alt: "Kraft thank-you gift box with ribbon",
+    style: { top: "49%", left: "49%", width: "51%", zIndex: 30, rotate: "-2deg" }, delay: "1.7s" },
 ];
 
-const SLIDE_DURATION = 6000;
-
-interface HeroProps {
-  slides?: HeroSlide[];
-}
-
-export default function Hero({ slides: slidesProp }: HeroProps) {
-  const slides = slidesProp && slidesProp.length > 0 ? slidesProp : fallbackSlides;
-  const [current, setCurrent] = useState(0);
-  const [progress, setProgress] = useState(0);
-
-  const next = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % slides.length);
-    setProgress(0);
-  }, []);
-
-  const prev = useCallback(() => {
-    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
-    setProgress(0);
-  }, []);
-
-  const goTo = useCallback((i: number) => {
-    setCurrent(i);
-    setProgress(0);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((p) => {
-        if (p >= 100) {
-          next();
-          return 0;
-        }
-        return p + 100 / (SLIDE_DURATION / 50);
-      });
-    }, 50);
-    return () => clearInterval(interval);
-  }, [current, next]);
-
-  const slide = slides[current];
-
+export default function Hero() {
   return (
-    <section className="relative bg-text-dark overflow-hidden min-h-[calc(100dvh-7rem)] lg:h-[calc(100dvh-7rem)]">
-      <div className="mx-auto h-full grid grid-cols-1 lg:grid-cols-2">
-        {/* Left — Text panel */}
-        <div className="relative z-10 flex flex-col justify-center px-5 sm:px-10 lg:px-16 xl:px-20 py-8 sm:py-14 md:py-20 lg:py-24 order-2 lg:order-1">
+    <section className="relative gradient-hero overflow-hidden">
+      {/* one large flowing curly string */}
+      <div aria-hidden className="absolute inset-0 pointer-events-none overflow-hidden">
+        <svg
+          className="absolute -top-10 left-0 w-[140%] sm:w-[110%] lg:w-full h-auto text-terracotta/20"
+          viewBox="0 0 1440 520"
+          fill="none"
+          preserveAspectRatio="xMidYMin slice"
+        >
+          <path
+            d="M-40 150 C 180 40, 360 60, 470 180 C 560 280, 460 380, 380 330 C 320 293, 360 220, 440 250 C 560 295, 600 150, 760 150 C 940 150, 980 360, 1130 320 C 1230 293, 1210 170, 1130 200 C 1075 221, 1100 300, 1180 300 C 1360 300, 1420 120, 1520 230"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
 
+      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pt-10 sm:pt-14 lg:pt-16 pb-14 lg:pb-20">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-10 items-center">
+          {/* Left — copy */}
+          <div className="order-2 lg:order-1 max-w-xl">
+            <h1 className="animate-fade-in-up-1 font-heading text-[2.9rem] leading-[0.95] sm:text-6xl lg:text-7xl text-ink">
+              Packaging that makes the gift
+            </h1>
 
-          <div key={current}>
-              <span className="inline-block text-primary text-xs font-semibold tracking-[0.2em] uppercase mb-4 md:mb-5">
-                {slide.subtitle}
+            <p className="animate-fade-in-up-2 mt-6 text-lg md:text-xl text-ink-soft leading-relaxed max-w-md">
+              Luxury packaging and gifting solutions for life&apos;s most
+              meaningful moments.
+            </p>
+
+            <div className="animate-fade-in-up-3 mt-8 flex flex-wrap gap-3.5">
+              <Link href="/categories" className="btn btn-pill-brand btn-lg">
+                Explore Collections
+              </Link>
+              <Link href="/customize" className="btn btn-pill-light btn-lg">
+                Customize Yours
+              </Link>
+            </div>
+
+            <div className="animate-fade-in-up-4 mt-9 flex flex-wrap gap-3">
+              <span className="badge-pill">
+                <Sparkles size={16} className="text-gold" />
+                1000+ weddings
               </span>
-
-              <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-[1.15] mb-4 md:mb-5 max-w-[520px]">
-                {slide.title}
-              </h1>
-
-              <p className="text-sm sm:text-base md:text-lg text-white/60 leading-relaxed mb-6 md:mb-8 max-w-lg line-clamp-2">
-                {slide.description}
-              </p>
-
-              <div className="flex flex-wrap gap-3 sm:gap-4">
-                <Link
-                  href={slide.cta.href}
-                  className="group inline-flex items-center justify-center font-medium transition-all duration-300 bg-primary text-white hover:bg-primary-hover shadow-lg hover:shadow-xl px-6 py-3.5 sm:px-8 sm:py-4 text-sm sm:text-base rounded-xl"
-                >
-                  {slide.cta.text}
-                  <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-                <Link
-                  href="/customize"
-                  className="inline-flex items-center justify-center font-medium transition-all duration-300 border-2 border-white/20 text-white hover:bg-white/10 px-6 py-3.5 sm:px-8 sm:py-4 text-sm sm:text-base rounded-xl"
-                >
-                  Customize Yours
-                </Link>
-              </div>
+              <span className="badge-pill">
+                <Leaf size={16} className="text-sage" />
+                Handcrafted
+              </span>
+              <span className="badge-pill">
+                <Truck size={16} className="text-terracotta" />
+                Pan-India delivery
+              </span>
+            </div>
           </div>
 
-          {/* Bottom controls */}
-          <div className="mt-6 sm:mt-12 md:mt-16 flex items-center gap-4 sm:gap-6">
-            {/* Arrows */}
-            <div className="flex gap-2">
-              <button
-                onClick={prev}
-                aria-label="Previous slide"
-                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/40 transition-colors"
-              >
-                <ChevronLeft size={18} />
-              </button>
-              <button
-                onClick={next}
-                aria-label="Next slide"
-                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/40 transition-colors"
-              >
-                <ChevronRight size={18} />
-              </button>
-            </div>
-
-            {/* Progress bars */}
-            <div className="flex items-center gap-2 flex-1 max-w-48">
-              {slides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => goTo(i)}
-                  aria-label={`Go to slide ${i + 1}`}
-                  className="relative h-1 flex-1 rounded-full bg-white/15 overflow-hidden cursor-pointer"
+          {/* Right — overlapping framed collage */}
+          <div className="order-1 lg:order-2 relative">
+            <div className="relative w-full max-w-[36rem] mx-auto aspect-square">
+              {collage.map((img, i) => (
+                <div
+                  key={img.src}
+                  className="absolute animate-float-slow"
+                  style={{
+                    top: img.style.top,
+                    left: img.style.left,
+                    width: img.style.width,
+                    zIndex: img.style.zIndex,
+                    rotate: img.style.rotate,
+                    animationDelay: img.delay,
+                  }}
                 >
-                  <div
-                    className="absolute inset-y-0 left-0 rounded-full bg-primary transition-all duration-100 ease-linear"
-                    style={{
-                      width:
-                        i === current
-                          ? `${progress}%`
-                          : i < current
-                            ? "100%"
-                            : "0%",
-                    }}
-                  />
-                </button>
+                  <div className="overflow-hidden rounded-2xl border-[5px] sm:border-[6px] border-white bg-cream-deep shadow-[0_22px_48px_-18px_rgba(46,30,19,0.5)] aspect-square">
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      width={560}
+                      height={560}
+                      className="w-full h-full object-cover"
+                      priority={i < 2}
+                      sizes="(max-width: 1024px) 50vw, 25vw"
+                    />
+                  </div>
+                </div>
               ))}
+              {/* soft glow behind collage */}
+              <div className="absolute -z-10 inset-4 blur-3xl opacity-70 bg-[radial-gradient(circle_at_55%_45%,rgba(194,96,61,0.22),transparent_62%)]" />
             </div>
-
-          </div>
-        </div>
-
-        {/* Right — Image panel */}
-        <div className="relative order-1 lg:order-2 min-h-[200px] h-[35dvh] sm:min-h-[300px] sm:h-[40dvh] lg:h-auto lg:min-h-0">
-          <div className="absolute inset-0">
-              {slide.image ? (
-                <Image
-                  src={slide.image}
-                  alt={slide.title}
-                  fill
-                  className="object-cover"
-                  priority={current === 0}
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  quality={90}
-                />
-              ) : (
-                <div className="w-full h-full bg-charcoal/30" />
-              )}
-              {/* Subtle gradient blending into dark panel on left */}
-              <div className="absolute inset-0 bg-linear-to-t from-text-dark/80 via-transparent to-transparent lg:bg-linear-to-r lg:from-text-dark/60 lg:via-transparent lg:to-transparent" />
           </div>
         </div>
       </div>

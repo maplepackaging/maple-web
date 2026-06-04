@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Instagram, Facebook } from "lucide-react";
 import NewsletterForm from "@/components/forms/NewsletterForm";
 import { CopyrightYear } from "@/components/ui/CopyrightYear";
-import type { SiteSettings } from "@/lib/sanity-data";
+import type { SiteSettings } from "@/lib/content";
 
 const defaultFooterLinks = {
   shop: [
@@ -40,152 +40,116 @@ export default function Footer({ settings }: FooterProps) {
   const email = settings?.email || "hello@maplepackaging.com";
   const phone = settings?.phone || "+91 84335 72388";
   const address = settings?.address || "Mumbai, India";
-  const tagline = settings?.footerTagline || "Crafting premium packaging and gifting experiences that leave lasting impressions. Every box tells a story.";
+  const tagline =
+    settings?.footerTagline ||
+    "Crafting premium packaging and gifting experiences that leave lasting impressions. Every box tells a story.";
   const instagramUrl = settings?.instagramUrl || "https://instagram.com";
   const facebookUrl = settings?.facebookUrl || "https://facebook.com";
-  const pinterestUrl = settings?.pinterestUrl || "https://pinterest.com";
   const newsletterHeading = settings?.newsletterHeading || "Stay in the loop";
-  const newsletterBody = settings?.newsletterBody || "Be the first to know about new collections, exclusive offers, and gifting inspiration.";
+  const newsletterBody =
+    settings?.newsletterBody ||
+    "Be the first to know about new collections, exclusive offers, and gifting inspiration.";
+
+  const columns: [string, { label: string; href: string }[]][] = [
+    ["Shop", footerLinks.shop],
+    ["Company", footerLinks.company],
+    ["Support", footerLinks.support],
+  ];
+
   return (
-    <footer className="bg-text-dark text-white/80">
-      {/* Newsletter */}
-      <div className="border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div>
-              <h3 className="font-heading text-2xl md:text-3xl font-semibold text-white">
+    <footer className="bg-cream-deep pt-12 md:pt-16 px-5 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Newsletter card */}
+        <div className="relative overflow-hidden rounded-[2.25rem] bg-espresso-deep text-cream px-6 py-10 md:px-12 md:py-12">
+          <div className="dotted-grid absolute inset-0 opacity-[0.07] [background-image:radial-gradient(rgba(255,255,255,0.6)_1px,transparent_1px)] pointer-events-none" />
+          <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-7">
+            <div className="max-w-md">
+              <h3 className="font-heading text-3xl md:text-4xl text-white leading-tight">
                 {newsletterHeading}
               </h3>
-              <p className="mt-2 text-white/60 text-sm">
-                {newsletterBody}
-              </p>
+              <p className="mt-2.5 text-cream/60 text-sm md:text-base">{newsletterBody}</p>
             </div>
             <NewsletterForm />
           </div>
         </div>
-      </div>
 
-      {/* Links */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-2">
+        {/* Links */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 py-12 md:py-16">
+          <div className="col-span-2">
             <Image
               src="/logowithoutbg.png"
               alt="Maple Packaging"
-              width={140}
-              height={44}
+              width={150}
+              height={46}
               style={{ width: "auto" }}
-              className="h-10"
+              className="h-11"
             />
-            <p className="mt-4 text-sm text-white/50 max-w-xs leading-relaxed">
-              {tagline}
-            </p>
-            <div className="mt-6 space-y-3">
-              <div className="flex items-center gap-3 text-sm text-white/50">
-                <Mail size={14} />
-                <span>{email}</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm text-white/50">
-                <Phone size={14} />
-                <span>{phone}</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm text-white/50">
-                <MapPin size={14} />
-                <span>{address}</span>
+            <p className="mt-4 text-sm text-ink-soft max-w-xs leading-relaxed">{tagline}</p>
+            <div className="mt-6 space-y-2.5 text-sm text-ink-soft">
+              <a href={`mailto:${email}`} className="flex items-center gap-3 hover:text-terracotta transition-colors">
+                <Mail size={15} className="text-terracotta" />
+                {email}
+              </a>
+              <a href={`tel:${phone}`} className="flex items-center gap-3 hover:text-terracotta transition-colors">
+                <Phone size={15} className="text-terracotta" />
+                {phone}
+              </a>
+              <div className="flex items-center gap-3">
+                <MapPin size={15} className="text-terracotta" />
+                {address}
               </div>
             </div>
           </div>
 
-          {/* Shop */}
-          <div>
-            <h4 className="font-medium text-white text-sm tracking-wider uppercase mb-4">
-              Shop
-            </h4>
-            <ul className="space-y-3">
-              {footerLinks.shop.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/50 hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h4 className="font-medium text-white text-sm tracking-wider uppercase mb-4">
-              Company
-            </h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/50 hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div>
-            <h4 className="font-medium text-white text-sm tracking-wider uppercase mb-4">
-              Support
-            </h4>
-            <ul className="space-y-3">
-              {footerLinks.support.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/50 hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {columns.map(([title, links]) => (
+            <div key={title}>
+              <h4 className="font-semibold text-ink text-sm tracking-wide uppercase mb-4">{title}</h4>
+              <ul className="space-y-3">
+                {links.map((link) => (
+                  <li key={link.label}>
+                    <Link href={link.href} className="link-underline text-sm text-ink-soft hover:text-ink transition-colors">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
+
+      </div>
+
+      {/* Oversized brand wordmark */}
+      <div className="select-none pointer-events-none px-5" aria-hidden="true">
+        <span className="block font-heading font-extrabold tracking-tighter leading-[1.05] text-center text-transparent bg-clip-text bg-gradient-to-b from-terracotta via-clay to-[#a8855a] text-[22vw] lg:text-[16rem]">
+          Maple
+        </span>
       </div>
 
       {/* Bottom */}
-      <div className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-white/40">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-6">
+        <div className="border-t border-line pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-ink-soft">
             © <CopyrightYear /> Maple Packaging. All rights reserved.
           </p>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2.5">
             <a
               href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-white/40 hover:text-primary transition-colors"
+              aria-label="Instagram"
+              className="grid place-items-center w-10 h-10 rounded-full bg-paper border border-line text-ink hover:text-terracotta hover:-translate-y-0.5 transition-all"
             >
-              Instagram
+              <Instagram size={17} />
             </a>
             <a
               href={facebookUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-white/40 hover:text-primary transition-colors"
+              aria-label="Facebook"
+              className="grid place-items-center w-10 h-10 rounded-full bg-paper border border-line text-ink hover:text-terracotta hover:-translate-y-0.5 transition-all"
             >
-              Facebook
-            </a>
-            <a
-              href={pinterestUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-white/40 hover:text-primary transition-colors"
-            >
-              Pinterest
+              <Facebook size={17} />
             </a>
           </div>
         </div>

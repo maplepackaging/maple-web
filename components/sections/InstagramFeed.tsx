@@ -1,8 +1,8 @@
 import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { Instagram } from "lucide-react";
-import InstagramGrid from "./InstagramGrid";
-import type { SiteSettings } from "@/lib/sanity-data";
+import InstagramRing from "./InstagramRing";
+import type { SiteSettings } from "@/lib/content";
 
 interface BeholdPost {
   id: string;
@@ -55,40 +55,40 @@ export default async function InstagramFeed({ settings }: InstagramFeedProps) {
   }));
 
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-cream">
       {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         <div className="text-center mb-10 md:mb-14">
-          <div className="inline-flex items-center gap-2 text-primary text-xs md:text-sm font-medium tracking-wider uppercase mb-3">
-            <Instagram size={14} />
-            <span>Instagram</span>
-          </div>
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-text-dark mb-4">
-            Follow Our Journey
+          <span className="badge-pill mb-5">
+            <Instagram size={15} className="text-terracotta" />
+            Instagram
+          </span>
+          <h2 className="font-heading text-4xl md:text-5xl lg:text-[3.4rem] text-ink leading-[1.02]">
+            Follow our journey
           </h2>
-          <p className="text-base md:text-lg text-text-muted max-w-xl mx-auto">
+          <p className="mt-4 text-base md:text-lg text-ink-soft max-w-xl mx-auto">
             Behind the scenes, latest creations, and gifting inspiration
           </p>
         </div>
       </div>
 
-      {/* Grid */}
+      {/* Rotating 3D reel ring — full width */}
       {gridPosts.length > 0 && (
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <InstagramGrid posts={gridPosts} />
+        <div className="w-full">
+          <InstagramRing posts={gridPosts} />
         </div>
       )}
 
       {/* Follow CTA */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mt-10">
+        <div className="text-center mt-12">
           <Link
             href={igUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-7 py-3 rounded-full border-2 border-text-dark text-text-dark text-sm font-medium hover:bg-text-dark hover:text-white transition-all duration-200"
+            className="btn btn-pill-dark btn-lg"
           >
-            <Instagram size={16} />
+            <Instagram size={18} />
             Follow {handle}
           </Link>
         </div>

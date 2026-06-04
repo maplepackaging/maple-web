@@ -105,7 +105,7 @@ export default function ChatWidget() {
       {/* Floating button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-white shadow-lg hover:bg-primary-hover transition-colors flex items-center justify-center"
+        className="btn-pill-brand fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         aria-label={isOpen ? "Close chat" : "Open chat"}
@@ -143,17 +143,18 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed bottom-24 right-6 z-50 w-90 max-w-[calc(100vw-3rem)] bg-surface rounded-2xl shadow-2xl border border-border overflow-hidden flex flex-col"
+            className="fixed bottom-24 right-6 z-50 w-90 max-w-[calc(100vw-3rem)] bg-paper rounded-[1.75rem] shadow-2xl border border-line overflow-hidden flex flex-col"
             style={{ height: "min(520px, calc(100vh - 140px))" }}
           >
             {/* Header */}
-            <div className="px-5 py-4 bg-text-dark text-white">
-              <h3 className="font-heading text-lg font-semibold">
-                Maple AI
-              </h3>
-              <p className="text-xs text-white/60 mt-0.5">
-                Powered by AI · Ask me anything about gifting
-              </p>
+            <div className="px-5 py-4 bg-espresso-deep text-cream flex items-center gap-3">
+              <span className="icon-chip bg-terracotta w-9 h-9 shrink-0">
+                <MessageCircle size={17} className="text-white" />
+              </span>
+              <div>
+                <h3 className="font-heading text-lg text-white leading-none">Maple AI</h3>
+                <p className="text-xs text-cream/60 mt-1">Your gifting concierge</p>
+              </div>
             </div>
 
             {/* Messages */}
@@ -166,8 +167,8 @@ export default function ChatWidget() {
                   <div
                     className={`max-w-[85%] ${
                       msg.role === "user"
-                        ? "bg-primary text-white rounded-2xl rounded-br-md px-4 py-2.5"
-                        : "bg-beige-dark text-text-dark rounded-2xl rounded-bl-md px-4 py-2.5"
+                        ? "bg-terracotta text-white rounded-2xl rounded-br-md px-4 py-2.5"
+                        : "bg-cream-deep text-ink rounded-2xl rounded-bl-md px-4 py-2.5"
                     }`}
                   >
                     <p className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -181,8 +182,8 @@ export default function ChatWidget() {
               ))}
               {loading && (
                 <div className="flex justify-start">
-                  <div className="bg-beige-dark rounded-2xl rounded-bl-md px-4 py-3">
-                    <Loader2 size={16} className="animate-spin text-primary" />
+                  <div className="bg-cream-deep rounded-2xl rounded-bl-md px-4 py-3">
+                    <Loader2 size={16} className="animate-spin text-terracotta" />
                   </div>
                 </div>
               )}
@@ -190,7 +191,7 @@ export default function ChatWidget() {
             </div>
 
             {/* Input */}
-            <div className="px-4 py-3 border-t border-border bg-surface">
+            <div className="px-4 py-3 border-t border-line bg-paper">
               <div className="flex items-center gap-2">
                 <input
                   ref={inputRef}
@@ -199,13 +200,13 @@ export default function ChatWidget() {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Ask about gifts, occasions..."
-                  className="flex-1 px-4 py-2.5 text-sm bg-beige border border-border rounded-full focus:outline-none focus:border-primary transition-colors text-text-dark placeholder:text-text-muted"
+                  className="flex-1 px-4 py-2.5 text-sm bg-cream border border-line rounded-full focus:outline-none focus:border-terracotta focus:ring-2 focus:ring-terracotta/15 transition-all text-ink placeholder:text-ink-soft/70"
                   disabled={loading}
                 />
                 <button
                   onClick={sendMessage}
                   disabled={!input.trim() || loading}
-                  className="p-2.5 rounded-full bg-primary text-white disabled:opacity-40 hover:bg-primary-hover transition-colors"
+                  className="grid place-items-center w-10 h-10 rounded-full bg-terracotta text-white disabled:opacity-40 hover:bg-terracotta-deep transition-colors shrink-0"
                   aria-label="Send message"
                 >
                   <Send size={16} />

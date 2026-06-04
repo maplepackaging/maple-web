@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { PortableText, type PortableTextBlock } from "@portabletext/react";
-import SectionHeading from "@/components/ui/SectionHeading";
-import { getAboutPage } from "@/lib/sanity-data";
+import { getAboutPage } from "@/lib/content";
+import PageHero from "@/components/ui/PageHero";
 
 export const metadata: Metadata = {
   title: "About Us — Maple Packaging",
@@ -11,9 +12,9 @@ export const metadata: Metadata = {
 };
 
 const defaultValues = [
-  { title: "Craftsmanship First", description: "Every product passes through the hands of skilled artisans. We believe packaging is not just a container — it's the first impression, and it must be flawless." },
-  { title: "Sustainability Matters", description: "We actively source eco-friendly materials and minimize waste across our production. Premium doesn't have to come at the planet's expense." },
-  { title: "Client Obsession", description: "From a bride ordering 50 invite boxes to a Fortune 500 company ordering 5,000 welcome kits — every client receives the same care and attention." },
+  { title: "Craftsmanship First", description: "Every product passes through the hands of skilled artisans. Packaging is the first impression — and it must be flawless." },
+  { title: "Sustainability Matters", description: "We actively source eco-friendly materials and minimize waste across production. Premium doesn't have to cost the planet." },
+  { title: "Client Obsession", description: "From 50 invite boxes to 5,000 corporate welcome kits — every client receives the same care and attention." },
 ];
 
 const defaultSteps = [
@@ -29,63 +30,46 @@ export default async function AboutPage() {
   const processSteps = about.processSteps?.length ? about.processSteps : defaultSteps;
 
   return (
-    <div className="bg-beige">
-      {/* Hero */}
-      <section className="relative h-72 md:h-96 overflow-hidden">
-        <Image
-          src={about.heroImage || "/placeholder-product.png"}
-          alt="Maple Packaging workshop"
-          fill
-          className="object-cover"
-          priority
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/40 to-black/20" />
-        <div className="absolute bottom-0 left-0 right-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
-          <h1 className="font-heading text-4xl md:text-6xl font-semibold text-white">
-            {about.heroTitle || "Our Story"}
-          </h1>
-          <p className="mt-3 text-white/70 max-w-xl text-lg">
-            {about.heroSubtitle || "Crafting experiences, one package at a time"}
-          </p>
-        </div>
-      </section>
+    <div className="bg-cream">
+      <PageHero
+        label="Our Story"
+        title={about.heroTitle || "We make moments worth unwrapping"}
+        subtitle={about.heroSubtitle || "Crafting premium packaging and gifting experiences, one box at a time."}
+        crumbs={[{ label: "Home", href: "/" }, { label: "About" }]}
+      />
 
       {/* What we do */}
       <section className="py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <div>
-              <span className="text-primary text-sm font-medium tracking-widest uppercase">
-                What We Do
-              </span>
-              <h2 className="mt-3 font-heading text-3xl md:text-4xl font-semibold text-text-dark leading-tight">
-                {about.whatWeDoTitle || "We transform ordinary moments into extraordinary memories"}
+              <p className="eyebrow mb-3">What we do</p>
+              <h2 className="font-heading text-3xl md:text-5xl text-ink leading-[1.05]">
+                {about.whatWeDoTitle || "Ordinary moments, made extraordinary"}
               </h2>
               {about.whatWeDoBody?.length ? (
-                <div className="mt-6 text-text-muted leading-relaxed prose-maple">
+                <div className="mt-6 text-ink-soft leading-relaxed space-y-4">
                   <PortableText value={about.whatWeDoBody as PortableTextBlock[]} />
                 </div>
               ) : (
-                <>
-                  <p className="mt-6 text-text-muted leading-relaxed">
-                    Maple Packaging is a premium packaging and gifting company based
-                    in India. We specialize in wedding invitations, gift hampers,
-                    corporate gifting solutions, and bespoke packaging design.
+                <div className="mt-6 space-y-4 text-ink-soft leading-relaxed">
+                  <p>
+                    Maple Packaging is a premium packaging and gifting company based in India,
+                    specialising in wedding invitations, gift hampers, corporate gifting, and bespoke
+                    packaging design.
                   </p>
-                  <p className="mt-4 text-text-muted leading-relaxed">
-                    What started as a passion for beautiful packaging has grown into
-                    a brand trusted by over 10,000 clients — from intimate family
-                    celebrations to large-scale corporate events. We believe the
-                    right packaging doesn&apos;t just hold a gift — it elevates the
-                    entire experience.
+                  <p>
+                    What started as a passion for beautiful packaging has grown into a brand trusted
+                    by over 10,000 clients — from intimate celebrations to large-scale corporate
+                    events. The right packaging doesn&apos;t just hold a gift — it elevates the whole
+                    experience.
                   </p>
-                </>
+                </div>
               )}
             </div>
-            <div className="relative aspect-4/3 rounded-xl overflow-hidden">
+            <div className="relative aspect-[4/3] rounded-[1.75rem] overflow-hidden border border-line/60 bg-cream-deep">
               <Image
-                src={about.whatWeDoImage || "/placeholder-product.png"}
+                src={about.whatWeDoImage || "/hero-box-1.png"}
                 alt="Premium packaging craftsmanship"
                 fill
                 className="object-cover"
@@ -96,23 +80,21 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* Vision */}
-      <section className="py-16 md:py-24 bg-surface">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            label="Our Values"
-            title="What We Stand For"
-            subtitle="The principles that guide every product we create"
-          />
-          <div className="grid md:grid-cols-3 gap-8 md:gap-12">
-            {values.map((value) => (
-              <div key={value.title} className="text-center">
-                <h3 className="font-heading text-xl font-semibold text-text-dark">
-                  {value.title}
-                </h3>
-                <p className="mt-3 text-sm text-text-muted leading-relaxed">
-                  {value.description}
-                </p>
+      {/* Values */}
+      <section className="py-16 md:py-24 gradient-warm">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 md:mb-16">
+            <p className="eyebrow mb-3">Our values</p>
+            <h2 className="font-heading text-4xl md:text-5xl text-ink leading-[1.02]">What we stand for</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5 md:gap-6">
+            {values.map((value, i) => (
+              <div key={value.title} className="card-soft p-8">
+                <span className="icon-chip bg-terracotta w-12 h-12 mb-5 font-heading text-lg text-white">
+                  {i + 1}
+                </span>
+                <h3 className="font-heading text-xl text-ink">{value.title}</h3>
+                <p className="mt-3 text-sm text-ink-soft leading-relaxed">{value.description}</p>
               </div>
             ))}
           </div>
@@ -120,25 +102,21 @@ export default async function AboutPage() {
       </section>
 
       {/* Process */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            label="How We Work"
-            title="Our Process"
-            subtitle="From first conversation to doorstep delivery"
-          />
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <section className="relative py-16 md:py-24 overflow-hidden">
+        <div className="dotted-grid absolute inset-0 opacity-50 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)] pointer-events-none" />
+        <div className="relative max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 md:mb-16">
+            <p className="eyebrow mb-3">How we work</p>
+            <h2 className="font-heading text-4xl md:text-5xl text-ink leading-[1.02]">Our process</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
             {processSteps.map((item) => (
-              <div key={item.step} className="relative">
-                <span className="font-heading text-5xl font-bold text-primary/20">
+              <div key={item.step} className="card-soft p-7 text-center">
+                <span className="icon-chip bg-espresso w-14 h-14 mx-auto mb-5 font-heading text-xl text-cream">
                   {item.step}
                 </span>
-                <h3 className="mt-2 font-heading text-lg font-semibold text-text-dark">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-sm text-text-muted leading-relaxed">
-                  {item.description}
-                </p>
+                <h3 className="font-heading text-lg text-ink">{item.title}</h3>
+                <p className="mt-2 text-sm text-ink-soft leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>
@@ -146,14 +124,22 @@ export default async function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 md:py-24 bg-text-dark">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-heading text-3xl md:text-4xl font-semibold text-white leading-tight">
-            {about.ctaHeading || "Every box we create carries a piece of our heart"}
-          </h2>
-          <p className="mt-6 text-white/60 leading-relaxed">
-            {about.ctaBody || "We're not just a packaging company. We're storytellers, craftspeople, and perfectionists who believe that the way a gift is presented matters just as much as the gift itself. That's the Maple promise."}
-          </p>
+      <section className="bg-cream pb-16 md:pb-24 px-5 sm:px-6 lg:px-8">
+        <div className="relative max-w-5xl mx-auto overflow-hidden rounded-[2.5rem] bg-espresso-deep text-cream px-6 py-16 md:px-12 md:py-20 text-center">
+          <div className="dotted-grid absolute inset-0 opacity-[0.08] [background-image:radial-gradient(rgba(255,255,255,0.6)_1px,transparent_1px)] pointer-events-none" />
+          <div className="relative">
+            <h2 className="font-heading text-3xl md:text-5xl text-white leading-[1.05] max-w-2xl mx-auto">
+              {about.ctaHeading || "Every box carries a piece of our heart"}
+            </h2>
+            <p className="mt-6 text-cream/70 leading-relaxed max-w-2xl mx-auto">
+              {about.ctaBody ||
+                "We're storytellers, craftspeople, and perfectionists who believe the way a gift is presented matters as much as the gift itself. That's the Maple promise."}
+            </p>
+            <div className="mt-9 flex flex-col sm:flex-row justify-center gap-3.5">
+              <Link href="/customize" className="btn btn-pill-brand btn-lg">Start a project</Link>
+              <Link href="/contact" className="btn btn-pill-ghost btn-lg">Get in touch</Link>
+            </div>
+          </div>
         </div>
       </section>
     </div>

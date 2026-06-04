@@ -6,17 +6,15 @@ import Testimonials from "@/components/sections/Testimonials";
 import InstagramFeed from "@/components/sections/InstagramFeed";
 import CTA from "@/components/sections/CTA";
 import {
-  getHeroSlides,
   getSanityCategories,
   getSanityFeaturedProducts,
   getSanityTestimonials,
   getSiteSettings,
-} from "@/lib/sanity-data";
+} from "@/lib/content";
 
 export default async function Home() {
-  const [heroSlides, categories, featuredProducts, testimonials, settings] =
+  const [categories, featuredProducts, testimonials, settings] =
     await Promise.all([
-      getHeroSlides(),
       getSanityCategories(),
       getSanityFeaturedProducts(),
       getSanityTestimonials(),
@@ -25,7 +23,7 @@ export default async function Home() {
 
   return (
     <>
-      <Hero slides={heroSlides} />
+      <Hero />
       <Categories categories={categories} />
       <Featured products={featuredProducts} />
       <WhyUs settings={settings} />

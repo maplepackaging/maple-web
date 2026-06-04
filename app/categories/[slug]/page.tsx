@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getSanityCategories, getSanityCategoryBySlug, getSanityProductsByCategory } from "@/lib/sanity-data";
+import { getSanityCategories, getSanityCategoryBySlug, getSanityProductsByCategory } from "@/lib/content";
 import CategoryDetail from "@/components/pages/CategoryDetail";
 
 interface PageProps {

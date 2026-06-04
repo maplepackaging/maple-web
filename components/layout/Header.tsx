@@ -9,11 +9,10 @@ import { useCart } from "@/lib/cart-context";
 import MobileMenu from "./MobileMenu";
 
 const defaultNavLinks = [
-  { label: "Wedding Invites", href: "/categories/wedding-invites" },
-  { label: "Gift Packaging", href: "/categories/gift-packaging" },
-  { label: "Hampers & Gifts", href: "/categories/hampers-gifts" },
+  { label: "Shop", href: "/categories" },
+  { label: "Wedding", href: "/categories/wedding-invites" },
+  { label: "Hampers", href: "/categories/hampers-gifts" },
   { label: "Corporate", href: "/categories/corporate-gifting" },
-  { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" },
 ];
 
@@ -28,56 +27,54 @@ export default function Header({ navLinks: navLinksProp }: HeaderProps) {
   const [mounted, setMounted] = useState(false);
   const { totalItems, openCart } = useCart();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > 16);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <>
-      <header
-        className={cn(
-          "sticky top-0 z-50 transition-[background-color,box-shadow] duration-300",
-          scrolled
-            ? "bg-white/95 backdrop-blur-md shadow-sm"
-            : "bg-[#FAFBF0]"
-        )}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-18 md:h-20">
+      <header className="sticky top-0 z-50 px-3 sm:px-5 pt-3 sm:pt-4">
+        <div className="max-w-7xl mx-auto">
+          <div
+            className={cn(
+              "flex items-center justify-between gap-4 rounded-[1.75rem] border border-line/70 bg-paper/90 backdrop-blur-md px-3 sm:px-4 lg:px-5 h-16 lg:h-[4.5rem] transition-shadow duration-300",
+              scrolled
+                ? "shadow-[0_14px_40px_-18px_rgba(46,30,19,0.35)]"
+                : "shadow-[0_10px_30px_-20px_rgba(46,30,19,0.25)]"
+            )}
+          >
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileOpen(true)}
-              className="md:hidden p-2 -ml-2 text-text-dark hover:text-primary transition-colors"
+              className="md:hidden grid place-items-center w-10 h-10 rounded-full text-ink hover:bg-cream transition-colors"
               aria-label="Open menu"
             >
-              <Menu size={24} />
+              <Menu size={22} />
             </button>
 
             {/* Logo */}
-            <Link href="/" className="shrink-0">
+            <Link href="/" className="shrink-0 flex items-center">
               <Image
-                src={scrolled ? "/logowithoutbg.png" : "/logo.png"}
+                src="/logowithoutbg.png"
                 alt="Maple Packaging"
-                width={180}
-                height={56}
-                className="h-12 md:h-14 w-auto transition-opacity duration-300"
+                width={170}
+                height={52}
+                className="h-9 lg:h-11 w-auto"
                 priority
               />
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-8">
+            {/* Desktop nav */}
+            <nav className="hidden md:flex items-center gap-7 lg:gap-9">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-medium text-text-dark hover:text-primary transition-colors duration-200 tracking-wide"
+                  className="link-underline text-[0.95rem] font-medium text-ink/80 hover:text-ink transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -85,29 +82,26 @@ export default function Header({ navLinks: navLinksProp }: HeaderProps) {
             </nav>
 
             {/* Right actions */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-2.5">
               <button
-                className="p-2 text-text-dark hover:text-primary transition-colors"
+                className="hidden sm:grid place-items-center w-11 h-11 rounded-full bg-paper border border-line/80 text-ink shadow-[0_6px_16px_-10px_rgba(46,30,19,0.4)] hover:-translate-y-0.5 hover:text-terracotta transition-all"
                 aria-label="Search"
               >
-                <Search size={20} />
+                <Search size={18} />
               </button>
               <button
                 onClick={openCart}
-                className="p-2 text-text-dark hover:text-primary transition-colors relative"
+                className="relative grid place-items-center w-11 h-11 rounded-full bg-paper border border-line/80 text-ink shadow-[0_6px_16px_-10px_rgba(46,30,19,0.4)] hover:-translate-y-0.5 hover:text-terracotta transition-all"
                 aria-label="Cart"
               >
-                <ShoppingBag size={20} />
+                <ShoppingBag size={18} />
                 {mounted && totalItems > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 grid place-items-center bg-terracotta text-white text-[11px] font-bold rounded-full">
                     {totalItems}
                   </span>
                 )}
               </button>
-              <Link
-                href="/customize"
-                className="hidden lg:inline-flex items-center px-5 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors duration-200"
-              >
+              <Link href="/customize" className="btn btn-pill-dark btn-md hidden sm:inline-flex">
                 Customize
               </Link>
             </div>

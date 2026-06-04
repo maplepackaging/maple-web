@@ -82,66 +82,56 @@ export default function EngagementPopup() {
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="fixed inset-0 z-60 flex items-center justify-center p-4 pointer-events-none"
           >
-            <div className="relative bg-surface rounded-2xl shadow-2xl max-w-md w-full overflow-hidden pointer-events-auto">
+            <div className="relative bg-paper rounded-[1.75rem] shadow-2xl max-w-md w-full overflow-hidden pointer-events-auto border border-line">
               {/* Close button */}
               <button
                 onClick={dismiss}
-                className="absolute top-4 right-4 z-10 p-1.5 rounded-full bg-white/80 text-text-muted hover:text-text-dark transition-colors"
+                className="absolute top-4 right-4 z-10 grid place-items-center w-8 h-8 rounded-full bg-cream text-ink-soft hover:text-ink transition-colors"
                 aria-label="Close popup"
               >
                 <X size={18} />
               </button>
 
-              {/* Top accent bar */}
-              <div className="h-1.5 bg-primary" />
-
               <div className="px-8 py-10 text-center">
                 {!submitted ? (
                   <>
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-light mb-6">
-                      <Gift size={28} className="text-primary" />
-                    </div>
-                    <h3 className="font-heading text-2xl md:text-3xl font-semibold text-text-dark">
-                      Get 10% Off
-                    </h3>
-                    <p className="mt-2 text-sm text-text-muted max-w-xs mx-auto leading-relaxed">
-                      Join our mailing list and receive 10% off your first
-                      order. Be the first to know about new collections.
+                    <span className="icon-chip bg-terracotta-soft w-16 h-16 mx-auto mb-6">
+                      <Gift size={28} className="text-terracotta" />
+                    </span>
+                    <span className="eyebrow block mb-2">Welcome gift</span>
+                    <h3 className="font-heading text-3xl text-ink">Get 10% off</h3>
+                    <p className="mt-2 text-sm text-ink-soft max-w-xs mx-auto leading-relaxed">
+                      Join our mailing list and receive 10% off your first order. Be the first to
+                      know about new collections.
                     </p>
-                    <form onSubmit={handleSubmit} className="mt-6">
+                    <form onSubmit={handleSubmit} className="mt-6 space-y-3">
                       <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Your email address"
+                        placeholder="you@email.com"
                         required
-                        className="w-full px-4 py-3 text-sm bg-beige border border-border rounded-lg focus:outline-none focus:border-primary transition-colors text-text-dark placeholder:text-text-muted"
+                        className="w-full px-4 py-3 text-sm bg-cream border border-line rounded-full text-center focus:outline-none focus:border-terracotta focus:ring-2 focus:ring-terracotta/15 transition-all text-ink placeholder:text-ink-soft/70"
                       />
-                      <button
-                        type="submit"
-                        className="w-full mt-3 px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-hover transition-colors text-sm"
-                      >
-                        Claim My 10% Off
+                      <button type="submit" className="btn btn-pill-brand btn-lg w-full">
+                        Claim my 10% off
                       </button>
                     </form>
                     <button
                       onClick={dismiss}
-                      className="mt-4 text-xs text-text-muted hover:text-text-dark transition-colors"
+                      className="mt-4 text-xs text-ink-soft hover:text-ink transition-colors"
                     >
                       No thanks, I&apos;ll pay full price
                     </button>
                   </>
                 ) : (
                   <>
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-light mb-6">
+                    <span className="icon-chip bg-sage-soft w-16 h-16 mx-auto mb-6">
                       <span className="text-3xl">🎉</span>
-                    </div>
-                    <h3 className="font-heading text-2xl font-semibold text-text-dark">
-                      You&apos;re In!
-                    </h3>
-                    <p className="mt-2 text-sm text-text-muted">
-                      Check your inbox for your 10% discount code. Welcome to
-                      the Maple family.
+                    </span>
+                    <h3 className="font-heading text-2xl text-ink">You&apos;re in!</h3>
+                    <p className="mt-2 text-sm text-ink-soft">
+                      Check your inbox for your 10% discount code. Welcome to the Maple family.
                     </p>
                   </>
                 )}

@@ -13,20 +13,6 @@ const SUPABASE_TAG_MAP: Record<string, string[]> = {
   testimonials: ["testimonials"],
 };
 
-// Map Sanity document types to cache tags
-const SANITY_TAG_MAP: Record<string, string[]> = {
-  heroSlide: ["heroSlides"],
-  category: ["categories"],
-  subcategory: ["categories"],
-  subSubcategory: ["categories"],
-  product: ["products"],
-  blogPost: ["blog"],
-  testimonial: ["testimonials"],
-  siteSettings: ["siteSettings"],
-  aboutPage: ["aboutPage"],
-  customizePage: ["customizePage"],
-};
-
 export async function POST(request: NextRequest) {
   try {
     // Verify secret
@@ -36,22 +22,6 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-
-    // Sanity webhook sends `_type` in the payload
-    const sanityType = body?._type as string | undefined;
-    if (sanityType && SANITY_TAG_MAP[sanityType]) {
-      const tags = SANITY_TAG_MAP[sanityType];
-      for (const tag of tags) {
-        revalidateTag(tag, "max");
-      }
-      return NextResponse.json({
-        revalidated: true,
-        source: "sanity",
-        tags,
-        type: sanityType,
-        timestamp: new Date().toISOString(),
-      });
-    }
 
     // Supabase webhook sends `table` in the payload
     const table = body?.table as string | undefined;

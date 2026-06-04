@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Star } from "lucide-react";
-import SectionHeading from "@/components/ui/SectionHeading";
-import { getSanityTestimonials } from "@/lib/sanity-data";
+import Link from "next/link";
+import { Star, Quote } from "lucide-react";
+import PageHero from "@/components/ui/PageHero";
+import { getSanityTestimonials } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Testimonials — Maple Packaging",
@@ -13,67 +14,48 @@ export default async function TestimonialsPage() {
   const testimonials = await getSanityTestimonials();
 
   return (
-    <div className="bg-beige py-16 md:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeading
-          label="Testimonials"
-          title="Client Stories"
-          subtitle="Real experiences from people who trusted us with their most important moments"
-        />
+    <>
+      <PageHero
+        label="Testimonials"
+        title="Client stories"
+        subtitle="Real experiences from people who trusted us with their most important moments."
+        crumbs={[{ label: "Home", href: "/" }, { label: "Testimonials" }]}
+      />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {testimonials.map((testimonial) => (
-            <div
-              key={testimonial.id}
-              className="bg-white rounded-2xl p-6 md:p-8 hover:shadow-xl transition-all duration-300"
-            >
-              {/* Stars */}
-              <div className="flex gap-0.5 mb-4">
-                {Array.from({ length: testimonial.rating }).map((_, i) => (
-                  <Star
-                    key={i}
-                    size={14}
-                    className="fill-primary text-primary"
-                  />
-                ))}
-              </div>
-
-              {/* Content */}
-              <p className="text-text-dark text-sm md:text-base leading-relaxed mb-6">
-                {testimonial.content}
-              </p>
-
-              {/* Author */}
-              <div className="flex items-center gap-3 pt-4 border-t border-border">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm">
-                  {testimonial.avatar}
-                </div>
-                <div>
-                  <div className="font-semibold text-sm text-text-dark">
-                    {testimonial.name}
+      <section className="py-14 md:py-20 bg-cream">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+            {testimonials.map((t) => (
+              <div key={t.id} className="card-soft p-7 flex flex-col">
+                <Quote size={28} className="text-terracotta/80 fill-terracotta/15" />
+                <p className="text-ink leading-relaxed mt-4 flex-1">{t.content}</p>
+                <span className="rule-gold w-full my-5 !bg-[linear-gradient(90deg,transparent,var(--color-gold),transparent)]" />
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-full bg-terracotta-soft grid place-items-center text-terracotta font-bold">
+                    {t.name.charAt(0)}
                   </div>
-                  <div className="text-xs text-text-muted">
-                    {testimonial.role}
+                  <div>
+                    <p className="font-semibold text-ink leading-tight">{t.name}</p>
+                    <p className="text-sm text-ink-soft mt-0.5">{t.role}</p>
+                    <div className="flex gap-0.5 mt-1.5">
+                      {Array.from({ length: t.rating || 5 }).map((_, i) => (
+                        <Star key={i} size={13} className="fill-terracotta text-terracotta" />
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        {/* CTA */}
-        <div className="mt-16 text-center">
-          <p className="text-text-muted">
-            Have a story to share? We&apos;d love to hear from you.
-          </p>
-          <a
-            href="mailto:hello@maplepackaging.com"
-            className="inline-block mt-4 px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-hover transition-colors text-sm"
-          >
-            Share Your Experience
-          </a>
+          <div className="mt-14 text-center">
+            <p className="text-ink-soft">Have a story to share? We&apos;d love to hear from you.</p>
+            <Link href="/contact" className="btn btn-pill-brand btn-lg mt-5">
+              Share your experience
+            </Link>
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 }
