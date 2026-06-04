@@ -133,6 +133,7 @@ export default function Footer({ settings }: FooterProps) {
             © <CopyrightYear /> Maple Packaging. All rights reserved.
           </p>
           <div className="flex items-center gap-2.5">
+            {/* hihi */}
             <a
               href={instagramUrl}
               target="_blank"
